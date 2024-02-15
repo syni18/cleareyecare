@@ -1,0 +1,25 @@
+.shoppingbag-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: #f1f3f6;
+}
+.shoppingbag-container {
+    /* display: flex; */
+    width: 85%;
+    height: 100%;
+}
+.shoppingbag-container .bag-label-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+.bag-label-head label {
+    font-size: 24px;
+}
+.bag-label-head .continue-shop {
+    background: #f1f3f6;
+    padding: 2px 10px;
+}

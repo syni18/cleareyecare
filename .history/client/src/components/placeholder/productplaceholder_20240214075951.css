@@ -1,0 +1,29 @@
+/* ProductPlaceholder.css */
+.product-placeholder {
+  border: 1px solid black;
+  border-radius: 4px;
+  /* padding: 10px; */
+  display: flex;
+  align-items: center;
+}
+
+.product-image-placeholder {
+  width: 2;
+  height: 200px;
+  background-color: grey;
+  border-radius: 4px;
+}
+
+.product-info-placeholder {
+  flex: 1;
+  padding-left: 10px;
+}
+
+.product-title-placeholder,
+.product-price-placeholder {
+  background-color: #f0f0f0;
+  height: 10px;
+  width: 80%;
+  border-radius: 4px;
+  margin: 5px 0;
+}

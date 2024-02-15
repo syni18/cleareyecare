@@ -1,0 +1,20 @@
+.upi-wrapper{
+
+}
+.upi-wrapper .upi-container{
+    display: flex;
+    margin: 1rem  0 0 3.9rem;
+}
+.upi-container .upi-mode {
+    height: 2rem;
+    width: 200px;
+    padding-left: 0.65rem;
+    outline: none;
+}
+.upi-container button {
+    background: #490B3D;
+    color: white;
+    padding: 0 1rem;
+    border: none;
+    cursor: pointer;
+}

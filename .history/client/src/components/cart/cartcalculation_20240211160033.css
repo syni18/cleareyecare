@@ -1,0 +1,66 @@
+.cart-eval-wrapper{
+    width: 100%;
+    height: 100%;
+}
+.cart-eval-wrapper .cart-eval-container{
+    margin: 1rem;
+    padding: 10px 20px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    /* margin-right: 1rem; */
+
+}
+.cart-eval-container .cart-eval-btn{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    
+}
+.cart-eval-container .cart-eval-btn button{
+    text-decoration: none;
+    padding: 7px 15px;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 2px;
+    background: #490B3D;
+    color: #faf7f7;
+    border: 1px solid #490B3D;
+}
+.cart-eval-container .cart-eval-body {
+    display: flex;
+    flex-direction: column;
+}
+.cart-eval-body .cart-eval-subtotal, 
+.cart-eval-body .cart-eval-shipping,
+.cart-eval-body .cart-eval-tax {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.cart-eval-container .cart-eval-payment{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #490B3D;
+    margin-bottom: 3rem;
+    margin-top: 1rem;
+}
+
+.cart-eval-trust{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.cart-eval-trust .eval-trust-box1,
+.cart-eval-trust .eval-trust-box2,
+.cart-eval-trust .eval-trust-box3{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    margin: 0.2rem;
+}
+.trust-box1-icon {
+    margin-left: 0.5rem;
+}

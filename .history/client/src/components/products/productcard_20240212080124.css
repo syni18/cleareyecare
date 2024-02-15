@@ -1,0 +1,79 @@
+.productcard-wrapper {
+    /* background: #fff; */
+    /* padding: 8px 8px 8px 8px; */
+    width: 100%;
+    /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
+}
+/* .productcard-wrapper img {
+    cursor: pointer;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+} */
+/* .productcard-wrapper .productcard-body{
+    margin-bottom: 1rem;
+} */
+.productcard-wrapper .body-buy-btn{
+    text-decoration: none;
+    padding: 2px 15px;
+    background: #490B3D;
+    color: #faf7f7;
+    border: 1px solid #490B3D;
+}
+.productcard-wrapper .body-cart-btn{
+    text-decoration: none;
+    padding: 2px 15px;
+    font-size: 13px;
+    color: #490B3D;
+}
+
+/* topItem css */
+.product-grid {
+  /* display: grid; */
+  /* grid-template-columns: repeat(3, 1fr); Create two columns */
+  /* gap: 5px; Space between items */
+  /* margin-top: 0.5rem; */
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
+  /* justify-items: center; Center the items in their cells */
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr; /* One column on smaller screens */
+  }
+}
+
+.product {
+  /* border: 1px solid #ddd; */
+  /* border-radius: 4px; */
+  /* padding: 16px; */
+  /* text-align: center; */
+  width: 200px;
+  margin-bottom: 0.5rem;
+  /* margin: 0.5rem auto; Center product in the grid cell */
+}
+
+.product-image {
+  width: 100%; /* Make the image fill the container */
+  height: 200px; /* Fixed height */
+  object-fit:cover; /* Keep aspect ratio, cover the box */
+  border-radius: 4px;
+}
+
+.product-info {
+  width: 100%; /* Match width with the .product */
+}
+
+.product-title {
+  font-size: 14px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+
+.product-price {
+  color: #666;
+  margin: 0;
+  font-size: 16px;
+}
