@@ -1,0 +1,21 @@
+.watchlist-wrapper {
+
+}
+.watchlist-container {
+
+}
+.watchlist-container .watchlist-head {
+    margin: 1rem;
+}
+.watchlist-head label {
+    font-size: 18px;
+}
+.watchlist-container .watchlist-list {
+    margin: 1rem;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+}
+.watchlist-list .watchlist-list-item {
+    /* border: 1px solid #d3d3d3; */
+    /* padding: 1rem; */
+}

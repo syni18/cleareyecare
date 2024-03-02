@@ -1,0 +1,70 @@
+.coupon-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.coupon-modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px; /* Set a max-width for larger screens */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.coupon-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.coupon-modal h2 {
+  margin: 0;
+}
+
+.coupon-modal-close-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.coupon-modal .coupon-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0 0;
+}
+
+.coupon-modal .coupon-list li {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.coupon-modal .coupon-list li:hover {
+  background-color: #f9f9f9; /* Light grey background on hover */
+}
+
+.coupon-code {
+  font-weight: bold;
+}
+
+.coupon-description {
+  font-style: italic;
+}
+
+.coupon-discount {
+  color: green;
+}

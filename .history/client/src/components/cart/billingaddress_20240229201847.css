@@ -1,0 +1,57 @@
+.billing-address-wrapper
+{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: #f1f3f6;
+}
+.billing-address-container
+{
+    width: 85%;
+    height: 100%;
+}
+.billing-address-container .bill-label-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+.bill-label-head label {
+    font-size: 24px;
+}
+.billing-address-container .billing-address-scard{
+    border: 1px solid #d3d3d3;
+    border-radius: ;
+    background-color: #fff;
+    width: 300px;
+}
+.billing-address-scard .bill-address-scard-container{
+    margin: 0.5em;
+}
+.bill-address-scard-container .bill-scard-tag span{
+    background-color: #f1f3f6;
+    padding: 2px 5px;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.bill-scard-nameph{
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.25em;
+    font-size: 14px;
+}
+.bill-scard-nameph .bill-scard-name {
+    font-weight: bold;
+}
+.bill-scard-nameph .bill-scard-phno{
+
+}
+.bill-scard-locate {
+    margin-top: 0.25em;
+    font-size: 14px;
+    /* color: rgb(108, 108, 108); */
+    display: flex;
+    flex-direction: column;
+}

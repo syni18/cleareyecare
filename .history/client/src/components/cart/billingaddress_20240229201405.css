@@ -1,0 +1,30 @@
+.billing-address-wrapper
+{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: #f1f3f6;
+}
+.billing-address-container
+{
+    width: 85%;
+    height: 100%;
+}
+.billing-address-container .bill-label-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+.bill-label-head label {
+    font-size: 24px;
+}
+.billing-address-container .billing-address-scard{
+    border: 1px solid #000;
+    width: 300px;
+}
+.billing-address-scard .bill-address-scard-container{
+    margin-top: 1em;
+}
+.bill-address-scard-container .tag
