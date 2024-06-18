@@ -6,7 +6,7 @@ import ENV from '../router/config.js';
 // https://ethereal.email/create
 let nodeConfig = {
     service: "gmail",
-    // secure: false,   //true for 465, false for other ports
+    secure: false,   //true for 465, false for other ports
     auth: {
         user: ENV.EMAIL,
         pass: ENV.PASSWORD

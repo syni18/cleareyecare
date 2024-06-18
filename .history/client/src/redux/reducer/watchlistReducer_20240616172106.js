@@ -1,0 +1,119 @@
+// src/redux/reducers/watchlistReducer.js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  addToWatchlistApi,
+  fetchWatchlistItem,
+  removeFromWatchlistApi,
+  fetchProductsById,
+} from "../../helper/helper";
+
+const initialState = {
+  watchlistItems: [],
+  loading: false,
+  error: null,
+};
+
+export const addToWatchlist = createAsyncThunk(
+  "watchlist/addToWatchlist",
+  async (productId, { rejectWithValue }) => {
+    try {
+      const response = await addToWatchlistApi(productId);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const removeFromWatchlist = createAsyncThunk(
+  "watchlist/removeFromWatchlist",
+  async (productId, { rejectWithValue }) => {
+    try {
+      const response = await removeFromWatchlistApi(productId);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchWatchlist = createAsyncThunk(
+  "watchlist/fetchWatchlist",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetchWatchlistItem();
+      const watchlistIds = response.data.watchlist.map(
+        (item) => item.productId
+      );
+      const products = await Promise.all(
+        watchlistIds.map((id) => fetchProductsById(id))
+      );
+      return products;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+const watchlistSlice = createSlice({
+  name: "watchlist",
+  initialState,
+  reducers: {
+    addToWatchlistSuccess: (state, action) => {
+      state.watchlistItems.push(action.payload);
+    },
+    removeFromWatchlistSuccess: (state, action) => {
+      state.watchlistItems = state.watchlistItems.filter(
+        (item) => item._id !== action.payload
+      );
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(addToWatchlist.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addToWatchlist.fulfilled, (state, action) => {
+        state.loading = false;
+        const existItem = state.watchlistItems.find(
+          (item) => item._id === action.payload._id
+        );
+        if (!existItem) {
+          state.watchlistItems.push(action.payload);
+        }
+      })
+      .addCase(addToWatchlist.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(removeFromWatchlist.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeFromWatchlist.fulfilled, (state, action) => {
+        state.loading = false;
+        state.watchlistItems = state.watchlistItems.filter(
+          (item) => item._id !== action.payload
+        );
+      })
+      .addCase(removeFromWatchlist.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchWatchlist.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchWatchlist.fulfilled, (state, action) => {
+        state.loading = false;
+        state.watchlistItems = action.payload;
+      })
+      .addCase(fetchWatchlist.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+});
+
+export default watchlistSlice.reducer;
