@@ -1,0 +1,94 @@
+.g-d-wrapper{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.g-d-container{
+    border: 1px solid black;
+    width: 95vw;
+    height: 95vh;
+    border-radius: 10px;
+    padding: 10px;
+}
+.g-d-c-top-index{
+    display: flex;
+    justify-content: space-between;
+    align-items:start;
+    /* border: 1px solid black; */
+
+}
+.gdc-t-i-left{
+    flex: 0.28;
+    /* display: flex; */
+    /* flex-direction: row; */
+}
+.gdc-t-i-left .ti-left-ck{
+    display: flex;
+}
+.gdc-til-logo{
+    /* border: 1px solid black; */
+    /* border-radius: 999px;/ */
+    width: max-content;
+    height: max-content;
+}
+.gdc-til-usr-details{
+    flex: 1;
+    margin-left: 16px;
+}
+.til-usr-name{
+    font-weight: 600;
+    font-size: 16px;
+}
+.til-usr-uid{
+    color: gray;
+    display: flex;
+    /* border: 1px solid black; */
+    /* width: 50%; */
+    font-size: 12px;
+    justify-content: space-between;
+}
+.usr-id{
+
+}
+.usr-clip{
+    cursor: pointer;
+}
+.til-usr-ref{
+    color: gray;
+    display: flex;
+    /* border: 1px solid black; */
+    /* width: 50%; */
+    font-size: 12px;
+    justify-content: space-between;
+}
+.usr-ref-link{
+
+}
+.gdc-t-i-right{
+    flex: 0.7;
+    display: flex;
+    justify-content: flex-end;
+    /* border: 1px solid black; */
+}
+.tir-links{
+    display: flex;
+    flex-direction: row;
+    /* border: 1px solid black; */
+}
+.tir-links li{
+    /* flex: 1; */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    /* border: 1px solid black; */
+    padding: 5px;
+    margin-left: 30px;
+}
+.tir-links li .tirl-text{
+    margin-left: 4px;
+}
+.g-d-c-bottom-index{
+
+}
