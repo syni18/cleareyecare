@@ -1,9 +1,0 @@
-.banner {
-  position: fixed;
-  top: 60px; /* Adjust based on your navigation height */
-  left: 0;
-  width: 100%;
-  background-color: #ccc; /* Example background color */
-  overflow: hidden;
-  transition: height 0.5s ease; /* Optional: Add smooth transition effect */
-}
