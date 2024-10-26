@@ -1,5 +1,5 @@
 import React from "react";
-import './productplaceholder.css';
+import './productplace'
 // import useFetchProducts from "../../hooks/useFetechProducts";
 
 const ProductPlaceholder = () => {

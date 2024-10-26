@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 
-axios.defaults.baseURL = import.meta.env.REACT_APP_SERVER_URL;
+axios.defaults.baseURL = import.env.REACT_APP_SERVER_URL;
 
 // ** Make API Requests **
 

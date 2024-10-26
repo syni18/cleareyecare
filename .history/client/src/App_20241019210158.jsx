@@ -9,7 +9,7 @@ const HomePage = lazy(() => import("./components/homepage/HomePage"));
 const Login = lazy(() => import("./components/auth/Login"));
 // const Signup = lazy(() => import("./components/auth/Signup"));
 // new ui
-const Signup = lazy(() => import("./containers/Authentication/signup/Signup"));
+const Signup = lazy(() => import("./"));
 const Recovery = lazy(() => import("./components/auth/Recovery"));
 const ResetPassword = lazy(() => import("./components/auth/ResetPassword"));
 const ShoppingBag = lazy(() => import("./components/cart/ShoppingBag"));
