@@ -1,0 +1,151 @@
+.login-wrapper{
+    width: 100%;
+    height: 100vh;
+    /* border: 1px solid black; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f1f3f6;
+}
+.auth-wrap-close {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.auth-wrap-close .auth-wrcl-text{
+    margin-left: 0.5rem;
+}
+.login-container{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    border: 1px solid black;
+}
+.login-container .loco-left{
+    flex: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* border-right: 1px solid black; */
+    background: #007bff;
+    color:#ffffff;
+}
+.login-container .loco-left h1{
+    font-size: 3rem;
+    font-weight: 500;
+    width: max-content;
+    margin-left: 2rem;
+    border-bottom: 7px solid #ffffff;
+    border-radius: 4px;
+}
+.login-container .loco-left h3, .loco-left h5{
+    font-weight: normal;
+    margin-top: 1rem;
+    margin-left: 2rem;
+}
+
+.login-container .loco-right{
+    flex: 75%;
+    border: 1px solid  black;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 4px;
+    display: flex;
+    margin-left: 0.4rem;
+    flex-direction: column;
+}
+
+/* new design */
+.loco-right .lr-heading{
+    border: 1px solid ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .loco-right .login-form-wrapper{
+    width: 35%;
+    margin: 2rem;
+}
+.login-form-wrapper label {
+    font-size: 14px;
+    font-weight: 600;
+}
+.login-form-wrapper input {
+    outline: none;
+    border: 1px solid #007bff ;
+    width: 100%;
+    height: 2.7rem;
+    font-size: large;
+    padding-left: 0.4rem;
+    margin-bottom: 1rem;
+    border-radius: 0.4rem;
+}
+.login-form-wrapper input:focus::-webkit-input-placeholder{
+    color: transparent;
+}
+
+.login-form-wrapper p {
+    margin-top: 1.5rem;
+    font-size: 12px;
+}
+.login-form-wrapper p em {
+    color: #007bff;
+    cursor: pointer;
+}
+
+.login-form-wrapper button,
+.login-linkbtn {
+    width: 100%;
+    margin-top: 0.8rem;
+    border-radius: 1rem;
+    border: none;
+    padding: 0.6rem 2rem;
+    background: #007bff;
+    color: #ffffff;
+    cursor: pointer;
+}
+.loco-right .loco-recovery-link,
+.loco-right .loco-regis-link{
+    margin-bottom: 1rem;
+    color: #007bff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.login-form-otp {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.login-form-otp p {
+    margin: 0;
+}
+.login-form-otp a {
+    text-decoration: none;
+    color: #007bff;
+} */

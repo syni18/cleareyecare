@@ -1,0 +1,33 @@
+/* PatternBackground.css */
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.blinking-dot {
+  animation: blink 1.5s infinite;
+}
+
+.blinking-dot:nth-of-type(1) {
+  fill: #ff6347; /* Tomato */
+  animation-delay: 0s;
+}
+
+.blinking-dot:nth-of-type(2) {
+  fill: #ffa500; /* Orange */
+  animation-delay: 0.5s;
+}
+
+.blinking-dot:nth-of-type(3) {
+  fill: #1e90ff; /* DodgerBlue */
+  animation-delay: 1s;
+}
+
+.blinking-dot:nth-of-type(4) {
+  fill: #32cd32; /* LimeGreen */
+  animation-delay: 1.5s;
+}
