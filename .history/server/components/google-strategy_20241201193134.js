@@ -14,14 +14,14 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
         try {
-            let isUserExist = await UserModel.findOne({ email: profile._json.email });
+            const isUserExist = await UserModel.findOne({ email: profile._json.email });
             if(!isUserExist) {
                  const password = generatePassword(
                    profile._json.given_name,
                    profile._json.family_name
                  );
 
-                isUserExist = await UserModel.create({
+                iawait UserModel.create({
                   fullname: profile._json.name,
                   firstname: profile._json.given_name,
                   lastname: profile._json.family_name,
