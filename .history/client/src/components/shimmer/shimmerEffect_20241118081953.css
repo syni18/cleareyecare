@@ -1,0 +1,33 @@
+.shimmer {
+  width: 100%;
+  height: auto; /* Adjust as needed */
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.shimmer-item {
+  margin: 10px 0;
+  border-radius: 4px;
+  background-color: #f0f0f0; /* Light gray */
+}
+
+.form-field-shimmer {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-shimmer {
+  height: 30px; /* Adjust as needed */
+  background-color: #e0e0e0; /* Light gray */
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
