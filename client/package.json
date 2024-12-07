@@ -17,6 +17,7 @@
     "boring-avatars": "^1.10.2",
     "formik": "^2.4.5",
     "jwt-decode": "^4.0.0",
+    "lodash": "^4.17.21",
     "lucide": "^0.303.0",
     "lucide-react": "^0.303.0",
     "prop-types": "^15.8.1",
