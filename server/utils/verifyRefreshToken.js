@@ -14,7 +14,6 @@ const verifyRefreshToken = async (refreshToken) => {
 
         // verify details
         const tokenDetails = jwt.verify(refreshToken, key);
-        console.log("token details",tokenDetails);
         return {
             tokenDetails,
             error: false,

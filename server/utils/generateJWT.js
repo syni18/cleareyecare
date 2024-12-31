@@ -4,30 +4,25 @@ import RefreshTokenModel from "../model/RefreshToken.model.js";
 
 const generateJWT = async (user) => {
     try {
-        // console.log("user", user);
+        console.log("generate JWT called");
         
         const payload = {_id: user._id, ...user};
-        console.log("payload", payload);
         
-        const accessTokenExpiry = Math.floor(Date.now() / 1000) + 100; // expire in 100 seconds
+        const accessTokenExpiry = '100s' // expire in 100 seconds
 
         const accessToken = jwt.sign({
-            ...payload, 
-            exp: accessTokenExpiry,
+            ...payload,
             },
             ENV.JWT_SECRET_KEY, 
-            // {expiresIn: '100'}
+            {expiresIn: '100s'}
         );
-        console.log("accessTokeninJWT", accessToken);
-        
 
-        const refreshTokenExpiry = Math.floor(Date.now() / 1000) + 60*60*24*5; // expire in 5 days
+        const refreshTokenExpiry = '5d' // expire in 5 days
         const refreshToken = jwt.sign({
             ...payload,
-            exp: refreshTokenExpiry,
             },
             ENV.JWT_REFRESH_SECRET_KEY,
-            // {expiresIn: '5d'}
+            {expiresIn: '5d'}
         );
         const isRefreshTokenExist = await RefreshTokenModel.findOne({userId: user._id});
         if(isRefreshTokenExist) {
@@ -37,11 +32,9 @@ const generateJWT = async (user) => {
         await new RefreshTokenModel({
             userId: user._id,
             token: refreshToken,
-            // expiry: refreshTokenExpiry,
+            expiry: refreshTokenExpiry,
         }).save();
 
-        // console.log("token saved successfully", accessToken, refreshToken, accessTokenExpiry, refreshTokenExpiry);
-        
         return {
           accessToken,
           refreshToken,

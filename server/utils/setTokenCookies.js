@@ -1,3 +1,5 @@
+import ms from 'ms'; // Import the 'ms' library for parsing time strings
+
 const setTokenCookies = (
   res,
   accessToken,
@@ -5,10 +7,11 @@ const setTokenCookies = (
   accessTokenExpiry,
   refreshTokenExpiry
 ) => {
-  const accessTokenMaxAge =
-    (accessTokenExpiry - Math.floor(Date.now() / 1000)) * 1000;
-  const refreshTokenMaxAge =
-    (refreshTokenExpiry - Math.floor(Date.now() / 1000)) * 1000;
+  // Convert the accessTokenExpiry string to milliseconds
+  const accessTokenMaxAge = ms(accessTokenExpiry); // ms will handle strings like '100s', '2d', '1h', etc.
+
+  // Convert the refreshTokenExpiry string to milliseconds
+  const refreshTokenMaxAge = ms(refreshTokenExpiry);
 
   //set cookie
   res.cookie("accessToken", accessToken, {

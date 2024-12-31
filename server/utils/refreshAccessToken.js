@@ -5,10 +5,8 @@ import verifyRefreshToken from "./verifyRefreshToken.js";
 
 const refreshAccessToken = async (req, res ) => {
     try {
-        console.log("refresh access tken called");
-        
+
         const oldRefreshToken = req.cookies.refreshToken;
-        console.log("old refresh token: " + oldRefreshToken);
         
         const { tokenDetails, error, msg } = await verifyRefreshToken(oldRefreshToken);
         if (error) {
@@ -16,10 +14,12 @@ const refreshAccessToken = async (req, res ) => {
         }
 
         const getUser = await UserModel.findById(tokenDetails._id);
+
         if(!getUser) {
             return res.status(401).send({status: "failed", msg: "User not found"})
         }
         const userRefreshToken = await RefreshTokenModel.findOne({userId: tokenDetails._id});
+
         if(oldRefreshToken !== userRefreshToken.token || userRefreshToken.blackList) {
             return res.status(401).send({status: "failed", msg: "Unauthorized access"})
         }

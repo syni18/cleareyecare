@@ -5,20 +5,14 @@ import setTokenCookies from "../utils/setTokenCookies.js";
 
 const accessTokenAutoRefresh= async (req, res, next) => {
     try {
-      console.log("function accessTokenAuto");
-      
+        console.log("access token Auto refresh called");
       const accessToken = req.cookies.accessToken;
-      console.log("accessToken", accessToken);
-      
 
       if (accessToken || !isTokenExpire(accessToken)) {
-        console.log("acc", accessToken);
-        
         req.headers['authorization'] = `Bearer ${accessToken}`;
       }
       if(!accessToken || isTokenExpire(accessToken)) {
         const refreshToken = req.cookies.refreshToken;
-        console.log("re", refreshToken);
         
         if(!refreshToken) {
             throw new Error('Refresh token is missing');
