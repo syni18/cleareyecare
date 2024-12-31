@@ -21,7 +21,7 @@ export async function signupWithGoogle(){
   window.location.href = "http://localhost:8080/v1/api/auth/google";
   // const result = await axios.get('/v1/api/auth/google');
   // console.log("result", result);
-  signupWithGoogleCallback()
+  // signupWithGoogleCallback()
 }
 export async function signupWithGoogleCallback() {
   // window.location.href = "http://localhost:8080/v1/api/auth/google";
@@ -180,26 +180,19 @@ export async function verifyOtp(values){
 export async function resetPassword(values){
     console.log(values);
     try{
-        const {data, status} = await axios.put('v1/api/resetPassword', {useremail, password});
-        // console.log(data, status);
-        return Promise.resolve({data, status});
+      const response = await axios.put('v1/api/resetPassword', values);
+      console.log(response);
+      return response.data;
     }
     catch(error){
         return Promise.reject({error});
     }
 }
 // Update the profile info
-export async function updateProfileInfo({ credential }) {
+export async function updateProfileInfo(values, user) {
   try {
-    // Fetch the user ID asynchronously
-    const userIdInfo = await getUsername();
-
-    // Once the promise is fulfilled, extract the userId
-    const userId = userIdInfo.userId;
-    console.log(userId);
-
-    // Make the PUT request with the user ID
-    const response = await axios.put(`v1/api/updateUser`, {credential, userId});
+    console.log("values updated", user, values);
+    const response = await axios.put('v1/api/updateUserProfile', {values, user}, {withCredentials: true});
 
     return {
       message: "Profile information updated successfully",
@@ -211,18 +204,22 @@ export async function updateProfileInfo({ credential }) {
 }
 
 // Update the profile info
-export async function addAddress(formData, mode) {
+export async function editAddress(values, mode) {
   try {
     // Fetch the user ID asynchronously
-    // console.log(formData);
-    const userIdInfo = await getUsername();
+    console.log("formData", values, mode);
+    // const userIdInfo = await getUsername();
 
     // Once the promise is fulfilled, extract the userId
-    const userId = userIdInfo.userId;
-    console.log(userId);
+    // const userId = userIdInfo.userId;
+    // console.log(userId);
 
     // Make the PUT request with the user ID
-    const response = await axios.post(`v1/api/newAddress`, {formData, userId ,mode});
+    const response = await axios.post(
+      `v1/api/manageAddress`,
+      { values, mode },
+      { withCredentials: true }
+    );
 
     return {
       message: "Address information Added successfully",
@@ -235,35 +232,18 @@ export async function addAddress(formData, mode) {
 
 export async function fetchAddress(){
     try {
-      // Fetch the user ID asynchronously
-      // console.log(formData);
-      const userIdInfo = await getUsername();
-
-      // Once the promise is fulfilled, extract the userId
-      const userId = userIdInfo.userId;
-      const response = await axios.get(`v1/api/savedaddress?userId=${userId}`);
-    //   console.log("response : ", response);
-      return response;
+      const response = await axios.get(`v1/api/addresses`, {withCredentials: true});
+      // console.log("response : ", response);
+      return response.data;
     } catch (error) {
       console.error("Error fetching addresses:", error);
     }
 }
-export async function deleteSavedAddress(addressId) {
+export async function deleteAddressById(id) {
   try {
-    // Fetch the user ID asynchronously
-    // console.log(formData);
-    const userIdInfo = await getUsername();
-
-    // Once the promise is fulfilled, extract the userId
-    const userId = userIdInfo.userId;
-    const response = await axios.delete(`v1/api/deleteSavedAddress`, {
-      data: {
-        userId: userId,
-        addressId: addressId,
-      },
-    });
-      // console.log("response : ", response);
-    return response;
+    const response = await axios.delete(`v1/api/address/${id}`, {withCredentials: true});
+      console.log("response : ", response);
+    return response.data;
   } catch (error) {
     console.error("Error deletion address:", error);
   }

@@ -40,7 +40,7 @@
     border: 1px solid #d3d3d3;
     border-radius: 4px;
     display: flex;
-    /* background-color: #f1f3f6; */
+    background-color: #e5e7eb;
     align-items: center;
     justify-content: space-between;
 }

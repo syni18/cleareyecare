@@ -21,7 +21,7 @@ export async function signupWithGoogle(){
   window.location.href = "http://localhost:8080/v1/api/auth/google";
   // const result = await axios.get('/v1/api/auth/google');
   // console.log("result", result);
-  signupWithGoogleCallback()
+  // signupWithGoogleCallback()
 }
 export async function signupWithGoogleCallback() {
   // window.location.href = "http://localhost:8080/v1/api/auth/google";

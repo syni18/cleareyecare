@@ -6,8 +6,7 @@ import store from "./redux/store.js";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "./redux/context/UserContext.jsx";
-import '../misc/trusted-security-policies.js';
-
+import '../misc/'
 const fetchUserDetails = async () => {
   try {
     const response = await fetch("/v1/api/users", {
