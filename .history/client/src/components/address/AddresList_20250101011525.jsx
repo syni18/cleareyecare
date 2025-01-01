@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NewAddress from "./NewAddress";
 import { deleteAddressById, fetchAddress } from "../../helper/helper";
 import { useAddressStore } from "../../redux/store/addressStore";
@@ -9,26 +9,36 @@ function AddressList() {
   const [openDropdownId, setOpenDropdownId] = useState(null);
   // const [addresses, setAddresses] = useState([]);
   const [addressSavedData, setAddressSavedData] = useState({});
- const hasFetched = useRef(false); // Track if fetch has already happened
 
- useEffect(() => {
-   const fetchAddresses = async () => {
-     try {
-       const response = await fetchAddress();
-       setAddresses(response.addressList); // Update Zustand state
-     } catch (error) {
-       console.error("Error fetching addresses:", error);
-     }
-   };
+  
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const response = await fetchAddress();
+        if (response.addressList) {
+          // Check for duplicates before setting new addresses
+          setAddresses((prevAddresses) => {
+            const newAddresses = response.addressList.filter(
+              (newAddress) =>
+                !prevAddresses.some((address) => address.id === newAddress.id)
+            );
+            return [...prevAddresses, ...newAddresses]; // Append non-duplicate addresses
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching addresses:", error);
+      }
+    };
 
-   if (!hasFetched.current) {
-     hasFetched.current = true; // Mark as fetched
-     fetchAddresses();
-   }
- }, [setAddresses]);
+    if (!addresses.length) {
+      fetchAddresses(); // Fetch only if addresses are empty
+    } else {
+      setLoading(false); // If addresses are already in state, stop loading
+    }
+  }, [addresses.length, setAddresses]);
 
   const handleUpdateAddress = (updatedAddress) => {
-    // updateAddress(updatedAddress.address); // Update Zustand state
+    updateAddress(updatedAddress.address); // Update Zustand state
     setIsEditing(false);
   };
 
@@ -69,6 +79,7 @@ function AddressList() {
           onCancel={handleCancel}
           mode="update"
           addressSavedData={addressSavedData}
+          onUpdateAddress={handleUpdateAddress} // Pass the callback
         />
       ) : (
         <ul>

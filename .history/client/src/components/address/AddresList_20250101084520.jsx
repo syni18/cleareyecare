@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NewAddress from "./NewAddress";
 import { deleteAddressById, fetchAddress } from "../../helper/helper";
 import { useAddressStore } from "../../redux/store/addressStore";
@@ -15,6 +15,7 @@ function AddressList() {
    const fetchAddresses = async () => {
      try {
        const response = await fetchAddress();
+       console.log("Fetched addresses:", response.addressList);
        setAddresses(response.addressList); // Update Zustand state
      } catch (error) {
        console.error("Error fetching addresses:", error);
@@ -69,6 +70,7 @@ function AddressList() {
           onCancel={handleCancel}
           mode="update"
           addressSavedData={addressSavedData}
+          onUpdateAddress={handleUpdateAddress} // Pass the callback
         />
       ) : (
         <ul>

@@ -68,7 +68,7 @@ function NewAddress({ onCancel, mode, addressSavedData }) {
         if (mode === 'update' && response.data) {
           updateAddress(response.data);
         } else {
-          setAddresses(response.data.address);
+          setAddresses()
         }
         onCancel();
       } catch (error) {

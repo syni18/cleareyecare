@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NewAddress from "./NewAddress";
 import { deleteAddressById, fetchAddress } from "../../helper/helper";
 import { useAddressStore } from "../../redux/store/addressStore";
@@ -9,23 +9,25 @@ function AddressList() {
   const [openDropdownId, setOpenDropdownId] = useState(null);
   // const [addresses, setAddresses] = useState([]);
   const [addressSavedData, setAddressSavedData] = useState({});
- const hasFetched = useRef(false); // Track if fetch has already happened
+const [isFetched, setIsFetched] = useState(false);
 
- useEffect(() => {
-   const fetchAddresses = async () => {
-     try {
-       const response = await fetchAddress();
-       setAddresses(response.addressList); // Update Zustand state
-     } catch (error) {
-       console.error("Error fetching addresses:", error);
-     }
-   };
+useEffect(() => {
+  const fetchAddresses = async () => {
+    try {
+      const response = await fetchAddress();
+      console.log("Fetched addresses:", response.addressList);
 
-   if (!hasFetched.current) {
-     hasFetched.current = true; // Mark as fetched
-     fetchAddresses();
-   }
- }, [setAddresses]);
+      setAddresses(response.addressList); // Update Zustand state
+      setIsFetched(true); // Mark as fetched
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
+    }
+  };
+
+  if (!isFetched) {
+    fetchAddresses();
+  }
+}, []);
 
   const handleUpdateAddress = (updatedAddress) => {
     // updateAddress(updatedAddress.address); // Update Zustand state
@@ -69,6 +71,7 @@ function AddressList() {
           onCancel={handleCancel}
           mode="update"
           addressSavedData={addressSavedData}
+          onUpdateAddress={handleUpdateAddress} // Pass the callback
         />
       ) : (
         <ul>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NewAddress from "./NewAddress";
 import { deleteAddressById, fetchAddress } from "../../helper/helper";
 import { useAddressStore } from "../../redux/store/addressStore";
@@ -9,26 +9,25 @@ function AddressList() {
   const [openDropdownId, setOpenDropdownId] = useState(null);
   // const [addresses, setAddresses] = useState([]);
   const [addressSavedData, setAddressSavedData] = useState({});
- const hasFetched = useRef(false); // Track if fetch has already happened
 
- useEffect(() => {
-   const fetchAddresses = async () => {
-     try {
-       const response = await fetchAddress();
-       setAddresses(response.addressList); // Update Zustand state
-     } catch (error) {
-       console.error("Error fetching addresses:", error);
-     }
-   };
+  
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const response = await fetchAddress();
+        setAddresses(response.addressList); // Update Zustand state
+      } catch (error) {
+        console.error("Error fetching addresses:", error);
+      }
+    };
 
-   if (!hasFetched.current) {
-     hasFetched.current = true; // Mark as fetched
-     fetchAddresses();
-   }
- }, [setAddresses]);
+    if (!addresses.length) {
+      fetchAddresses(); // Fetch only if addresses are empty
+    }
+  }, [addresses.length, setAddresses]);
 
   const handleUpdateAddress = (updatedAddress) => {
-    // updateAddress(updatedAddress.address); // Update Zustand state
+    updateAddress(updatedAddress.address); // Update Zustand state
     setIsEditing(false);
   };
 
@@ -42,7 +41,7 @@ function AddressList() {
     try {
       const response = await deleteAddressById(id);
       if (response.success) {
-        console.log("Address deleted", id);
+        console.log("");
         
         deleteAddress(id); // Update Zustand state
       } else {
@@ -69,6 +68,7 @@ function AddressList() {
           onCancel={handleCancel}
           mode="update"
           addressSavedData={addressSavedData}
+          onUpdateAddress={handleUpdateAddress} // Pass the callback
         />
       ) : (
         <ul>

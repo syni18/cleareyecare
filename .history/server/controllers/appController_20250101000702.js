@@ -165,7 +165,7 @@ export async function login(req, res) {
       refreshTokenExpiry 
     } = await generateJWT(isUserExist);
 
-    console.log("Creating", accessToken, refreshToken);
+    console.log("Creating");
     
     // Set cookies (uncomment and implement setTokenCookies if needed)
     setTokenCookies(res, accessToken, refreshToken, accessTokenExpiry, refreshTokenExpiry);

@@ -69,6 +69,7 @@ function AddressList() {
           onCancel={handleCancel}
           mode="update"
           addressSavedData={addressSavedData}
+          onUpdateAddress={handleUpdateAddress} // Pass the callback
         />
       ) : (
         <ul>

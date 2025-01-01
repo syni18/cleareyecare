@@ -3,7 +3,6 @@ import "./newaddress.css";
 import { useFormik } from "formik";
 import { Locate } from "lucide-react";
 import { editAddress } from "../../helper/helper";
-import { useAddressStore } from "../../redux/store/addressStore";
 
 function NewAddress({ onCancel, mode, addressSavedData }) {
     const { addresses, setAddresses, updateAddress, deleteAddress } = useAddressStore();
@@ -65,11 +64,6 @@ function NewAddress({ onCancel, mode, addressSavedData }) {
       try {
         const response = await editAddress(values, mode);
         console.log(response.data);
-        if (mode === 'update' && response.data) {
-          updateAddress(response.data);
-        } else {
-          setAddresses(response.data.address);
-        }
         onCancel();
       } catch (error) {
         console.error("Error adding address:", error);

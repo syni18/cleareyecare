@@ -7,16 +7,13 @@ const setTokenCookies = (
   accessTokenExpiry,
   refreshTokenExpiry
 ) => {
-  console.log("setTokenCookies called");
-  
+  log
   // Convert the accessTokenExpiry string to milliseconds
   const accessTokenMaxAge = ms(accessTokenExpiry); // ms will handle strings like '100s', '2d', '1h', etc.
 
   // Convert the refreshTokenExpiry string to milliseconds
   const refreshTokenMaxAge = ms(refreshTokenExpiry);
 
-  console.log("ergf", accessTokenMaxAge, refreshTokenMaxAge);
-  
   //set cookie
   res.cookie("accessToken", accessToken, {
     maxAge: accessTokenMaxAge,

@@ -65,11 +65,7 @@ function NewAddress({ onCancel, mode, addressSavedData }) {
       try {
         const response = await editAddress(values, mode);
         console.log(response.data);
-        if (mode === 'update' && response.data) {
-          updateAddress(response.data);
-        } else {
-          setAddresses(response.data.address);
-        }
+        
         onCancel();
       } catch (error) {
         console.error("Error adding address:", error);

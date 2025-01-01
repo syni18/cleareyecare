@@ -1,50 +1,60 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NewAddress from "./NewAddress";
 import { deleteAddressById, fetchAddress } from "../../helper/helper";
-import { useAddressStore } from "../../redux/store/addressStore";
 
 function AddressList() {
-  const { addresses, setAddresses, updateAddress, deleteAddress } = useAddressStore();
+    const { addresses, setAddresses, updateAddress, deleteAddress } = useAddressStore();
   const [isEditing, setIsEditing] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
   // const [addresses, setAddresses] = useState([]);
   const [addressSavedData, setAddressSavedData] = useState({});
- const hasFetched = useRef(false); // Track if fetch has already happened
 
- useEffect(() => {
-   const fetchAddresses = async () => {
-     try {
-       const response = await fetchAddress();
-       setAddresses(response.addressList); // Update Zustand state
-     } catch (error) {
-       console.error("Error fetching addresses:", error);
-     }
-   };
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const response = await fetchAddress();
+        console.log("address", response.addressList);
+        
+        setAddresses(response.addressList);
+      } catch (error) {
+        console.error("Error fetching addresses:", error);
+      }
+    };
 
-   if (!hasFetched.current) {
-     hasFetched.current = true; // Mark as fetched
-     fetchAddresses();
-   }
- }, [setAddresses]);
+    fetchAddresses();
+  }, []);
 
   const handleUpdateAddress = (updatedAddress) => {
-    // updateAddress(updatedAddress.address); // Update Zustand state
-    setIsEditing(false);
+    console.log("update addre", updatedAddress);
+    
+    setAddresses((prevAddresses) =>
+      prevAddresses.map((address) =>
+        address.id === updatedAddress.address.id ? updatedAddress.address : address
+      )
+    );
+    console.log("sfd", addresses);
+    
+    setIsEditing(false); // Close the edit form
   };
-
+  
   const handleEdit = (addressId) => {
-    const addressToEdit = addresses.find((address) => address.id === addressId);
+    const addressToEdit = addresses.find(
+      (address) => address.id === addressId
+    );
+    console.log("address to edit", addressToEdit);
+    
     setAddressSavedData(addressToEdit);
     setIsEditing(true);
   };
 
   const handleDelete = async (id) => {
     try {
-      const response = await deleteAddressById(id);
-      if (response.success) {
-        console.log("Address deleted", id);
-        
-        deleteAddress(id); // Update Zustand state
+      const response = await deleteAddressById(`/api/address/${id}`);
+      if (response.data.success) {
+        setAddresses((prevAddresses) =>
+          prevAddresses.filter((address) => address.id !== id)
+        );
+        console.log("Address deleted successfully.");
       } else {
         console.error("Failed to delete address:", response.data.message);
       }
@@ -69,6 +79,7 @@ function AddressList() {
           onCancel={handleCancel}
           mode="update"
           addressSavedData={addressSavedData}
+          onUpdateAddress={handleUpdateAddress} // Pass the callback
         />
       ) : (
         <ul>
