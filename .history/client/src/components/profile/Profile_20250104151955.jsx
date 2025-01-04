@@ -20,7 +20,7 @@ function Profile() {
     error: state.error,
   }));
   
-  // console.log("ryj", user);
+  console.log("ryj", user.avatar);
   
   const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ function Profile() {
           <div className="profile-hl-account">
             <span
               className={`hl-account-circle ${
-                user && !user.avatar ? "with-padding" : ""
+                !user.avatar ? "with-padding" : ""
               }`}
             >
               {user ? (

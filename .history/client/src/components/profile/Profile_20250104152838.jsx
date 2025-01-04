@@ -20,7 +20,7 @@ function Profile() {
     error: state.error,
   }));
   
-  // console.log("ryj", user);
+  console.log("ryj", user.avatar);
   
   const navigate = useNavigate();
 
