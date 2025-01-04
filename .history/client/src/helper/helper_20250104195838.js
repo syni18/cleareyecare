@@ -327,6 +327,7 @@ export async function addPanCard(values) {
 export async function getPancardDetails() {
   try{
     const response = await axios.get(`v1/api/getPancardDetails`, {withCredentials:true});
+    console.log("rtrdf", response);
     return response.data;
   } catch(error) {
     console.log("Error in GetPancardDetails:", error);

@@ -6,7 +6,7 @@ import { pancardValidation } from "../../helper/validate";
 import toast, { Toaster } from "react-hot-toast";
 import imageCompression from "browser-image-compression";
 
-const PANUpload = React.memo(() => {
+function PANUpload() {
   const [imagePreview, setImagePreview] = useState(null);
   const [isEditing, setIsEditing] = useState(true); // Flag to check if user can edit
   const fileInputRef = useRef(null);
@@ -257,6 +257,6 @@ const PANUpload = React.memo(() => {
       </div>
     </div>
   );
-});
+}
 
 export default PANUpload;

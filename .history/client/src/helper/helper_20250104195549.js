@@ -325,13 +325,7 @@ export async function addPanCard(values) {
 
 // pan card details
 export async function getPancardDetails() {
-  try{
-    const response = await axios.get(`v1/api/getPancardDetails`, {withCredentials:true});
-    return response.data;
-  } catch(error) {
-    console.log("Error in GetPancardDetails:", error);
-    
-  }
+  
 }
 
 export async function saveProductsToServer(products){

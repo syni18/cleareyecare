@@ -6,87 +6,55 @@ import { pancardValidation } from "../../helper/validate";
 import toast, { Toaster } from "react-hot-toast";
 import imageCompression from "browser-image-compression";
 
-const PANUpload = React.memo(() => {
+function PANUpload() {
   const [imagePreview, setImagePreview] = useState(null);
-  const [isEditing, setIsEditing] = useState(true); // Flag to check if user can edit
   const fileInputRef = useRef(null);
 
-  const { handleSubmit, getFieldProps, values, setFieldValue, setValues } =
-    useFormik({
-      initialValues: {
-        fullname: "",
-        panNumber: "",
-        declaration: false,
-        panImage: null,
-      },
-      validate: pancardValidation,
-      validateOnBlur: false, // Disable validation on blur
-      validateOnChange: false,
-      onSubmit: async (values) => {
-        try {
-          const response = await toast.promise(addPanCard(values), {
-            loading: "Uploading...",
-            success: (response) => {
-              return <b>{response.msg || "PAN Card verified successfully!"}</b>;
-            },
-            error: (error) => {
-              return <b>{error.msg || "Could not verify PAN Card!"}</b>;
-            },
-          });
-        } catch (error) {
-          console.error("Error adding PAN Card:", error);
-        }
-      },
-    });
+  const { handleSubmit, getFieldProps, values, setFieldValue } = useFormik({
+    initialValues: {
+      fullname: "",
+      panNumber: "",
+      declaration: false,
+      panImage: null,
+    },
+    validate: pancardValidation,
+    validateOnBlur: false, // Disable validation on blur
+    validateOnChange: false,
+    onSubmit: async (values) => {
+      try {
+        const response = await toast.promise(addPanCard(values), {
+          loading: "Uploading...",
+          success: (response) => {
+            return <b>{response.msg || "PAN Card verified successfully!"}</b>;
+          },
+          error: (error) => {
+            return <b>{error.msg || "Could not verify PAN Card!"}</b>;
+          },
+        });
+      } catch (error) {
+        console.error("Error adding PAN Card:", error);
+      }
+    },
+  });
 
   useEffect(() => {
     const pandetails = async () => {
       try {
         const getPan = await getPancardDetails();
-        if (getPan.success) {
-          // Only update state if data has changed
-          setValues((prevValues) => {
-            const newValues = {
-              fullname: getPan.data.fullname,
-              panNumber: getPan.data.panNumber,
-              declaration: getPan.data.declaration,
-              panImage: getPan.data.panImage,
-            };
-
-            // Check if the new values are different from the previous ones
-            if (JSON.stringify(prevValues) !== JSON.stringify(newValues)) {
-              return newValues;
-            }
-            return prevValues; // No change
-          });
-
-          // Set image preview only if it has changed
-          const newImagePreview = `data:image/jpeg;base64,${getPan.data.panImage}`;
-          if (newImagePreview !== imagePreview) {
-            setImagePreview(newImagePreview);
-          }
-
-          setIsEditing(false); // Set editing flag to false after fetching details
+        if(getPan.success) {
+          setFieldValue('fullname', getPan.data.fullname);
+          setFieldValue('panNumber', getPan.data.panNumber);
+          setFieldValue('declaration', getPan.data.declaration);
+          setImagePreview('panImage',getPan.data.panImage);
         }
+        setImagePreview(`data:image/jpeg;base64,${get.panImage}`);
       } catch (error) {
-        console.error("Error fetching PAN details:", error);
-        toast.error("Failed to fetch PAN details. Please try again.");
+        console.log("dhg", error);
+        
       }
-    };
-
+    }
     pandetails();
-
-    // Cleanup function to handle unmounted component scenario
-    return () => {
-      setValues({
-        fullname: "",
-        panNumber: "",
-        declaration: false,
-        panImage: null,
-      });
-      setImagePreview(null);
-    };
-  }, []); // Empty dependency array to run once on mount
+  },[])
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -153,7 +121,6 @@ const PANUpload = React.memo(() => {
               id="_pan-name"
               placeholder="Full Name (same as PAN)"
               {...getFieldProps("fullname")}
-              disabled={!isEditing} // Disable if not editing
             />
           </div>
           <div className="panupload-no">
@@ -168,7 +135,6 @@ const PANUpload = React.memo(() => {
                 setFieldValue("panNumber", e.target.value.toUpperCase())
               }
               value={values.panNumber}
-              disabled={!isEditing} // Disable if not editing
             />
           </div>
           <div
@@ -188,7 +154,6 @@ const PANUpload = React.memo(() => {
                   onChange={handleFileChange} // Handle file change
                   ref={fileInputRef} // Attach ref here
                   style={{ display: "none" }}
-                  disabled={!isEditing} // Disable if not editing
                 />
               </>
             ) : (
@@ -197,15 +162,13 @@ const PANUpload = React.memo(() => {
           </div>
           {imagePreview && (
             <div className="imgview-wrap">
-              {isEditing && (
-                <button
-                  type="button"
-                  className="imgview-remove"
-                  onClick={removePreview}
-                >
-                  Remove
-                </button>
-              )}
+              <button
+                type="button"
+                className="imgview-remove"
+                onClick={removePreview}
+              >
+                Remove
+              </button>
               <input
                 type="file"
                 name="panImage"
@@ -214,17 +177,14 @@ const PANUpload = React.memo(() => {
                 onChange={handleFileChange} // Handle file change
                 ref={fileInputRef} // Attach ref here
                 style={{ display: "none" }}
-                disabled={!isEditing} // Disable if not editing
               />
-              {isEditing && (
-                <button
-                  type="button"
-                  className="imgview-change"
-                  onClick={triggerFileInput}
-                >
-                  Change
-                </button>
-              )}
+              <button
+                type="button"
+                className="imgview-change"
+                onClick={triggerFileInput}
+              >
+                Change
+              </button>
             </div>
           )}
           <div className="pan-upload-declare">
@@ -234,7 +194,6 @@ const PANUpload = React.memo(() => {
               id="_declaration"
               checked={values.declaration}
               onChange={(e) => setFieldValue("declaration", e.target.checked)}
-              disabled={!isEditing} // Disable if not editing
             />
             <p className="pan-declare-text">
               I do hereby declare that PAN furnished/stated above is correct and
@@ -244,19 +203,17 @@ const PANUpload = React.memo(() => {
               declaration.
             </p>
           </div>
-          {isEditing && (
-            <button
-              type="submit"
-              className="pan-uploadbtn"
-              disabled={!values.declaration}
-            >
-              Upload
-            </button>
-          )}
+          <button
+            type="submit"
+            className="pan-uploadbtn"
+            disabled={!values.declaration}
+          >
+            Upload
+          </button>
         </form>
       </div>
     </div>
   );
-});
+}
 
 export default PANUpload;

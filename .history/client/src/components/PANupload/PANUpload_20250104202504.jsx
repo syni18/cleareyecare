@@ -6,7 +6,7 @@ import { pancardValidation } from "../../helper/validate";
 import toast, { Toaster } from "react-hot-toast";
 import imageCompression from "browser-image-compression";
 
-const PANUpload = React.memo(() => {
+function PANUpload() {
   const [imagePreview, setImagePreview] = useState(null);
   const [isEditing, setIsEditing] = useState(true); // Flag to check if user can edit
   const fileInputRef = useRef(null);
@@ -44,49 +44,21 @@ const PANUpload = React.memo(() => {
       try {
         const getPan = await getPancardDetails();
         if (getPan.success) {
-          // Only update state if data has changed
-          setValues((prevValues) => {
-            const newValues = {
-              fullname: getPan.data.fullname,
-              panNumber: getPan.data.panNumber,
-              declaration: getPan.data.declaration,
-              panImage: getPan.data.panImage,
-            };
-
-            // Check if the new values are different from the previous ones
-            if (JSON.stringify(prevValues) !== JSON.stringify(newValues)) {
-              return newValues;
-            }
-            return prevValues; // No change
+          setValues({
+            fullname: getPan.data.fullname,
+            panNumber: getPan.data.panNumber,
+            declaration: getPan.data.declaration,
+            panImage: getPan.data.panImage,
           });
-
-          // Set image preview only if it has changed
-          const newImagePreview = `data:image/jpeg;base64,${getPan.data.panImage}`;
-          if (newImagePreview !== imagePreview) {
-            setImagePreview(newImagePreview);
-          }
-
-          setIsEditing(false); // Set editing flag to false after fetching details
         }
+        setImagePreview(`data:image/jpeg;base64,${getPan.data.panImage}`);
+        setIsEditing(false); // Set editing flag to false after fetching details
       } catch (error) {
-        console.error("Error fetching PAN details:", error);
-        toast.error("Failed to fetch PAN details. Please try again.");
+        console.log("dhg", error);
       }
     };
-
     pandetails();
-
-    // Cleanup function to handle unmounted component scenario
-    return () => {
-      setValues({
-        fullname: "",
-        panNumber: "",
-        declaration: false,
-        panImage: null,
-      });
-      setImagePreview(null);
-    };
-  }, []); // Empty dependency array to run once on mount
+  }, []);
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -199,12 +171,12 @@ const PANUpload = React.memo(() => {
             <div className="imgview-wrap">
               {isEditing && (
                 <button
-                  type="button"
-                  className="imgview-remove"
-                  onClick={removePreview}
-                >
-                  Remove
-                </button>
+                type="button"
+                className="imgview-remove"
+                onClick={removePreview}
+              >
+                Remove
+              </button>
               )}
               <input
                 type="file"
@@ -216,15 +188,13 @@ const PANUpload = React.memo(() => {
                 style={{ display: "none" }}
                 disabled={!isEditing} // Disable if not editing
               />
-              {isEditing && (
-                <button
-                  type="button"
-                  className="imgview-change"
-                  onClick={triggerFileInput}
-                >
-                  Change
-                </button>
-              )}
+              <button
+                type="button"
+                className="imgview-change"
+                onClick={triggerFileInput}
+              >
+                Change
+              </button>
             </div>
           )}
           <div className="pan-upload-declare">
@@ -234,7 +204,6 @@ const PANUpload = React.memo(() => {
               id="_declaration"
               checked={values.declaration}
               onChange={(e) => setFieldValue("declaration", e.target.checked)}
-              disabled={!isEditing} // Disable if not editing
             />
             <p className="pan-declare-text">
               I do hereby declare that PAN furnished/stated above is correct and
@@ -248,7 +217,7 @@ const PANUpload = React.memo(() => {
             <button
               type="submit"
               className="pan-uploadbtn"
-              disabled={!values.declaration}
+              disabled={!formik.values.declaration}
             >
               Upload
             </button>
@@ -257,6 +226,6 @@ const PANUpload = React.memo(() => {
       </div>
     </div>
   );
-});
+}
 
 export default PANUpload;
