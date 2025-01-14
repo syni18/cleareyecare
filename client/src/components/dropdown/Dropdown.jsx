@@ -40,25 +40,25 @@ function AuthDropdown({ onClose, isAuthorized, user }) {
       {isAuthorized ? (
         <ul className="auth-dropdown-container">
           <li className="dropdownItem">
-            <Link to="/profile" classname="dp-item-link">
+            <Link to="/profile" className="dp-item-link">
               Profile
               <UserRound size={18} />
             </Link>
           </li>
           <li className="dropdownItem">
-            <Link to="/orders" classname="dp-item-link">
+            <Link to="/orders" className="dp-item-link">
               Orders
               <Package size={18} />
             </Link>
           </li>
           <li className="dropdownItem">
-            <Link to="/profile/watchlist" classname="dp-item-link">
+            <Link to="/profile/watchlist" className="dp-item-link">
               Watchlist
               <Heart size={18} />
             </Link>
           </li>
           <li className="dropdownItem">
-            <Link to="/profile/myCoupons" classname="dp-item-link">
+            <Link to="/profile/myCoupons" className="dp-item-link">
               Coupons
               <BadgeIndianRupee size={18} />
             </Link>
@@ -73,7 +73,7 @@ function AuthDropdown({ onClose, isAuthorized, user }) {
       ) : (
         <ul className="auth-dropdown-container">
           <li className="dropdownItem" onClick={handlelogin}>
-            <Link to="/login" classname="dp-item-link">
+            <Link to="/login" className="dp-item-link">
               Login
               <ToggleLeft size={18} />
             </Link>

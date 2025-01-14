@@ -10,7 +10,7 @@ import {
   ToggleRight,
   UserRound,
 } from "lucide-react";
-function AuthDropdown({ onClose, isAuthorized }) {
+function AuthDropdown({ onClose, isAuthorized, user }) {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
   const handlelogout = () => {
@@ -40,33 +40,33 @@ function AuthDropdown({ onClose, isAuthorized }) {
       {isAuthorized ? (
         <ul className="auth-dropdown-container">
           <li className="dropdownItem">
-            <Link to="/profile" classname="dp-item-link">
-              <UserRound />
+            <Link to="/profile" className="dp-item-link">
               Profile
+              <UserRound size={18} />
             </Link>
           </li>
           <li className="dropdownItem">
             <Link to="/orders" classname="dp-item-link">
-              <Package />
               Orders
+              <Package size={18} />
             </Link>
           </li>
           <li className="dropdownItem">
             <Link to="/profile/watchlist" classname="dp-item-link">
-              <Heart />
               Watchlist
+              <Heart size={18} />
             </Link>
           </li>
           <li className="dropdownItem">
             <Link to="/profile/myCoupons" classname="dp-item-link">
-              <BadgeIndianRupee />
               Coupons
+              <BadgeIndianRupee size={18} />
             </Link>
           </li>
           <li className="dropdownItem" onClick={handlelogout}>
             <Link to="/">
-              <ToggleRight />
               Logout
+              <ToggleRight size={18} />
             </Link>
           </li>
         </ul>
@@ -74,8 +74,8 @@ function AuthDropdown({ onClose, isAuthorized }) {
         <ul className="auth-dropdown-container">
           <li className="dropdownItem" onClick={handlelogin}>
             <Link to="/login" classname="dp-item-link">
-              <ToggleLeft />
               Login
+              <ToggleLeft size={18} />
             </Link>
           </li>
         </ul>

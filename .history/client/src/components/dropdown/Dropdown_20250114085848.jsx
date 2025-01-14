@@ -10,7 +10,7 @@ import {
   ToggleRight,
   UserRound,
 } from "lucide-react";
-function AuthDropdown({ onClose, isAuthorized, is }) {
+function AuthDropdown({ onClose, isAuthorized, user }) {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
   const handlelogout = () => {
@@ -40,7 +40,7 @@ function AuthDropdown({ onClose, isAuthorized, is }) {
       {isAuthorized ? (
         <ul className="auth-dropdown-container">
           <li className="dropdownItem">
-            <Link to="/profile" classname="dp-item-link">
+            <Link to="/profile" className="dp-item-link">
               Profile
               <UserRound size={18} />
             </Link>

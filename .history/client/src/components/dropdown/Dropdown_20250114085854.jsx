@@ -40,13 +40,13 @@ function AuthDropdown({ onClose, isAuthorized, user }) {
       {isAuthorized ? (
         <ul className="auth-dropdown-container">
           <li className="dropdownItem">
-            <Link to="/profile" classname="dp-item-link">
+            <Link to="/profile" className="dp-item-link">
               Profile
               <UserRound size={18} />
             </Link>
           </li>
           <li className="dropdownItem">
-            <Link to="/orders" classname="dp-item-link">
+            <Link to="/orders" className="dp-item-link">
               Orders
               <Package size={18} />
             </Link>
