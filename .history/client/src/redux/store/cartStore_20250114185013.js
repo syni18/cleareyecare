@@ -15,6 +15,7 @@ export const useCartStore = createWithEqualityFn(
 
       addToCart: (item) =>
         set((state) => {
+          console.log("Setting cart items:", items); // Add a debug log here
           const updatedCartItems = state.cartItems.some(
             (cartItem) => cartItem.productId._id === item._id
           )

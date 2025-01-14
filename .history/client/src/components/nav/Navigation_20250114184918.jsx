@@ -33,6 +33,7 @@ const Navigation = () => {
     console.log("cart count ", cartCount);
   }, [setCartItems])
 
+
  const { user, loading, error } = useUserStore((state) => ({
    user: state.user,
    loading: state.loading,

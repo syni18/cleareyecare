@@ -40,6 +40,22 @@ function ShoppingBag() {
   const [addressSavedData, setAddressSavedData] = useState({});
   const hasFetchedAddresses = useRef(false);
 
+  // Fetch cart items (only once)
+  // useEffect(() => {
+  //   if (!hasFetchedCart.current) {
+  //     hasFetchedCart.current = true; // Mark as fetched
+  //     const fetchCartItems = async () => {
+  //       try {
+  //         const response = await getCartItems();          
+  //         setCartItems(response.cart.items);
+  //       } catch (error) {
+  //         console.error("Failed to fetch cart items:", error);
+  //       }
+  //     };
+  //     fetchCartItems();
+  //   }
+  // }, [setCartItems]); // Dependencies: Only `setCartItems` to ensure consistent state.
+
   // Fetch addresses (only once)
   useEffect(() => {
     if (!hasFetchedAddresses.current) {

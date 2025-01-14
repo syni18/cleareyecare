@@ -69,4 +69,4 @@ export const useCartStore = createWithEqualityFn(
   )
 );
 
-export default useCartStore;
+export default us

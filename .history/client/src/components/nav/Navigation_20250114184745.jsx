@@ -33,12 +33,18 @@ const Navigation = () => {
     console.log("cart count ", cartCount);
   }, [setCartItems])
 
+ useEffect(() => {
+   const unsubscribe = useCartStore.subscribe((state) => {
+     console.log("Updated cart state:", state);
+   });
+   return () => unsubscribe(); // Cleanup subscription
+ }, []);
+
  const { user, loading, error } = useUserStore((state) => ({
    user: state.user,
    loading: state.loading,
    error: state.error,
  }));
-
   const [dropdownVisible, setDropdownVisible] = useState(true);
   const [searchInput, setSearchInput] = useState("");
   

@@ -38,7 +38,24 @@ function ShoppingBag() {
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [isNewAddressOpen, setNewAddressOpen] = useState(false);
   const [addressSavedData, setAddressSavedData] = useState({});
+  const hasFetchedCart = useRef(false);
   const hasFetchedAddresses = useRef(false);
+
+  // Fetch cart items (only once)
+  // useEffect(() => {
+  //   if (!hasFetchedCart.current) {
+  //     hasFetchedCart.current = true; // Mark as fetched
+  //     const fetchCartItems = async () => {
+  //       try {
+  //         const response = await getCartItems();          
+  //         setCartItems(response.cart.items);
+  //       } catch (error) {
+  //         console.error("Failed to fetch cart items:", error);
+  //       }
+  //     };
+  //     fetchCartItems();
+  //   }
+  // }, [setCartItems]); // Dependencies: Only `setCartItems` to ensure consistent state.
 
   // Fetch addresses (only once)
   useEffect(() => {

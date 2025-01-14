@@ -4,7 +4,7 @@ import { debounce } from "lodash";
 
 import { useNavigate } from "react-router-dom";
 import AuthDropdown from "../dropdown/Dropdown";
-import { fetchSearchProducts, getCartItems } from "../../helper/helper.js";
+import { fetchSearchProducts } from "../../helper/helper.js";
 import { Cog, Search, ShoppingCart, User } from "lucide-react";
 import useCartStore from "../../redux/store/cartStore.js";
 import useUserStore from "../../redux/store/userStore.js";
@@ -12,36 +12,33 @@ import useUserStore from "../../redux/store/userStore.js";
 const Navigation = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const { cartCount, setCartItems } = useCartStore();
+  const { cartCount,  } = useCartStore();
+  const { user, loading, error } = useUserStore((state) => ({
+    user: state.user,
+    loading: state.loading,
+    error: state.error,
+  }));
 
-  const hasFetchedCart = useRef(false);
+    const hasFetchedCart = useRef(false);
   
     // Fetch cart items (only once)
-  useEffect(() => {
-    if (!hasFetchedCart.current) {
-      hasFetchedCart.current = true; // Mark as fetched
-      const fetchCartItems = async () => {
-        try {
-          const response = await getCartItems();          
-          setCartItems(response.cart.items);
-        } catch (error) {
-          console.error("Failed to fetch cart items:", error);
-        }
-      };
-      fetchCartItems();
-    }
-    console.log("cart count ", cartCount);
-  }, [setCartItems])
-
- const { user, loading, error } = useUserStore((state) => ({
-   user: state.user,
-   loading: state.loading,
-   error: state.error,
- }));
-
+    useEffect(() => {
+      if (!hasFetchedCart.current) {
+        hasFetchedCart.current = true; // Mark as fetched
+        const fetchCartItems = async () => {
+          try {
+            const response = await getCartItems();          
+            setCartItems(response.cart.items);
+          } catch (error) {
+            console.error("Failed to fetch cart items:", error);
+          }
+        };
+        fetchCartItems();
+      }
+    }, [setCartItems])
   const [dropdownVisible, setDropdownVisible] = useState(true);
   const [searchInput, setSearchInput] = useState("");
-  
+
   const handleSearch = useCallback(async () => {
     if (!searchInput.trim()) return;
     try {
