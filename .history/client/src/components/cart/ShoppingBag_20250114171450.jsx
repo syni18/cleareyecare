@@ -21,7 +21,8 @@ import axios from "axios";
 
 function ShoppingBag() {
   const navigate = useNavigate();
-  const { addresses, setAddresses } = useAddressStore();
+  const { addresses, setAddresses, updateAddress, deleteAddress } =
+    useAddressStore();
   const {
     cartItems,
     setCartItems,
@@ -29,9 +30,8 @@ function ShoppingBag() {
     decreaseQuantity,
     removeFromCart
   } = useCartStore();
-
+  log("cartItems", cartItems);
   const [coupons, setCoupons] = useState([]);
-  const [startIndex, setStartIndex] = useState(0);
   const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
   const [selectedCoupon, setSelectedCoupon] = useState("");
   const [editAddressId, setEditAddressId] = useState(null);
@@ -47,7 +47,9 @@ function ShoppingBag() {
       hasFetchedCart.current = true; // Mark as fetched
       const fetchCartItems = async () => {
         try {
-          const response = await getCartItems();          
+          const response = await getCartItems();
+          console.log("cartItems in useEffect", response.cart.items);
+          
           setCartItems(response.cart.items);
         } catch (error) {
           console.error("Failed to fetch cart items:", error);
@@ -63,7 +65,9 @@ function ShoppingBag() {
       hasFetchedAddresses.current = true; // Mark as fetched
       const fetchAddresses = async () => {
         try {
-          const response = await fetchAddress();          
+          const response = await fetchAddress();
+          console.log("vgcc", response.addressList);
+          
           setAddresses(response.addressList.addresses);
           setSelectedAddressId(response.addressList.defaultAddress.id);
         } catch (error) {
@@ -74,6 +78,7 @@ function ShoppingBag() {
     }
   }, [setAddresses]); // Dependencies: Only `setAddresses` for consistent state.
 
+  const [startIndex, setStartIndex] = useState(0);
   // Dummy coupon codes
   useEffect(() => {
     const fetchCoupons = async () => {
@@ -98,6 +103,7 @@ function ShoppingBag() {
     setIsCouponModalOpen(false); // Close the modal after selecting a coupon
   };
   const handleEditClick = (addressId) => {
+    console.log("Edit address with ID:", addressId);
     
     const addressToEdit = addresses.find(
       (address) => address.id === addressId

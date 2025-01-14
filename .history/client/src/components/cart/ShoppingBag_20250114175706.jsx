@@ -98,6 +98,7 @@ function ShoppingBag() {
     setIsCouponModalOpen(false); // Close the modal after selecting a coupon
   };
   const handleEditClick = (addressId) => {
+    console.log("Edit address with ID:", addressId);
     
     const addressToEdit = addresses.find(
       (address) => address.id === addressId

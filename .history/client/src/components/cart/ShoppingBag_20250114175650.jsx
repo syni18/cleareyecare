@@ -21,7 +21,8 @@ import axios from "axios";
 
 function ShoppingBag() {
   const navigate = useNavigate();
-  const { addresses, setAddresses } = useAddressStore();
+  const { addresses, setAddresses, updateAddress, deleteAddress } =
+    useAddressStore();
   const {
     cartItems,
     setCartItems,
@@ -29,7 +30,7 @@ function ShoppingBag() {
     decreaseQuantity,
     removeFromCart
   } = useCartStore();
-
+  
   const [coupons, setCoupons] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
@@ -98,6 +99,7 @@ function ShoppingBag() {
     setIsCouponModalOpen(false); // Close the modal after selecting a coupon
   };
   const handleEditClick = (addressId) => {
+    console.log("Edit address with ID:", addressId);
     
     const addressToEdit = addresses.find(
       (address) => address.id === addressId

@@ -32,7 +32,7 @@ const Watchlist = () => {
 
   const handleMoveToCart = useCallback(
     async (item) => {      
-      console.log("watchlist :", item);
+      console.log();
       
       addToCart(item);
       const items = await removeFromWishlists(item._id);

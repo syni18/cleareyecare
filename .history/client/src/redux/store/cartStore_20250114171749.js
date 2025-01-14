@@ -19,7 +19,7 @@ export const useCartStore = createWithEqualityFn(
           // Ensure no duplicates in the array
           const updatedCartItems = state.cartItems.includes(item._id)
            ? state.cartItems
-            : [...state.cartItems, {productId: item, quantity: 1}];
+            : [...state.cartItems, item];
           return {
             cartItems: updatedCartItems,
             cartCount: updatedCartItems.length,

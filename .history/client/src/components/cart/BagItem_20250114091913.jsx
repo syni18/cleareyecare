@@ -4,12 +4,12 @@ import useCartStore from "../../redux/store/cartStore";
 import { editItemsInCart, removeProductFromCart } from "../../helper/helper";
 
 const BagItem = ({cartItems, increaseQuantity, decreaseQuantity, removeFromCart}) => {
-  // const {
-  //   cartItems,
-  //   increaseQuantity,
-  //   decreaseQuantity,
-  //   removeFromCart,
-  // } = useCartStore();
+  const {
+    cartItems,
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart,
+  } = useCartStore();
 
 
   const handleIncreaseQuantity = useCallback(

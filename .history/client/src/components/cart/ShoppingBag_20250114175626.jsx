@@ -21,7 +21,8 @@ import axios from "axios";
 
 function ShoppingBag() {
   const navigate = useNavigate();
-  const { addresses, setAddresses } = useAddressStore();
+  const { addresses, setAddresses, updateAddress, deleteAddress } =
+    useAddressStore();
   const {
     cartItems,
     setCartItems,
@@ -29,9 +30,8 @@ function ShoppingBag() {
     decreaseQuantity,
     removeFromCart
   } = useCartStore();
-
+  console.log("cartItems", cartItems);
   const [coupons, setCoupons] = useState([]);
-  const [startIndex, setStartIndex] = useState(0);
   const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
   const [selectedCoupon, setSelectedCoupon] = useState("");
   const [editAddressId, setEditAddressId] = useState(null);
@@ -74,6 +74,7 @@ function ShoppingBag() {
     }
   }, [setAddresses]); // Dependencies: Only `setAddresses` for consistent state.
 
+  const [startIndex, setStartIndex] = useState(0);
   // Dummy coupon codes
   useEffect(() => {
     const fetchCoupons = async () => {
@@ -98,6 +99,7 @@ function ShoppingBag() {
     setIsCouponModalOpen(false); // Close the modal after selecting a coupon
   };
   const handleEditClick = (addressId) => {
+    console.log("Edit address with ID:", addressId);
     
     const addressToEdit = addresses.find(
       (address) => address.id === addressId
