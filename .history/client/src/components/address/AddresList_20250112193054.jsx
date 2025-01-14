@@ -15,9 +15,9 @@ function AddressList() {
    const fetchAddresses = async () => {
      try {
        const response = await fetchAddress();
-       console.log("trrt", response);
+       console.log("trrt");
        
-       setAddresses(response.addressList.addresses); // Update Zustand state
+       setAddresses(response.addressList); // Update Zustand state
      } catch (error) {
        console.error("Error fetching addresses:", error);
      }

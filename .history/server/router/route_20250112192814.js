@@ -48,6 +48,7 @@ router.route("/auth/google/callback").get(controller.getCallbackGoogle);
 router.route("/users").get(accessTokenAutoRefresh, (req, res, next) => {
   passport.authenticate("jwt", { session: false }, (err, user, info) => {
     if (err) {
+      // Log and handle unexpected errors
       console.error("Authentication error:", err);
       return res.status(500).json({ error: "Authentication error" });
     }
@@ -58,7 +59,7 @@ router.route("/users").get(accessTokenAutoRefresh, (req, res, next) => {
     req.user = user;
 
     return controller.getUser(req, res, next);
-  })(req, res, next);
+  })(req, res, next); // Ensure `next` is passed in case of errors
 });
 
 

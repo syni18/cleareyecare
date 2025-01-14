@@ -217,16 +217,10 @@ export async function logout(req, res) {
 }
 
 // GET: http://localhost:8080/api/user/example123
-export async function getUser(req, res, next) {
-  try {
-    // Send the user data as a response
-    res.send({ user: req.user });
-  } catch (error) {
-    console.error("Error in getUser:", error);
-    next(error); // Pass error to global error handler
-  }
+export async function getUser(req, res) {
+  // console.log(" re", req.user);
+  res.send({user: req.user});
 }
-
 
 // GET: http://localhost:8080/api/user/email
 export async function getUserByEmail(req, res) {
