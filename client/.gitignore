@@ -74,6 +74,9 @@ web_modules/
 # Optional eslint cache
 .eslintcache
 
+# gitignore
+.gitignore
+
 # Optional stylelint cache
 .stylelintcache
 
