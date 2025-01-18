@@ -1,30 +1,44 @@
 import React from 'react'
 import './ratingreview.css';
 import { ChevronRight, Star } from 'lucide-react';
+<<<<<<< HEAD
 // import ReviewCard from './ReviewCard';
+=======
+import ReviewCard from './ReviewCard';
+import { useNavigate } from 'react-router-dom';
+>>>>>>> item_details_work
 
 function RatingReview() {
+  const navigate = useNavigate();
+  const handlerateingForm = () => {
+    navigate("/rate&review-pkg");
+  }
   return (
     <div className="rating-review-wrapper">
       <div className="rating-review-container">
         <div className="rating-review-head">
           <label htmlFor="">
-            Product Details{" "}
+            Rating & Review{" "}
             <div className="rating-head-overview">
               <span className="rating-overview-star">
-                3.8 <Star size={16} className="overview-star-icon" />
+                3.8 <Star size={14} className="overview-star-icon" />
               </span>
               <span className="review-overview-detail">
                 3090 ratings & 1034 reviews
               </span>
             </div>
           </label>
-          <button className="rating-review-addbtn">Rate Product</button>
+          <button className="rating-review-addbtn" onClick={handlerateingForm}>Rate Product</button>
         </div>
+<<<<<<< HEAD
         {/* <ReviewCard /> */}
+=======
+        <ReviewCard />
+        <ReviewCard />
+>>>>>>> item_details_work
         <div className="review-load-more">
-          All 192 reviews
-          <ChevronRight size={18} />
+          more reviews
+          <ChevronRight size={16} />
         </div>
       </div>
     </div>

@@ -1,154 +1,233 @@
 import UserModel from "../model/User.model.js";
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken'
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
-import ENV from '../router/config.js'
+import ENV from "../router/config.js";
 import otpGenerator from "otp-generator";
 import { v4 as uuidv4 } from "uuid";
 import ProductModel from "../model/Product.model.js";
+import generateJWT from "../utils/generateJWT.js";
+import passport from "passport";
+import setTokenCookies from "../utils/setTokenCookies.js";
+import refreshAccessToken from "../utils/refreshAccessToken.js";
+import RefreshTokenModel from "../model/RefreshToken.model.js";
+import generatorOTP from "../utils/generatorOTP.js";
+import RecoveryOTPModel from "../model/RecoveryOTP.model.js";
+import { otpMessage } from "../utils/designEmail.js";
+import { sendEmail } from "./mailer.js";
+import AddressModel from "../model/Address.model.js";
+import PancardModel from "../model/Pancard.model.js";
+import { decryptionText, encryptionText } from "../encryption/AESencryption.js";
+import wishlistsModel from "../model/wishlists.model.js";
+import ShoppingBagModel from "../model/ShoppingBag.model.js"
+import CouponModel from "../model/Coupon.model.js";
+import ReviewModel from "../model/Review.model.js";
+// ** Global variables **
+let sessionStore = {}; // Simple in-memory store (replace with Redis or DB for production)
 
 //  ** middleware for verify user **
 export async function verifyUser(req, res, next) {
-    try{
-        const {email} = req.body;
+  try {
+    const { email } = req.body;
 
-        // check the user existance 
-        let exist = await UserModel.findOne({email});
-        if(!exist) return res.status(404).send({error: "Can't find User"});
-        // return res.status(200).send(exist);
-        console.log("app-Controller: ", exist);
-        next();
-    }catch(error){
-        return res.status(404).send({error: "Authentication Error"});
-    }
+    // check the user existance
+    let exist = await UserModel.findOne({ email });
+    if (!exist) return res.status(404).send({ error: "Can't find User" });
+    // return res.status(200).send(exist);
+    console.log("app-Controller: ", exist);
+    next();
+  } catch (error) {
+    return res.status(404).send({ error: "Authentication Error" });
+  }
 }
 
+//
+export async function getAuthGoogle(req, res, next) {
+  try {
+    // Initiate Google authentication using Passport
+    passport.authenticate("google", {
+      session: false,
+      scope: ["profile", "email"],
+    })(req, res, next);
+  } catch (error) {
+    console.error("Error verifying Google token:", error);
+    res.status(500).json({ error: "Failed to authenticate user with Google" });
+  }
+}
+
+//
+export async function getCallbackGoogle(req, res, next) {
+  passport.authenticate("google", { session: false, failureRedirect: "/login" }, 
+    (err, user, info) => {      
+      if (err) {
+        return next(err); // Handle errors from passport
+      }
+      if (!user) {
+        return res.redirect("/login"); // Handle case where authentication fails
+      }
+
+      // Access user details
+      const {
+        accessToken,
+        refreshToken,
+        accessTokenExpiry,
+        refreshTokenExpiry,
+      } = user; // Ensure `user` contains these fields
+
+      // Set token cookies
+      setTokenCookies(res, accessToken, refreshToken, accessTokenExpiry, refreshTokenExpiry);
+
+      // Redirect to the frontend
+      res.redirect("http://localhost:5173/");
+    }
+  )(req, res, next); // Pass req, res, and next to the passport middleware
+}
+
+
+// generate and set new access token  using Refresh token
+export async function getNewAccessToken(req, res) {
+  try {
+    const {
+      newAccessToken,
+      newRefreshToken, 
+      newAccessTokenExpiry, 
+      newRefreshTokenExpiry
+    } = await refreshAccessToken(req, res);
+    // set cookies new
+    setTokenCookies(res, newAccessToken, newRefreshToken, newAccessTokenExpiry, newRefreshTokenExpiry);
+    res.json({ msg: "New access token generated successfully." });
+} catch(err) {
+  console.error("Error: ", err);
+  return res.status(500).json({ msg: "Failed to generate new access token." });
+}
+}
 
 // POST: http://localhost:8080/api/register
 export async function register(req, res) {
-    try {
-        const { fullname, email, password } = req.body;
+  try {
+    const { firstname, lastname, email, password } = req.body;
 
-        // Check for existing email
-        const existEmail = UserModel.findOne({ email });
-
-        existEmail.then((existingUser) => {
-            if (existingUser) {
-                return res.status(400).json({ error: "Email address already exists." });
-            } else {
-                // Hash password
-                bcrypt.hash(password, 10).then((hashedPassword) => {
-                    const user = new UserModel({
-                        fullname,
-                        email,
-                        password: hashedPassword,
-                        createdAt: new Date(), // Set current date as createdAt
-                        lastLoginAt: null, // Set lastLoginAt to null initially
-                        isActive: true, // Set isActive to true by default
-                        isAdmin: false, // Set isAdmin to false by default
-                    });
-
-                    // Save user to the database
-                    user.save().then((result) => {
-                        res.status(201).json({ message: "User registered successfully" });
-                    }).catch((error) => {
-                        res.status(500).json({ error: "Failed to register user", details: error });
-                    });
-                }).catch((hashError) => {
-                    res.status(500).json({ error: "Error hashing password", details: hashError });
-                });
-            }
-        }).catch((error) => {
-            res.status(500).json({ error: "Database error", details: error });
-        });
-    } catch (error) {
-        res.status(500).json({ error: "Internal server error", details: error });
+    // Check for existing user
+    const isUserExist = await UserModel.findOne({ email });
+    if (isUserExist) {
+      return res
+        .status(400)
+        .json({ status: false, msg: "Email address already exists." });
     }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Save user to the database directly
+    const result = await new UserModel({
+      firstname,
+      lastname,
+      fullname: lastname ? `${firstname} ${lastname}` : firstname,
+      email,
+      decryptPassword: password, // Consider removing this for security reasons
+      password: hashedPassword,
+      createdAt: new Date(),
+      lastLoginAt: null,
+      isActive: true,
+      isAdmin: false,
+    }).save();
+
+    res.status(201).json({
+      status: true,
+      userId: result._id,
+      msg: "Registered successfully",
+    });
+  } catch (error) {
+    console.error(error); // Log error for debugging
+    res.status(500).json({status: false, msg: "Internal server error", details: error.message });
+  }
 }
 
-// **  **
 
 // POST: http://localhost:8080/api/login
 export async function login(req, res) {
+  try {
     const { email, password } = req.body;
+    // Find the user by email
+    const isUserExist = await UserModel.findOne({ email });
 
-    try {
-        // Find the user by email
-        UserModel.findOne({ email })
-            .then((user) => {
-                if (!user) {
-                    return res.status(404).json({ error: "Email address not found" });
-                }
-
-                // Compare passwords
-                bcrypt.compare(password, user.password)
-                    .then((passwordMatch) => {
-                        if (!passwordMatch) {
-                            return res.status(400).json({ error: "Password does not match" });
-                        }
-
-                        // Update lastLoginAt field to current date and time
-                        user.lastLoginAt = new Date();
-                        user.save(); // Save the updated user
-
-                        // Create JWT token
-                        const token = jwt.sign(
-                            {
-                                userId: user._id,
-                                username: user.fullname,
-                                useremail: user.email
-                            },
-                            ENV.JWT_SECRET,
-                            { expiresIn: "24h" }
-                        );
-
-                        // Return successful login response with token
-                        return res.status(200).json({
-                            message: "Login successful",
-                            username: user.fullname,
-                            email: user.email,
-                            token
-                        });
-                    })
-                    .catch((compareError) => {
-                        console.log(compareError);
-                        return res.status(500).json({ error: "Internal server error" });
-                    });
-            })
-            .catch((error) => {
-                console.log(error);
-                return res.status(500).json({ error: "Internal server error" });
-            });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ error: "Internal server error" });
+    if (!isUserExist) {
+      return res.status(404).json({ status: false, msg: "Invalid Email Or Password." });
     }
+
+    // Compare passwords
+    const passwordMatch = await bcrypt.compare(password, isUserExist.password);
+
+    if (!passwordMatch) {
+      return res.status(400).json({ status: false, msg: "Invalid Email Or Password." });
+    }
+
+    // Create JWT token
+    const { 
+      accessToken,
+      refreshToken, 
+      accessTokenExpiry, 
+      refreshTokenExpiry 
+    } = await generateJWT(isUserExist);
+
+    console.log("Creating", accessToken, refreshToken);
+    
+    // Set cookies (uncomment and implement setTokenCookies if needed)
+    setTokenCookies(res, accessToken, refreshToken, accessTokenExpiry, refreshTokenExpiry);
+
+    // Update lastLoginAt field to current date and time
+    isUserExist.lastLoginAt = new Date();
+    await isUserExist.save(); // Save the updated user
+    
+    // Return successful login response with token
+    return res.status(200).json({
+      status: true,
+      msg: "Login successful",
+      username: isUserExist.fullname,
+      email: isUserExist.email,
+      accessToken,
+      refreshToken,
+      accessTokenExpiry,
+      refreshTokenExpiry,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({status: false, msg: "Internal server error" });
+  }
+}
+
+export async function logout(req, res) {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+    await RefreshTokenModel.findOneAndUpdate(
+      { token: refreshToken },
+      { $set: {blacklist: true }}
+    );
+    //clear cookies
+    res.clearCookie('refreshToken');
+    res.clearCookie('accessToken');
+
+    return res.status(200).json({
+      status: true,
+      msg: "Logout successful",
+    });
+  } catch (error) {
+    console.log("Error", error);
+    return res.status(500).json({status: false, msg: "Logout failed", error: error.message});
+  }
 }
 
 // GET: http://localhost:8080/api/user/example123
-export async function getUser(req, res) {
-  const { username } = req.params;
-
+export async function getUser(req, res, next) {
   try {
-    if (!username) return res.status(400).send({ error: "Invalid Name" });
-
-    const user = await UserModel.findOne({ username}).exec();
-
-    if (!user) {
-      return res.status(404).send({ error: "User not found" });
-    }
-
-    const { password, ...rest } = Object.assign({}, user.toJSON());
-
-    // Log user data for debugging
-    // console.log("User Data:", rest);
-
-    return res.status(200).send(rest);
+    // Send the user data as a response
+    res.send({ user: req.user });
   } catch (error) {
-    console.error("Error:", error);
-    return res.status(500).send({ error: "Internal Server Error" });
+    console.error("Error in getUser:", error);
+    next(error); // Pass error to global error handler
   }
 }
+
 
 // GET: http://localhost:8080/api/user/email
 export async function getUserByEmail(req, res) {
@@ -158,7 +237,7 @@ export async function getUserByEmail(req, res) {
   try {
     if (!email) return res.status(400).send({ error: "Invalid email" });
 
-    const user = await UserModel.findOne({ email}).exec();
+    const user = await UserModel.findOne({ email }).exec();
 
     if (!user) {
       return res.status(404).send({ error: "User not found" });
@@ -177,372 +256,645 @@ export async function getUserByEmail(req, res) {
 }
 
 // ** PUT: http://localhost:8080/api/updateuser **
-export async function updateUser(req, res) {
+export async function updateUserProfile(req, res) {
   try {
     const data = req.body;
-    console.log(data.userId);
+    const user = req.user;
 
-    if (data.userId) {
-      const { firstName, lastName, email, phoneNo } = data.credential;
-      // console.log(firstName, lastName, email, phoneNo);
-      // Construct an object to hold the fields to be updated
-      const updateFields = {};
-      if (firstName || lastName) updateFields.fullname = `${firstName} ${lastName}`;
-      if (email) updateFields.email = email;
-      if (phoneNo) updateFields.phoneNo = phoneNo;
+    if (!data || data.user._id !== user.userId) {
+      console.log("Invalid", data.user._id, user._id);
+      
+      return res.status(400).send({ error: "Invalid request" });
+    }
 
-      const updatedUser = await UserModel.findByIdAndUpdate(
-        { _id: data.userId },
-        updateFields,
-        {
-          new: true,
-        }
-      );
+    const { firstname, lastname, email, phoneNo } = data.values;
 
-      if (updatedUser) {
-        return res.status(200).send({ msg: "Record Updated!", updatedUser });
-      } else {
-        return res.status(404).send({ error: "User Not Found!" });
+    // Check if any field has changed
+    if (
+      user.firstname === firstname &&
+      user.lastname === lastname &&
+      user.email === email &&
+      user.phoneNo === phoneNo
+    ) {
+      console.log("Field has no changed");
+      
+      return res.status(200).send({ msg: "No changes detected" });
+    }
+
+    // Construct an object to hold the fields to be updated
+    const updateFields = {};
+
+    if (firstname !== user.firstname || lastname !== user.lastname) {
+      updateFields.firstname = firstname;
+      updateFields.lastname = lastname;
+      updateFields.fullname = `${firstname} ${lastname}`;
+    }
+
+    if (email !== user.email) updateFields.email = email;
+    if (phoneNo !== user.phoneNo) updateFields.phoneNo = phoneNo;
+
+    console.log("updateFields", updateFields);
+    
+    // Find and update the user
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      { _id: user._id },
+      updateFields,
+      {
+        new: true,
       }
+    );
+    console.log("Updated user", updatedUser);
+    
+
+    if (updatedUser) {
+      return res
+        .status(200)
+        .send({ msg: "User  profile updated successfully!", updatedUser });
     } else {
-      return res.status(400).send({ error: "Missing User ID" });
+      return res.status(404).send({ error: "User  not found!" });
     }
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).send({ error: "Internal Server Error" });
   }
-};
-
-
+}
 
 // ** GET: http://localhost:8080/api/generate-Otp **
 export async function generateOTP(req, res) {
-    req.app.locals.OTP = await otpGenerator.generate(6,{lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars:false});
+  req.app.locals.OTP = await otpGenerator.generate(6, {
+    lowerCaseAlphabets: false,
+    upperCaseAlphabets: false,
+    specialChars: false,
+  });
 
-    res.status(201).send({code: req.app.locals.OTP})
+  res.status(201).send({ code: req.app.locals.OTP });
 }
 
 // ** GET: http://localhost:8080/api/verify-Otp **
 export async function verifyOTP(req, res) {
-    const { code } = req.query;
-
-    if(parseInt(req.app.locals.OTP) === parseInt(code)){
-        req.app.locals.OTP = null;     // reset the oTP value
-        req.app.locals.resetSession = true;  // start the session for the reset password
-
-        return res.status(201).send({mesg: "Verify Successfully!"})
+  try {
+    const { email, otp, userId } = req.body;
+    // console.log("re", req.body);
+    
+    const isUserExist = await UserModel.findOne({ email: email});
+    const isOTPExist = await RecoveryOTPModel.findOne({userId: userId});
+    // console.log("tt", isUserExist, isOTPExist);
+    
+    if (isUserExist && isOTPExist && isOTPExist.userId === userId) {
+      if (!isOTPExist.otp === otp.join("")) {
+        return res.status(400).send({ error: "Invalid OTP" });
+      }
     }
-    return res. status(400).send({error : "InValid OTP"})
+    // delete otp from RecoveryOtpModel
+    await RecoveryOTPModel.deleteOne({ userId: userId });
+
+    const sessionId = Date.now().toString(); // Generate session ID
+    sessionStore[sessionId] = { isValid: true };
+
+    return res.status(200).send({ msg: `OTP verified successfully!`,SID: sessionId , userId: isUserExist._id});
+  } catch (error) {
+    return res.status(500).send({ msg: "Internal Server Error" });
+  }
 }
 
 // ** GET: http://localhost:8080/api/createResetSession **
 export async function createResetSession(req, res) {
-     if (req.app.locals.resetSession) {
-       return res.status(201).send({ flag: req.app.locals.resetSession });
-     }
-     return res.status(440).send({ error: "Session expired!" });
+  if (req.app.locals.resetSession) {
+    return res.status(201).send({ flag: req.app.locals.resetSession });
+  }
+  return res.status(440).send({ error: "Session expired!" });
 }
+// "" check email and send OTP ""
+export async function recovery(req, res, next) {
+  try {
+    const { email } = req.body;
+    const isUserExist = await UserModel.findOne({ email });
+    if (!isUserExist) {
+      return res
+        .status(400)
+        .json({ status: false, msg: "Invalid email address." });
+    }
+    const otp = generatorOTP();
+    console.log("otp", otp);
+    
+    await RecoveryOTPModel.findOneAndUpdate(
+      { userId: isUserExist._id }, // Search condition
+      { otp, createdAt: Date.now() }, // Update data
+      { upsert: true, new: true } // Upsert and return the updated document
+    );
 
-
+    // send email notification
+    // const emailBody = otpMessage(isUserExist.fullname, otp);
+    // const subject = `Reset Password`
+    // await sendEmail(email, subject, emailBody);
+    return  res.status(201).send({status: true ,userId: isUserExist._id, msg: "OTP sent to your email." });    
+  } catch (error) {
+    return res
+      .status(500)
+      .json({
+        status: false,
+        msg: "Something went wrong.",
+        error: error.message,
+      });
+  }
+}
 // update the password when we have valid session
 /** PUT: http://localhost:8080/api/resetPassword */
 export async function resetPassword(req, res) {
   try {
-    if (!req.app.locals.resetSession)
-      return res.status(440).send({ error: "Session expired!" });
+    const { id, password, confirmPassword } = req.body;
 
-    const { useremail, password } = req.body;
-    console.log("reset: ",useremail);
+    if (password !== confirmPassword) {
+      return res.status(400).send({status: false, msg: "Password does not match" });
+    }
 
-   try {
-     const user = await UserModel.findOne({ email:useremail });
-     console.log("user", user);
+    const isUserExist = await UserModel.findById(id);
 
-     if (!user) {
-       return res.status(404).send({ error: "Username not Found" });
-     }
+    if (!isUserExist) {
+      return res.status(404).send({status: false, msg: "Unauthorized access attempt" });
+    }
 
-     const hashedPassword = await bcrypt.hash(password, 10);
+    // Update the user's password
+    (user.password = await bcrypt.hash(password, 10));; // Directly update the user's password
+    user.decryptPassword = password;
+    await user.save(); // Save the updated user
 
-     const updatedUser = await UserModel.findOneAndUpdate(
-       { email: user.email },
-       { password: hashedPassword },
-       { new: true }
-     );
-
-     if (!updatedUser) {
-       return res.status(500).send({ error: "Unable to update password" });
-     }
-
-     req.app.locals.resetSession = false; // reset session
-     return res.status(201).send({ msg: "Record Updated...!" });
-   } catch (error) {
-     console.error(error);
-     return res.status(500).send({ error: "Unable to reset password" });
-   }
-
+    return res.status(200).send({status: true, msg: "Password updated successfully!" });
   } catch (error) {
-    return res.status(401).send({ error });
+    console.error("Error resetting password:", error); // Log the error for debugging
+    return res.status(500).json({status: false, msg: "Internal server error" });
   }
 }
 
+export async function passwordResetSession (req, res, next) {
+  console.log("ress", req.session.resetPassword);
+  
+  if (req.session.resetPassword) {
+    return res.status(200).send({ flag: req.session.resetPassword });
+  } else {
+    res.status(403).send("Access Denied. Please verify your OTP first.");
+  }
+};
+
+// API to validate session
+export async function passwordValidateSession (req, res) {
+  const { sessionId } = req.query;
+  if (sessionStore[sessionId]?.isValid) {
+    res.status(200).json({ isValid: true });
+  } else {
+    res.status(401).json({ isValid: false });
+  }
+};
+
+export async function passwordLogoutSession (req, res) {
+  const { sessionId } = req.body;
+  if (sessionStore[sessionId]) {
+    delete sessionStore[sessionId]; // Remove the session
+    return res.status(200).json({ message: "Session invalidated" });
+  }
+  res.status(400).json({ message: "Session not found" });
+};
+
+
 // Add new address for delivery
 // ** POST : http://localhost:8080/api/newAddress   */
-export async function addNewAddress(req, res) {
+export async function manageAddress(req, res) {
+  const { values, mode } = req.body;
+  const { userId } = req.user;
+
   try {
-    const data = req.body;
-    console.log(data);
+    console.log("Incoming values:", values, "Mode:", mode);
 
-    if (data.userId) {
-      const body = data.formData;
-      const mode  = data.mode;
-      console.log(mode);
-
-      if (mode === 'edit' && body.addressId) {
-        // Update existing address
-        const updatedAddress = await UserModel.findOneAndUpdate(
-          { _id: data.userId, 'address.addressId': body.addressId },
-          {
-            $set: {
-              'address.$.fullName': body.fullName,
-              'address.$.phoneNumber': body.phoneNumber,
-              'address.$.pincode': body.pincode,
-              'address.$.locality': body.locality,
-              'address.$.address': body.address,
-              'address.$.cityDistrictTown': body.cityDistrictTown,
-              'address.$.state': body.state,
-              'address.$.landmark': body.landmark,
-              'address.$.altMobile': body.altMobile,
-              'address.$.addressType': body.addressType,
-            }
-          },
-          { new: true }
-        );
-
-        if (updatedAddress) {
-          return res.status(200).send({ msg: "Address Updated!", updatedAddress });
-        } else {
-          return res.status(404).send({ error: "Address Not Found!" });
-        }
-      } else {
-        // Add new address
-        const newAddress = {
-          addressId: uuidv4(), // Generate unique ID for the address
-          ...body,
-        };
-
-        const user = await UserModel.findByIdAndUpdate(
-          { _id: data.userId },
-          { $push: { address: newAddress } },
-          { new: true }
-        );
-
-        if (user) {
-          return res.status(200).send({ msg: "Address Added!", user });
-        } else {
-          return res.status(404).send({ error: "User Not Found!" });
-        }
-      }
-    } else {
-      return res.status(400).send({ error: "Missing User ID" });
+    // Check if the user exists
+    const isUserExist = await UserModel.findById(userId);
+    if (!isUserExist) {
+      return res.status(401).json({ error: "Unauthorized access attempt" });
     }
+
+    if (mode === "create") {
+      // Check if userId already exists in AddressModel
+      let userAddressData = await AddressModel.findOne({ userId });
+
+      // Generate a new UUID if values.id is an empty string
+      if (!values.id) {
+        values.id = uuidv4();
+      }
+
+      if (userAddressData) {
+        // If the user already has addresses, add the new address
+        userAddressData.addresses.push(values);
+
+        // If no default address exists, set the new one as default
+        if (!userAddressData.defaultAddress) {
+          userAddressData.defaultAddress = values;
+        }
+
+        await userAddressData.save();
+        return res.status(201).json({
+          status: true,
+          address: values,
+          msg: "Address added successfully",
+        });
+      } else {
+        // If no entry exists for this user, create a new one
+        const newAddressEntry = new AddressModel({
+          userId,
+          defaultAddress: values,
+          addresses: [values],
+        });
+
+        await newAddressEntry.save();
+        return res.status(201).json({
+          status: true,
+          address: values,
+          msg: "Address added successfully",
+        });
+      }
+    }
+
+    if (mode === "update") {
+      // Find the existing address by userId and address ID
+      const userAddressData = await AddressModel.findOne({ userId });
+      console.log("userAddressData", userAddressData);
+      
+      if (!userAddressData) {
+        return res.status(404).json({ error: "Address not found" });
+      }
+
+      const addressIndex = userAddressData.addresses.findIndex(
+        (addr) => addr.id === values.id
+      );
+      
+
+      if (addressIndex === -1) {
+        return res.status(404).json({ error: "Address not found" });
+      }
+
+      // Update the specific address
+      userAddressData.addresses[addressIndex] = {
+        ...userAddressData.addresses[addressIndex],
+        ...values,
+      };
+
+      // If defaultAddress is being updated, update it
+      if (userAddressData.defaultAddress.id === values.id) {
+        userAddressData.defaultAddress =
+          userAddressData.addresses[addressIndex];
+      }
+
+      await userAddressData.save();
+
+      return res.status(200).json({
+        status: true,
+        address: userAddressData.addresses[addressIndex],
+        msg: "Address updated successfully",
+      });
+    }
+
+    return res.status(400).json({ error: "Invalid mode" });
   } catch (error) {
     console.error("Error:", error);
-    return res.status(500).send({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
-};
-
+}
 
 // Get saved addresses for a user
-export async function getSavedAddress(req, res) {
+export async function getUserAddresses(req, res) {
   try {
-    const { userId } = req.query; // Assuming userId is provided as a query parameter
-    // console.log("userId: ",userId);
-
-    // Fetch user by userId
-    const user = await UserModel.findById(userId);
-
+    const user = req.user;
+    
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "User  not found" });
     }
 
+    // Find addresses associated with the user
+    const isAddressExist = await AddressModel.findOne({ userId: user._id });
+    // console.log("Addresses found:", isAddressExist);
+    
     // Return the addresses array
-    res.status(200).json({ addresses: user.address });
+    res.status(200).json({ addressList: isAddressExist });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
-};
+}
 
 // Delete an address for a user
-export async function deleteAddress(req, res) {
+export async function deleteAddressById(req, res) {
   try {
-    const { userId, addressId } = req.body; // Assuming userId and addressId are provided in the request body
-    // console.log(req.body);
-
-    // Fetch user by userId
-    const user = await UserModel.findById(userId);
+    const user = req.user; // Authenticated user
+    const { id } = req.params; // Address ID to delete
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(401).json({ error: "Unauthorized Access" });
     }
 
-    // Filter out the address to be deleted
-    user.address = user.address.filter((address) => address.addressId !== addressId);
+    // Find the user's address document in a single call
+    const userAddresses = await AddressModel.findOne({ userId: user._id });
 
-    // Save the updated user object
-    await user.save();
+    if (!userAddresses) {
+      return res.status(404).json({ error: "Address document not found" });
+    }
 
-    // Return success message
-    res.status(200).json({ message: "Address deleted successfully" });
+    // Check if the address to delete exists in the addresses array
+    const addressIndex = userAddresses.addresses.findIndex(
+      (address) => address.id === id
+    );
+
+    if (addressIndex === -1) {
+      return res.status(404).json({ error: "Address not found" });
+    }
+
+    // Check if the address to delete is the default address
+    const isDefaultAddress = userAddresses.defaultAddress?.id === id;
+
+    // Remove the address from the addresses array
+    userAddresses.addresses.splice(addressIndex, 1);
+
+    // Update default address if the deleted address was the default
+    if (isDefaultAddress) {
+      if (userAddresses.addresses.length > 0) {
+        userAddresses.defaultAddress = userAddresses.addresses[0];
+      } else {
+        userAddresses.defaultAddress = null;
+      }
+    }
+
+    // Save the updated document
+    await userAddresses.save();
+
+    res.status(200).json({
+      success: true,
+      msg: "Address deleted successfully",
+      defaultAddress: userAddresses.defaultAddress,
+    });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error deleting address:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
-};
+}
 
 
-export async function addPANCard(req, res) {
+export async function updateDefaultAddress(req, res) {
   try {
-    const { userId, panData } = req.body;
-    console.log(userId, panData);
-    const user = await UserModel.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not Found." });
+    const user = req.user; // Authenticated user
+    const { id } = req.body; // Address ID to set as default
+    
+    const isAddressExist = await AddressModel.findOne({ userId: user._id });
+    if(!isAddressExist) {
+      return res.status(404).json({ status: false, msg: "Address not found" });
     }
-    // Check if user already has PAN card details
-    if (user.panCard) {
-      return res.status(400).json({ message: "PAN card details already exist for this user." });
+    // find the addres with the specified id in the Array
+    const addressIndex = isAddressExist.addresses.findIndex(
+      (address) => address.id === id
+    )
+    if(addressIndex === -1) {
+      return res.status(404).json({ status: false, msg: "Address not found" });
     }
-    // Assuming panData contains fullName, panNumber, declaration, and panImages
-    const { fullName, panNumber, declaration, panImage } = panData;
+    // now set this array as default address
+    isAddressExist.defaultAddress = isAddressExist.addresses[addressIndex];
+    // save the updated document
+    await isAddressExist.save();
+    return res.status(200).json({ status: true, msg: "Default address updated successfully" });
+  } catch (error) {
+    console.error("Error updating default address:", error);
+    res.status(500).json({ status: false, msg: "Internal Server Error" });
+  }
+}
 
-    // Construct PAN card object
-    const panCard = {
-      fullName,
-      panNumber,
-      declaration,
-      panImage,
-    };
+// add pan card details
+export async function pancardvalidation(req, res) {
+  try {
+    const user = req.user; // Assuming `req.user` contains authenticated user info
+    const { values } = req.body;    
 
-    // Add PAN card details to the user's profile
-    user.panCard = panCard;
+    // Encrypt PAN number and PAN image
+    const encryptedPanNumber = encryptionText(values.panNumber);
+    const encryptedPanImage = encryptionText(values.panImage);
 
-    // Save the updated user object
-    await user.save();
+    // Check for existing PAN card or PAN number
+    const existingPanRecord = await PancardModel.findOne({
+      $or: [{ userId: user.id }, { "panNumber.number": encryptedPanNumber.encrypt }],
+    });
 
-    return res
-      .status(200)
-      .json({ message: "PAN card information added successfully" });
+    if (existingPanRecord) {
+      if (existingPanRecord.userId.toString() === user.id) {
+        return res
+          .status(400)
+          .json({status: false, msg: "User has already saved a PAN card." });
+      }
+
+      if (existingPanRecord.panNumber.number === encryptedPanNumber) {
+        return res
+          .status(400)
+          .json({ status: false, msg: "This PAN number is already registered." });
+      }
+    }
+
+    // Create a new PAN card entry
+    const newPancard = new PancardModel({
+      userId: user.id,
+      fullname: values.fullname,
+      panNumber: {
+        number: encryptedPanNumber.encrypt,
+        secret: {
+          iv: encryptedPanNumber.secret.iv,
+          key: encryptedPanNumber.secret.key,
+        },
+      },
+      panImage: {
+        image: encryptedPanImage.encrypt,
+        secret: {
+          iv: encryptedPanImage.secret.iv,
+          key: encryptedPanImage.secret.key,
+        },
+      },
+      declaration: values.declaration,
+    });
+
+    // Save to database
+    await newPancard.save();
+
+    return res.status(201).json({
+      msg: "PAN card saved successfully.",
+      pancard: newPancard,
+    });
   } catch (error) {
     console.error("Error adding PAN card information:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
-};
+}
 
-export async function addToWatchlist(req, res) {
+
+
+// get the information about the Pan Card
+export async function getPancardDetails(req, res) {
   try {
-    const { userId, productId } = req.body;
+    const user = req.user; // Assuming `req.user` contains authenticated user info
+    const isPanExist = await PancardModel.findOne({ userId: user.id });
 
-    // Validate the presence of userId and productId
-    if (!userId || !productId) {
+    if (!isPanExist) {
+      return res.status(404).json({ status: false, msg: "PAN card details not found." });
+    }
+    
+    // Decrypt sensitive data
+    const data = {
+      userId: isPanExist.userId,
+      fullname: isPanExist.fullname,
+      panImage: decryptionText(isPanExist.panImage.image, isPanExist.panImage.secret.key),
+      panNumber: decryptionText(isPanExist.panNumber.number, isPanExist.panNumber.secret.key),
+      declaration: isPanExist.declaration,
+    };
+
+    return res.status(200).json({ success: true, msg: "pan details found!", data: data });
+  } catch (error) {
+    console.error("Error fetching PAN card details:", error);
+    return res.status(500).json({ status: false, msg: "Internal Server Error" });
+  }
+}
+
+
+export async function addItemWishlists(req, res) {
+  try {
+    const user = req.user;
+    const { id } = req.params;
+
+    // Check if the wishlist exists for the user
+    const isWishlistExists = await wishlistsModel.findOne({ userId: user.id });
+
+    if (isWishlistExists) {
+      // Check if the productId already exists in the items array
+      const isProductExists = isWishlistExists.items.some(
+        (item) => item.productId.toString() === id
+      );
+
+      if (isProductExists) {
+        return res
+          .status(400)
+          .json({status: false, msg: "Product already exists in the wishlist" });
+      } else {
+        // Add the productId to the items array with optional notes
+        isWishlistExists.items.push({
+          productId: id,
+        });
+        await isWishlistExists.save(); // Save the updated wishlist
+        return res
+          .status(200)
+          .json({status: true ,msg: "Product added to wishlist successfully" });
+      }
+    } else {
+      // If the wishlist doesn't exist, create a new one with the productId
+      const newWishlist = new wishlistsModel({
+        userId: user.id,
+        items: [
+          {
+            productId: id,
+          },
+        ],
+      });
+      await newWishlist.save(); // Save the new wishlist
       return res
-        .status(400)
-        .json({ message: "userId and productId are required" });
+        .status(201)
+        .json({status: true, msg: "Wishlist created and product added successfully" });
     }
-
-    // Ensure userId and productId are strings
-    if (typeof userId !== "string" || typeof productId !== "string") {
-      return res
-        .status(400)
-        .json({ message: "userId and productId must be strings" });
-    }
-
-    // Check if user exists
-    const user = await UserModel.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Update the user's watchlist
-    const updatedUser = await UserModel.findByIdAndUpdate(
-      userId,
-      { $addToSet: { watchlist: {productId} } },
-      { new: true }
-    );
-
-    res.json(updatedUser);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({status: false, msg: "Internal Server Error" });
   }
 }
-
-
-export async function removeFromWatchlist(req, res) {
+export async function removeItemWishlists(req, res) {
   try {
-    const { userId, productId } = req.params;
-    // Find the user by ID
-    const user = await UserModel.findById(userId);
+    const userId = req.user.id;
+    const { id: productId } = req.params;
 
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+    // Check if the wishlist exists for the user and find the product index in one query
+    const wishlist = await wishlistsModel.findOne({ userId });
+
+    if (!wishlist) {
+      return res.status(404).json({
+        status: false,
+        msg: "Wishlist not found for the user",
+      });
     }
 
-    // Remove the item from the watchlist based on productId
-    const updatedUser = await UserModel.findByIdAndUpdate(
-      userId,
-      { $pull: { watchlist: { productId: productId } } },
-      { new: true }
+    // Find the index of the product in the items array
+    const productIndex = wishlist.items.findIndex(
+      (item) => item.productId.toString() === productId
     );
 
-    if (!updatedUser) {
-      return res.status(404).json({ error: "Failed to update user watchlist" });
+    if (productIndex === -1) {
+      return res.status(404).json({
+        status: false,
+        msg: "Product not found in the wishlist",
+      });
     }
 
-    res.json(updatedUser);
+    // Remove the product from the items array and save the updated wishlist
+    wishlist.items.splice(productIndex, 1);
+    await wishlist.save();
+
+    // Populate the entire product object and return updated items
+    const updatedWishlist = await wishlistsModel
+      .findOne({ userId })
+      .populate("items.productId")
+      .exec();
+
+    const items = updatedWishlist.items.map((item) => item.productId);
+
+    return res.status(200).json({
+      status: true,
+      msg: "Product removed from wishlist successfully",
+      updatedWishlist: items,
+    });
   } catch (error) {
-    console.error("Error removing item from watchlist:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Error removing item from wishlist:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
 
-export async function getWatchlist(req, res){
+export async function getWishlists(req, res) {
   try {
-    const { userId } = req.query; // Assuming userId is provided as a query parameter
-    console.log("userId: ",userId);
+    const user = req.user;
+    const { location } = req.query;
+    
+    if(location === "homepage") {
+      const isWishlistExist = await wishlistsModel.findOne({ userId: user.id});
+      if(!isWishlistExist) {
+        return res.status(404).json({ error: "User's wishlist not found" });
+      }
+      const items = isWishlistExist.items.map((item) => item.productId);
+      return res.status(200).json({wishlist: items});
+    } else {
+      const isWishlistExist = await wishlistsModel
+        .findOne({ userId: user.id })
+        .populate("items.productId") // Populate the entire product object
+        .exec();
+      if (!isWishlistExist) {
+        return res.status(404).json({ error: "User's wishlist not found" });
+      }
+      const items = isWishlistExist.items.map((item) => item.productId);
 
-    // Fetch user by userId
-    const user = await UserModel.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(200).json({ wishlist: items });
     }
-
-    console.log("userWatchlist", user.watchlist.length);
-    // Return the addresses array
-    res.status(200).json({ watchlist: user.watchlist });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
 
-
 // this is related to product Database schema
-export async function products(req, res){
-  try{
-      const productsData = req.body; // Assuming products are sent in the body of the request
-      console.log(productsData.body.length);
-      const savedProducts = await ProductModel.insertMany(productsData.body);
-      res.status(201).json(savedProducts);
-    } catch (error) {
-        console.error('Error saving products:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
+export async function products(req, res) {
+  try {
+    const productsData = req.body; // Assuming products are sent in the body of the request
+    console.log(productsData.body.length);
+    const savedProducts = await ProductModel.insertMany(productsData.body);
+    res.status(201).json(savedProducts);
+  } catch (error) {
+    console.error("Error saving products:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
 
 export async function getProducts(req, res) {
   try {
@@ -564,20 +916,14 @@ export async function getProducts(req, res) {
 
 export async function getProductsById(req, res) {
   try {
-    const productId = req.query.Id;
-    // console.log("ProductId: ", productId);
-    // Validate the productId
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
-      return res.status(400).json({ message: "Invalid product ID" });
+    const {id} = req.query;
+    
+    const isProductExist = await ProductModel.findById(id);
+    // console.log("exisr", isProductExist);
+    if(!isProductExist) {
+      return res.status(404).json({ error: "Product not found" });
     }
-
-    const product = await ProductModel.findById(productId);
-
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-    // console.log(product);
-    res.status(200).json(product);
+    return res.status(200).json({status: true, msg: "Product Found", item: isProductExist});
   } catch (error) {
     console.error("Error fetching product:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -604,6 +950,231 @@ export async function getSearchProducts(req, res) {
   }
 }
 
+
+export async function getItemsInCart(req, res) {
+  try {
+    const user = req.user;
+    const isCartExist = await ShoppingBagModel.findOne({ userId: user._id }).populate('items.productId');;
+
+    if(!isCartExist) {
+      return res.status(404).json({ status: false, msg: "Cart not found." });
+    }
+
+    return res.json({ status: true, msg: "Cart items fetched successfully.", cart: isCartExist });
+  } catch (error) {
+    console.error("Error fetching cart items:", error);
+    res.status(500).json({ status: false, msg: "Internal server error." });
+  }
+}
+
+
+export async function addItemsToCart(req, res) {
+  try {
+    const user = req.user; // Assuming the user is authenticated and attached to the request
+    const { product } = req.body; // Expecting a product object in the request body
+    
+    if (!product || !product.productId || !product.price || !product.quantity) {
+      return res
+        .status(400)
+        .json({
+          status: false,
+          msg:
+            "Incomplete product data. Ensure product ID, price, and quantity are provided.",
+        });
+    }
+
+    // Check if the user's cart already exists
+    let isCartExist = await ShoppingBagModel.findOne({ userId: user._id });
+
+    if (!isCartExist) {
+      // If no cart exists, create a new one
+      isCartExist = new ShoppingBagModel({
+        userId: user._id,
+        items: [],
+        totalPrice: 0,
+      });
+    }
+
+    // Check if the product already exists in the cart
+    const existingItem = isCartExist.items.find(
+      (item) => item.productId.toString() === product.productId
+    );
+
+    if (existingItem) {
+      // If the product exists, update the quantity
+      existingItem.quantity += product.quantity;
+    } else {
+      // If the product does not exist, add it to the cart
+      isCartExist.items.push({
+        productId: product.productId,
+        name: product.title || "Unnamed Product", // Use product name if available
+        price: product.price,
+        quantity: product.quantity,
+        discount: {}, // Add discount if provided
+      });
+    }
+
+    // Recalculate the total price
+    isCartExist.totalPrice = isCartExist.items.reduce((total, item) => {
+      const discountValue = item.discount?.value || 0;
+      return total + item.price * item.quantity - discountValue;
+    }, 0);
+
+    // Save the updated cart to the database
+    await isCartExist.save();
+
+    res
+      .status(200)
+      .json({ status: true, cart: isCartExist, msg: "Product added to the cart successfully." });
+  } catch (error) {
+    console.error("Error adding items to cart:", error);
+    res.status(500).json({ status: false, msg: "Internal server error." });
+  }
+}
+
+
+
+export async function removeItemsFromCart(req, res) {
+  try {
+    const user = req.user; // Assuming user is already authenticated and attached to the request
+    const { product } = req.body; // Expecting a product object in the request body
+
+    if (!product || !product._id) {
+      return res
+        .status(400)
+        .json({
+          status: false,
+          msg: "Product object or ID is missing in the request body.",
+        });
+    }
+
+    // Check if the user's cart exists
+    const isCartExist = await ShoppingBagModel.findOne({ userId: user._id });
+
+    if (!isCartExist) {
+      return res.status(404).json({ status: false, msg: "User's cart not found." });
+    }
+
+    // Find the index of the product to remove
+    const itemIndex = isCartExist.items.findIndex(
+      (item) => item.productId.toString() === product._id.toString()
+    );
+
+    if (itemIndex === -1) {
+      return res.status(404).json({ status: false, msg: "Product not found in the cart." });
+    }
+
+    // Remove the product from the items array
+    isCartExist.items.splice(itemIndex, 1);
+
+    // Recalculate the total price after removing the item
+    isCartExist.totalPrice = isCartExist.items.reduce((total, item) => {
+      const discountValue = item.discount?.value || 0;
+      return total + item.price * item.quantity - discountValue;
+    }, 0);
+
+    // Save the updated cart to the database
+    await isCartExist.save();
+
+    res
+      .status(200)
+      .json({ status: true, cart: isCartExist, msg: "Product removed from the cart successfully." });
+  } catch (error) {
+    console.error("Error removing items from cart:", error);
+    res.status(500).json({ status: false, msg: "Internal server error." });
+  }
+}
+
+
+export async function updateItemsInCart(req, res) {
+  try {
+    const user = req.user;
+    const { id, quantity } = req.body;
+    console.log("ghbf", req.body);
+    
+
+    const isCartExist = await ShoppingBagModel.findOne({ userId: user._id});
+
+    if(!isCartExist) {
+      return res.status(404).json({ status: false, msg: "Cart not found." });
+    }
+
+    // Update the quantity of the items in the cart
+    const itemIndex = isCartExist.items.findIndex(
+      (item) => item.productId.toString() === id
+    )
+    if (itemIndex === -1) {
+      return res.status(404).json({ status: false, msg: "Product not found in the cart." });
+    }
+    isCartExist.items[itemIndex].quantity += quantity;
+    isCartExist.totalPrice = isCartExist.items.reduce((total, item) => {
+      const discountValue = item.discount?.value || 0;
+      return total + item.price * item.quantity - discountValue;
+    }, 0);
+    await isCartExist.save();
+
+    return res.status(200).json({ status: true, cart: isCartExist, msg: "Cart updated successfully." });
+  } catch (error) {
+    console.error("Error updating items in cart:", error);
+    res.status(500).json({ status: false, msg: "Internal server error." });
+  }
+}
+
+
+export async function couponsAddInDB(req, res) {
+  try {
+    const coupons = ["AGRQO5NPPZ", "DISCOUNT10", "SAVE20"];
+    const cp = await CouponModel.insertMany(coupons.map((coupon) => ({ code: coupon })));
+
+    return res.status(201).json({ status: true, msg: "Coupons added successfully." });
+  } catch (error) {
+    console.error("Error adding coupons:", error);
+    res.status(500).json({ status: false, msg: "Internal server error." });
+  }
+}
+
+
+export async function getCoupons(req, res) {
+  try {
+    const user = req.user;
+    if(user) {
+      const coupons = await CouponModel.find({});
+      return res.status(200).json({ status: true, coupons });
+    }
+  } catch (error) {
+    console.error("Error fetching coupons:", error);
+    res.status(500).json({ status: false, msg: "Internal server error." });
+  }
+}
+
+
+export async function addReviewProduct(req, res) {
+  try {
+    const user = req.user;
+    const { values } = req.body;
+    if(user) {
+
+    }
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    res.status(500).json({ status: false, msg: "Internal server error." });
+  }
+}
+
+
+export async function getProductReviewsById(req, res) {
+  try {
+    const id = req.params.id;
+    const isreviewExist = await ReviewModel.findOne({productId: id});
+    if(!isreviewExist) {
+      return res.status(404).json({ status: false, msg: "No review found for this product." });
+    }
+    return res.status(200).json({ status: true, reviews: isreviewExist });
+  } catch (error) {
+    console.error("Error fetching product review:", error);
+    res.status(500).json({ status: false, msg: "Internal server error." });
+  }
+}
 // const realGmailConnect = (req, res) => {
 //   let config = {
 //     service: 'gmail',
@@ -615,6 +1186,7 @@ export async function getSearchProducts(req, res) {
 //   let transporter = nodemailer.createTransporter(config);
 //   res.status(201).json("Real Gmail is Connected...!");
 // }
+<<<<<<< HEAD
 
 
 
@@ -657,3 +1229,5 @@ export async function cashfreeCreateOrder(req, res) {
 }
 
 // cashfreeCreateOrder();
+=======
+>>>>>>> item_details_work
