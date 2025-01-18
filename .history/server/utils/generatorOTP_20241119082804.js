@@ -1,8 +1,0 @@
-const otpGenerator = require("otp-generator");
-
-const generatorOTP = () => {
-  otpGenerator.generate(6, {
-    upperCaseAlphabets: false,
-    specialChars: false,
-  });
-};
