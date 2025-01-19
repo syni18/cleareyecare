@@ -6,12 +6,12 @@ const generateJWT = async (user) => {
         console.log("generate JWT called");
         const payload = {_id: user._id, ...user};
         
-        const accessTokenExpiry = process.env.JWT_ACCESS_TOKEN_EXPIRY // expire in 100 seconds
+        const accessTokenExpiry = process.env.JWT_ACCESS_TOKEN_EXPIRY // expire in 900 seconds
         const accessToken = jwt.sign({
             ...payload,
             },
             process.env.JWT_ACCESS_SECRET_KEY,
-            {expiresIn: '100s'}
+            {expiresIn: '900s'}
         );
 
         const refreshTokenExpiry = process.env.JWT_REFRESH_TOKEN_EXPIRY// expire in 5 days

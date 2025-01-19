@@ -179,7 +179,7 @@ const router = createBrowserRouter([
       </Layout>
     ),
   },
-]);
+],{future: {v7_fetcherPersist: true}});
 
 function App() {
   return (
