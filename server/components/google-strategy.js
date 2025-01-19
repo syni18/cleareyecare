@@ -1,21 +1,17 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import bcrypt from "bcrypt";
-import passport from 'passport';
-import ENV from '../router/config.js';
+import passport from 'passport';;
 import UserModel from '../model/User.model.js';
 import generateJWT from '../utils/generateJWT.js';
 
-passport.use(
-  new GoogleStrategy(
+passport.use( new GoogleStrategy(
     {  
-        clientID: ENV.GCLOUD_CLIENT_ID,
-        clientSecret: ENV.GCLOUD_CLIENT_SECRET,
-        callbackURL: `${ENV.BASE_URL}v1/api/auth/google/callback`,
+        clientID: process.env.GCLOUD_CLIENT_ID,
+        clientSecret: process.env.GCLOUD_CLIENT_SECRET,
+        callbackURL: `${process.env.SERVER_BASE_URL}v1/api/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
         try {
-          console.log("profile", profile);
-          
             let isUserExist = await UserModel.findOne({ email: profile._json.email });
             if(!isUserExist) {
                  const password = generatePassword(
@@ -31,7 +27,6 @@ passport.use(
                   googleId: profile._json.sub,
                   email: profile._json.email,
                   password: await bcrypt.hash(password, 10), // Placeholder password
-                  email: profile._json.email,
                   decryptPassword: password, // Placeholder password
                   isActive: true, // Set isActive to true by default
                   isAdmin: false, // Set isAdmin to false by default
@@ -45,7 +40,7 @@ passport.use(
         } catch(err) {
             console.error('Error fetching user profile:', err);
             return done(err);
-        };
+        }
     }));
 
     // Function to generate a password
@@ -55,8 +50,7 @@ function generatePassword(firstname, lastname) {
 
   // Function to generate a random string of specified length
   const generateRandomString = (length) => {
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const characters = process.env.CHARACTERS;
     let result = "";
     for (let i = 0; i < length; i++) {
       result += characters.charAt(

@@ -1,29 +1,28 @@
 import jwt from "jsonwebtoken";
-import ENV from '../router/config.js';
 import RefreshTokenModel from "../model/RefreshToken.model.js";
 
 const generateJWT = async (user) => {
     try {
         console.log("generate JWT called");
-        
         const payload = {_id: user._id, ...user};
         
-        const accessTokenExpiry = '100s' // expire in 100 seconds
-
+        const accessTokenExpiry = process.env.JWT_ACCESS_TOKEN_EXPIRY // expire in 100 seconds
         const accessToken = jwt.sign({
             ...payload,
             },
-            ENV.JWT_SECRET_KEY, 
+            process.env.JWT_ACCESS_SECRET_KEY,
             {expiresIn: '100s'}
         );
 
-        const refreshTokenExpiry = '5d' // expire in 5 days
+        const refreshTokenExpiry = process.env.JWT_REFRESH_TOKEN_EXPIRY// expire in 5 days
         const refreshToken = jwt.sign({
             ...payload,
             },
-            ENV.JWT_REFRESH_SECRET_KEY,
+            process.env.JWT_REFRESH_SECRET_KEY,
             {expiresIn: '5d'}
         );
+
+        // existence checking in DB
         const isRefreshTokenExist = await RefreshTokenModel.findOne({userId: user._id});
         if(isRefreshTokenExist) {
             await RefreshTokenModel.deleteOne({userId: user._id});

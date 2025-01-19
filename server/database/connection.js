@@ -1,20 +1,13 @@
 import mongoose from "mongoose";
-// import { MongoMemoryServer } from "mongodb-memory-server";
-import ENV from '../router/config.js';
 
 async function connect(){
-    // const mongod = await MongoMemoryServer.create();
-    // const getUri = mongod.getUri();
+    mongoose.set('strictQuery',true);
 
-    mongoose.set('strictQuery',true)
-    // const db = await mongoose.connect(getUri);
-    const db = await mongoose.connect(ENV.ATLAS_URI,{
-        // useNewUrlParser: true,
-        // useUnifiedTopology: true,
-        dbName: 'clear_eye_care', // Specify the database name here
+    const db = await mongoose.connect(process.env.DB_ATLAS_URI,{
+        dbName: process.env.DB_NAME, // Specify the database name here
     });
 
-    console.log("Database connected to clear_eye_care...");
+    console.log(`Database connected to ${process.env.DB_NAME}`);
     return db;
 }
 export default connect;

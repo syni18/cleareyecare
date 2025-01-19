@@ -5,7 +5,6 @@ import setTokenCookies from "../utils/setTokenCookies.js";
 
 const accessTokenAutoRefresh= async (req, res, next) => {
     try {
-        console.log("access token Auto refresh called");
       const accessToken = req.cookies.accessToken;
 
       if (accessToken || !isTokenExpire(accessToken)) {
@@ -20,7 +19,12 @@ const accessTokenAutoRefresh= async (req, res, next) => {
               .status(401)
               .json({ status: "failed", message: "Refresh token missing" });
         }
-        const { newAccessToken, newRefreshToken, newAccessTokenExpiry, newRefreshTokenExpiry } = await refreshAccessToken(req, res);
+        const {
+            newAccessToken,
+            newRefreshToken,
+            newAccessTokenExpiry,
+            newRefreshTokenExpiry } = await refreshAccessToken(req, res);
+
         setTokenCookies(
           res,
           newAccessToken,

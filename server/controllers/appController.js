@@ -1,27 +1,29 @@
-import UserModel from "../model/User.model.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
-import ENV from "../router/config.js";
-import otpGenerator from "otp-generator";
-import { v4 as uuidv4 } from "uuid";
-import ProductModel from "../model/Product.model.js";
-import generateJWT from "../utils/generateJWT.js";
 import passport from "passport";
-import setTokenCookies from "../utils/setTokenCookies.js";
-import refreshAccessToken from "../utils/refreshAccessToken.js";
-import RefreshTokenModel from "../model/RefreshToken.model.js";
-import generatorOTP from "../utils/generatorOTP.js";
-import RecoveryOTPModel from "../model/RecoveryOTP.model.js";
-import { otpMessage } from "../utils/designEmail.js";
-import { sendEmail } from "./mailer.js";
-import AddressModel from "../model/Address.model.js";
-import PancardModel from "../model/Pancard.model.js";
-import { decryptionText, encryptionText } from "../encryption/AESencryption.js";
-import wishlistsModel from "../model/wishlists.model.js";
-import ShoppingBagModel from "../model/ShoppingBag.model.js"
+import { v4 as uuidv4 } from "uuid";
+import otpGenerator from "otp-generator";
+
+// model imports
+import UserModel from "../model/User.model.js";
 import CouponModel from "../model/Coupon.model.js";
 import ReviewModel from "../model/Review.model.js";
+import ProductModel from "../model/Product.model.js";
+import AddressModel from "../model/Address.model.js";
+import PancardModel from "../model/Pancard.model.js";
+import wishlistsModel from "../model/wishlists.model.js";
+import ShoppingBagModel from "../model/ShoppingBag.model.js"
+import RecoveryOTPModel from "../model/RecoveryOTP.model.js";
+import RefreshTokenModel from "../model/RefreshToken.model.js";
+
+// helper function imports
+import { sendEmail } from "./mailer.js";
+import generateJWT from "../utils/generateJWT.js";
+import generatorOTP from "../utils/generatorOTP.js";
+import { otpMessage } from "../utils/designEmail.js";
+import setTokenCookies from "../utils/setTokenCookies.js";
+import refreshAccessToken from "../utils/refreshAccessToken.js";
+import { decryptionText, encryptionText } from "../encryption/AESencryption.js";
+
 // ** Global variables **
 let sessionStore = {}; // Simple in-memory store (replace with Redis or DB for production)
 
@@ -30,18 +32,16 @@ export async function verifyUser(req, res, next) {
   try {
     const { email } = req.body;
 
-    // check the user existance
+    // check the user existence
     let exist = await UserModel.findOne({ email });
     if (!exist) return res.status(404).send({ error: "Can't find User" });
-    // return res.status(200).send(exist);
-    console.log("app-Controller: ", exist);
     next();
   } catch (error) {
     return res.status(404).send({ error: "Authentication Error" });
   }
 }
 
-//
+// ** Google sign in **
 export async function getAuthGoogle(req, res, next) {
   try {
     // Initiate Google authentication using Passport
@@ -55,7 +55,7 @@ export async function getAuthGoogle(req, res, next) {
   }
 }
 
-//
+// ** Google callback after sign in **
 export async function getCallbackGoogle(req, res, next) {
   passport.authenticate("google", { session: false, failureRedirect: "/login" }, 
     (err, user, info) => {      
@@ -78,13 +78,12 @@ export async function getCallbackGoogle(req, res, next) {
       setTokenCookies(res, accessToken, refreshToken, accessTokenExpiry, refreshTokenExpiry);
 
       // Redirect to the frontend
-      res.redirect("http://localhost:5173/");
+      res.redirect(process.env.FRONTEND_BASE_URL);
     }
   )(req, res, next); // Pass req, res, and next to the passport middleware
 }
 
-
-// generate and set new access token  using Refresh token
+// ** Generate Authentication tokens and set in cookies **
 export async function getNewAccessToken(req, res) {
   try {
     const {
@@ -96,13 +95,13 @@ export async function getNewAccessToken(req, res) {
     // set cookies new
     setTokenCookies(res, newAccessToken, newRefreshToken, newAccessTokenExpiry, newRefreshTokenExpiry);
     res.json({ msg: "New access token generated successfully." });
-} catch(err) {
-  console.error("Error: ", err);
-  return res.status(500).json({ msg: "Failed to generate new access token." });
-}
+  } catch(err) {
+    console.error("Error: ", err);
+    return res.status(500).json({ msg: "Failed to generate new access token." });
+  }
 }
 
-// POST: http://localhost:8080/api/register
+// ** Signup using email **
 export async function register(req, res) {
   try {
     const { firstname, lastname, email, password } = req.body;
@@ -115,9 +114,6 @@ export async function register(req, res) {
         .json({ status: false, msg: "Email address already exists." });
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     // Save user to the database directly
     const result = await new UserModel({
       firstname,
@@ -125,7 +121,7 @@ export async function register(req, res) {
       fullname: lastname ? `${firstname} ${lastname}` : firstname,
       email,
       decryptPassword: password, // Consider removing this for security reasons
-      password: hashedPassword,
+      password: await bcrypt.hash(password, 10),
       createdAt: new Date(),
       lastLoginAt: null,
       isActive: true,
@@ -143,12 +139,10 @@ export async function register(req, res) {
   }
 }
 
-
-// POST: http://localhost:8080/api/login
+// ** SignIn using email **
 export async function login(req, res) {
   try {
     const { email, password } = req.body;
-    // Find the user by email
     const isUserExist = await UserModel.findOne({ email });
 
     if (!isUserExist) {
@@ -157,7 +151,6 @@ export async function login(req, res) {
 
     // Compare passwords
     const passwordMatch = await bcrypt.compare(password, isUserExist.password);
-
     if (!passwordMatch) {
       return res.status(400).json({ status: false, msg: "Invalid Email Or Password." });
     }
@@ -170,9 +163,6 @@ export async function login(req, res) {
       refreshTokenExpiry 
     } = await generateJWT(isUserExist);
 
-    console.log("Creating", accessToken, refreshToken);
-    
-    // Set cookies (uncomment and implement setTokenCookies if needed)
     setTokenCookies(res, accessToken, refreshToken, accessTokenExpiry, refreshTokenExpiry);
 
     // Update lastLoginAt field to current date and time
@@ -196,6 +186,7 @@ export async function login(req, res) {
   }
 }
 
+// ** logout **
 export async function logout(req, res) {
   try {
     const refreshToken = req.cookies.refreshToken;
@@ -217,7 +208,7 @@ export async function logout(req, res) {
   }
 }
 
-// GET: http://localhost:8080/api/user/example123
+// ** get current user details **
 export async function getUser(req, res, next) {
   try {
     // Send the user data as a response
@@ -228,8 +219,7 @@ export async function getUser(req, res, next) {
   }
 }
 
-
-// GET: http://localhost:8080/api/user/email
+// ** user details using email **
 export async function getUserByEmail(req, res) {
   const { email } = req.params;
   console.log(email);
@@ -238,15 +228,11 @@ export async function getUserByEmail(req, res) {
     if (!email) return res.status(400).send({ error: "Invalid email" });
 
     const user = await UserModel.findOne({ email }).exec();
-
     if (!user) {
       return res.status(404).send({ error: "User not found" });
     }
 
     const { password, ...rest } = Object.assign({}, user.toJSON());
-
-    // Log user data for debugging
-    // console.log("User Data:", rest);
 
     return res.status(200).send(rest);
   } catch (error) {
@@ -255,7 +241,7 @@ export async function getUserByEmail(req, res) {
   }
 }
 
-// ** PUT: http://localhost:8080/api/updateuser **
+// ** profile info update **
 export async function updateUserProfile(req, res) {
   try {
     const data = req.body;
@@ -275,11 +261,7 @@ export async function updateUserProfile(req, res) {
       user.lastname === lastname &&
       user.email === email &&
       user.phoneNo === phoneNo
-    ) {
-      console.log("Field has no changed");
-      
-      return res.status(200).send({ msg: "No changes detected" });
-    }
+    ) { return res.status(200).send({ msg: "No changes detected" }) };
 
     // Construct an object to hold the fields to be updated
     const updateFields = {};
@@ -293,8 +275,6 @@ export async function updateUserProfile(req, res) {
     if (email !== user.email) updateFields.email = email;
     if (phoneNo !== user.phoneNo) updateFields.phoneNo = phoneNo;
 
-    console.log("updateFields", updateFields);
-    
     // Find and update the user
     const updatedUser = await UserModel.findByIdAndUpdate(
       { _id: user._id },
@@ -303,8 +283,6 @@ export async function updateUserProfile(req, res) {
         new: true,
       }
     );
-    console.log("Updated user", updatedUser);
-    
 
     if (updatedUser) {
       return res
@@ -319,7 +297,7 @@ export async function updateUserProfile(req, res) {
   }
 }
 
-// ** GET: http://localhost:8080/api/generate-Otp **
+// ** generate OTP **
 export async function generateOTP(req, res) {
   req.app.locals.OTP = await otpGenerator.generate(6, {
     lowerCaseAlphabets: false,
@@ -330,16 +308,14 @@ export async function generateOTP(req, res) {
   res.status(201).send({ code: req.app.locals.OTP });
 }
 
-// ** GET: http://localhost:8080/api/verify-Otp **
+// ** verify OTP send by User **
 export async function verifyOTP(req, res) {
   try {
     const { email, otp, userId } = req.body;
-    // console.log("re", req.body);
-    
+
     const isUserExist = await UserModel.findOne({ email: email});
     const isOTPExist = await RecoveryOTPModel.findOne({userId: userId});
-    // console.log("tt", isUserExist, isOTPExist);
-    
+
     if (isUserExist && isOTPExist && isOTPExist.userId === userId) {
       if (!isOTPExist.otp === otp.join("")) {
         return res.status(400).send({ error: "Invalid OTP" });
@@ -357,17 +333,11 @@ export async function verifyOTP(req, res) {
   }
 }
 
-// ** GET: http://localhost:8080/api/createResetSession **
-export async function createResetSession(req, res) {
-  if (req.app.locals.resetSession) {
-    return res.status(201).send({ flag: req.app.locals.resetSession });
-  }
-  return res.status(440).send({ error: "Session expired!" });
-}
-// "" check email and send OTP ""
+//  ** recover account using email **
 export async function recovery(req, res, next) {
   try {
     const { email } = req.body;
+
     const isUserExist = await UserModel.findOne({ email });
     if (!isUserExist) {
       return res
@@ -375,8 +345,7 @@ export async function recovery(req, res, next) {
         .json({ status: false, msg: "Invalid email address." });
     }
     const otp = generatorOTP();
-    console.log("otp", otp);
-    
+
     await RecoveryOTPModel.findOneAndUpdate(
       { userId: isUserExist._id }, // Search condition
       { otp, createdAt: Date.now() }, // Update data
@@ -387,6 +356,7 @@ export async function recovery(req, res, next) {
     // const emailBody = otpMessage(isUserExist.fullname, otp);
     // const subject = `Reset Password`
     // await sendEmail(email, subject, emailBody);
+
     return  res.status(201).send({status: true ,userId: isUserExist._id, msg: "OTP sent to your email." });    
   } catch (error) {
     return res
@@ -398,8 +368,8 @@ export async function recovery(req, res, next) {
       });
   }
 }
-// update the password when we have valid session
-/** PUT: http://localhost:8080/api/resetPassword */
+
+// ** reset password after verify otp **
 export async function resetPassword(req, res) {
   try {
     const { id, password, confirmPassword } = req.body;
@@ -409,15 +379,14 @@ export async function resetPassword(req, res) {
     }
 
     const isUserExist = await UserModel.findById(id);
-
     if (!isUserExist) {
       return res.status(404).send({status: false, msg: "Unauthorized access attempt" });
     }
 
     // Update the user's password
-    (user.password = await bcrypt.hash(password, 10));; // Directly update the user's password
-    user.decryptPassword = password;
-    await user.save(); // Save the updated user
+    (isUserExist.password = await bcrypt.hash(password, 10)); // Directly update the user's password
+    isUserExist.decryptPassword = password;
+    await isUserExist.save(); // Save the updated user
 
     return res.status(200).send({status: true, msg: "Password updated successfully!" });
   } catch (error) {
@@ -426,17 +395,16 @@ export async function resetPassword(req, res) {
   }
 }
 
+// ** create session during password reset **
 export async function passwordResetSession (req, res, next) {
-  console.log("ress", req.session.resetPassword);
-  
   if (req.session.resetPassword) {
     return res.status(200).send({ flag: req.session.resetPassword });
   } else {
     res.status(403).send("Access Denied. Please verify your OTP first.");
   }
-};
+}
 
-// API to validate session
+// ** Reset password session validatation **
 export async function passwordValidateSession (req, res) {
   const { sessionId } = req.query;
   if (sessionStore[sessionId]?.isValid) {
@@ -444,8 +412,9 @@ export async function passwordValidateSession (req, res) {
   } else {
     res.status(401).json({ isValid: false });
   }
-};
+}
 
+// ** Reset password session logout **
 export async function passwordLogoutSession (req, res) {
   const { sessionId } = req.body;
   if (sessionStore[sessionId]) {
@@ -453,17 +422,13 @@ export async function passwordLogoutSession (req, res) {
     return res.status(200).json({ message: "Session invalidated" });
   }
   res.status(400).json({ message: "Session not found" });
-};
+}
 
-
-// Add new address for delivery
-// ** POST : http://localhost:8080/api/newAddress   */
+// ** Add and update addresses **
 export async function manageAddress(req, res) {
-  const { values, mode } = req.body;
-  const { userId } = req.user;
-
   try {
-    console.log("Incoming values:", values, "Mode:", mode);
+    const { values, mode } = req.body;
+    const { userId } = req.user;
 
     // Check if the user exists
     const isUserExist = await UserModel.findById(userId);
@@ -472,7 +437,6 @@ export async function manageAddress(req, res) {
     }
 
     if (mode === "create") {
-      // Check if userId already exists in AddressModel
       let userAddressData = await AddressModel.findOne({ userId });
 
       // Generate a new UUID if values.id is an empty string
@@ -515,8 +479,7 @@ export async function manageAddress(req, res) {
     if (mode === "update") {
       // Find the existing address by userId and address ID
       const userAddressData = await AddressModel.findOne({ userId });
-      console.log("userAddressData", userAddressData);
-      
+
       if (!userAddressData) {
         return res.status(404).json({ error: "Address not found" });
       }
@@ -558,7 +521,7 @@ export async function manageAddress(req, res) {
   }
 }
 
-// Get saved addresses for a user
+// ** get current user saved addresses **
 export async function getUserAddresses(req, res) {
   try {
     const user = req.user;
@@ -569,17 +532,15 @@ export async function getUserAddresses(req, res) {
 
     // Find addresses associated with the user
     const isAddressExist = await AddressModel.findOne({ userId: user._id });
-    // console.log("Addresses found:", isAddressExist);
-    
+
     // Return the addresses array
     res.status(200).json({ addressList: isAddressExist });
   } catch (error) {
-    console.error("Error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
 
-// Delete an address for a user
+// ** Delete an address by ID **
 export async function deleteAddressById(req, res) {
   try {
     const user = req.user; // Authenticated user
@@ -591,7 +552,6 @@ export async function deleteAddressById(req, res) {
 
     // Find the user's address document in a single call
     const userAddresses = await AddressModel.findOne({ userId: user._id });
-
     if (!userAddresses) {
       return res.status(404).json({ error: "Address document not found" });
     }
@@ -634,7 +594,7 @@ export async function deleteAddressById(req, res) {
   }
 }
 
-
+// ** Edit saved address **
 export async function updateDefaultAddress(req, res) {
   try {
     const user = req.user; // Authenticated user
@@ -644,7 +604,7 @@ export async function updateDefaultAddress(req, res) {
     if(!isAddressExist) {
       return res.status(404).json({ status: false, msg: "Address not found" });
     }
-    // find the addres with the specified id in the Array
+    // find the address with the specified id in the Array
     const addressIndex = isAddressExist.addresses.findIndex(
       (address) => address.id === id
     )
@@ -662,7 +622,7 @@ export async function updateDefaultAddress(req, res) {
   }
 }
 
-// add pan card details
+// ** Add PAN card details **
 export async function pancardvalidation(req, res) {
   try {
     const user = req.user; // Assuming `req.user` contains authenticated user info
@@ -725,12 +685,10 @@ export async function pancardvalidation(req, res) {
   }
 }
 
-
-
-// get the information about the Pan Card
+// ** Get current user Pan Details **
 export async function getPancardDetails(req, res) {
   try {
-    const user = req.user; // Assuming `req.user` contains authenticated user info
+    const user = req.user;
     const isPanExist = await PancardModel.findOne({ userId: user.id });
 
     if (!isPanExist) {
@@ -753,7 +711,7 @@ export async function getPancardDetails(req, res) {
   }
 }
 
-
+// ** Add items in wishlist **
 export async function addItemWishlists(req, res) {
   try {
     const user = req.user;
@@ -761,9 +719,7 @@ export async function addItemWishlists(req, res) {
 
     // Check if the wishlist exists for the user
     const isWishlistExists = await wishlistsModel.findOne({ userId: user.id });
-
     if (isWishlistExists) {
-      // Check if the productId already exists in the items array
       const isProductExists = isWishlistExists.items.some(
         (item) => item.productId.toString() === id
       );
@@ -802,6 +758,8 @@ export async function addItemWishlists(req, res) {
     res.status(500).json({status: false, msg: "Internal Server Error" });
   }
 }
+
+// ** Remove items from wishlist **
 export async function removeItemWishlists(req, res) {
   try {
     const userId = req.user.id;
@@ -852,7 +810,7 @@ export async function removeItemWishlists(req, res) {
   }
 }
 
-
+// ** Get current user wishlists **
 export async function getWishlists(req, res) {
   try {
     const user = req.user;
@@ -883,11 +841,10 @@ export async function getWishlists(req, res) {
   }
 }
 
-// this is related to product Database schema
+// ** Add DUMMY PRODUCTS in the DB [ADMIN USE ONLY] **
 export async function products(req, res) {
   try {
     const productsData = req.body; // Assuming products are sent in the body of the request
-    console.log(productsData.body.length);
     const savedProducts = await ProductModel.insertMany(productsData.body);
     res.status(201).json(savedProducts);
   } catch (error) {
@@ -896,6 +853,7 @@ export async function products(req, res) {
   }
 }
 
+// ** Get all products **
 export async function getProducts(req, res) {
   try {
     // Fetch all products from the database
@@ -914,12 +872,12 @@ export async function getProducts(req, res) {
   }
 }
 
+// ** Get product details by ID **
 export async function getProductsById(req, res) {
   try {
     const {id} = req.query;
     
     const isProductExist = await ProductModel.findById(id);
-    // console.log("exisr", isProductExist);
     if(!isProductExist) {
       return res.status(404).json({ error: "Product not found" });
     }
@@ -930,6 +888,7 @@ export async function getProductsById(req, res) {
   }
 }
 
+// ** Get products by User search request **
 export async function getSearchProducts(req, res) {
   try {
     const { query } = req.query; // Extract the search query from the request
@@ -950,11 +909,11 @@ export async function getSearchProducts(req, res) {
   }
 }
 
-
+// ** Get current user Cart Details **
 export async function getItemsInCart(req, res) {
   try {
     const user = req.user;
-    const isCartExist = await ShoppingBagModel.findOne({ userId: user._id }).populate('items.productId');;
+    const isCartExist = await ShoppingBagModel.findOne({ userId: user._id }).populate('items.productId');
 
     if(!isCartExist) {
       return res.status(404).json({ status: false, msg: "Cart not found." });
@@ -967,7 +926,7 @@ export async function getItemsInCart(req, res) {
   }
 }
 
-
+// ** Add items in Cart **
 export async function addItemsToCart(req, res) {
   try {
     const user = req.user; // Assuming the user is authenticated and attached to the request
@@ -1023,8 +982,7 @@ export async function addItemsToCart(req, res) {
     // Save the updated cart to the database
     await isCartExist.save();
 
-    res
-      .status(200)
+    res.status(200)
       .json({ status: true, cart: isCartExist, msg: "Product added to the cart successfully." });
   } catch (error) {
     console.error("Error adding items to cart:", error);
@@ -1032,12 +990,11 @@ export async function addItemsToCart(req, res) {
   }
 }
 
-
-
+// ** Remove items from Cart **
 export async function removeItemsFromCart(req, res) {
   try {
-    const user = req.user; // Assuming user is already authenticated and attached to the request
-    const { product } = req.body; // Expecting a product object in the request body
+    const user = req.user;
+    const { product } = req.body;
 
     if (!product || !product._id) {
       return res
@@ -1050,7 +1007,6 @@ export async function removeItemsFromCart(req, res) {
 
     // Check if the user's cart exists
     const isCartExist = await ShoppingBagModel.findOne({ userId: user._id });
-
     if (!isCartExist) {
       return res.status(404).json({ status: false, msg: "User's cart not found." });
     }
@@ -1085,16 +1041,13 @@ export async function removeItemsFromCart(req, res) {
   }
 }
 
-
+// ** Edit items in Cart [color, size, quantity, ...] **
 export async function updateItemsInCart(req, res) {
   try {
     const user = req.user;
     const { id, quantity } = req.body;
-    console.log("ghbf", req.body);
-    
 
     const isCartExist = await ShoppingBagModel.findOne({ userId: user._id});
-
     if(!isCartExist) {
       return res.status(404).json({ status: false, msg: "Cart not found." });
     }
@@ -1120,7 +1073,7 @@ export async function updateItemsInCart(req, res) {
   }
 }
 
-
+// ** Coupons add in DB [ADMIN use Only] **
 export async function couponsAddInDB(req, res) {
   try {
     const coupons = ["AGRQO5NPPZ", "DISCOUNT10", "SAVE20"];
@@ -1133,7 +1086,7 @@ export async function couponsAddInDB(req, res) {
   }
 }
 
-
+// ** Get all coupons **
 export async function getCoupons(req, res) {
   try {
     const user = req.user;
@@ -1147,7 +1100,7 @@ export async function getCoupons(req, res) {
   }
 }
 
-
+// ** Add product review by current User **
 export async function addReviewProduct(req, res) {
   try {
     const user = req.user;
@@ -1161,28 +1114,21 @@ export async function addReviewProduct(req, res) {
   }
 }
 
-
+// ** Get All Reviews of a Product by its ID **
 export async function getProductReviewsById(req, res) {
   try {
     const id = req.params.id;
-    const isreviewExist = await ReviewModel.findOne({productId: id});
-    if(!isreviewExist) {
+
+    const isReviewExist = await ReviewModel.findOne({productId: id});
+    if(!isReviewExist) {
       return res.status(404).json({ status: false, msg: "No review found for this product." });
     }
-    return res.status(200).json({ status: true, reviews: isreviewExist });
+
+    return res.status(200).json({ status: true, reviews: isReviewExist });
   } catch (error) {
     console.error("Error fetching product review:", error);
     res.status(500).json({ status: false, msg: "Internal server error." });
   }
 }
-// const realGmailConnect = (req, res) => {
-//   let config = {
-//     service: 'gmail',
-//     auth: {
-//       user: '',
-//       pass: ''
-//     }
-//   }
-//   let transporter = nodemailer.createTransporter(config);
-//   res.status(201).json("Real Gmail is Connected...!");
-// }
+
+

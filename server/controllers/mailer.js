@@ -1,15 +1,14 @@
 import nodemailer from 'nodemailer';
 import Mailgen from 'mailgen';
 
-import ENV from '../router/config.js';
 
 // https://ethereal.email/create
 let nodeConfig = {
     service: "gmail",
     secure: false,   //true for 465, false for other ports
     auth: {
-        user: ENV.EMAIL,
-        pass: ENV.PASSWORD
+        user: process.env.GOOGLE_APP_EMAIL,
+        pass: process.env.GOOGLE_APP_PASSWORD
     }
 }
 
@@ -28,16 +27,16 @@ export const registerMail = async(req,res)=> {
     const {username, useremail, text, subject} = req.body;
 
     // body of the email
-    var email = {
+    let email = {
         body: {
             name: username,
             intro: text || 'Welcome to Cleareyelens, We\'re very excited to have you on board.',
             outro: 'Need help, or have questions?  Just reply to this email, we\'d love to help.'
         }
     }
-    var emailBody = MailGenerator.generate(email);
+    let emailBody = MailGenerator.generate(email);
     let message = {
-        from: ENV.EMAIL,
+        from: process.env.GOOGLE_APP_EMAIL,
         to: useremail,
         subject: subject || "SignUp Successful",
         html: emailBody
@@ -46,7 +45,7 @@ export const registerMail = async(req,res)=> {
     // send mail
     transporter.sendMail(message)
         .then(()=> {
-            return res.status(200).send({mesg: "You should recieve an email from us."})
+            return res.status(200).send({msg: "You should receive an email from us."})
         })
         .catch(error => res.status(500).send({error}))
 }
@@ -54,7 +53,7 @@ export const registerMail = async(req,res)=> {
 
 export const sendEmail = async (email, subject, emailBody) => {
     const message = {
-        from: ENV.EMAIL,
+        from: process.env.GOOGLE_APP_EMAIL,
         to: email,
         subject: subject,
         html: emailBody
@@ -62,10 +61,9 @@ export const sendEmail = async (email, subject, emailBody) => {
     // send mail
     transporter.sendMail(message)
         .then(()=> {
-            return {mesg: "You should recieve an email from us."}
+            return {msg: "You should receive an email from us."}
         })
         .catch((error) => {
             return { msg:  "Error sending email", error: error }});
-
 }
 

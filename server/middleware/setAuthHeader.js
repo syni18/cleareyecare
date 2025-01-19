@@ -3,8 +3,7 @@ import isTokenExpire from "../utils/isTokenExpireJWT.js";
 const setAuthHeader = async (req, res, next) => {
     try {
         const accessToken = req.cookies.accessToken;
-        console.log("t", accessToken);
-        
+
         if(accessToken || !isTokenExpire(accessToken)){
             req.header['authorization'] = `Bearer ${accessToken}`;
         }
