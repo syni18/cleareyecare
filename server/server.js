@@ -7,12 +7,12 @@ import session from "express-session";
 import router from "./router/route.js";
 import cookieParser from "cookie-parser";
 import connect from "./database/connection.js";
+dotenv.config();
 
 import './components/google-strategy.js';
 import './utils/passport-jwt-strategy.js';
 
 
-dotenv.config();
 const app = express();
 
 // ** middleware **
@@ -36,7 +36,7 @@ app.use(cors({
     origin: process.env.FRONTEND_BASE_URL,
     credentials: true }));
 
-app.disable('x-powered-by');   //prevent exposing backend details
+// app.disable('x-powered-by');   //prevent exposing backend details
 app.use(session({
     secret: process.env.SESSION_KEY, // Replace with a secure key
     resave: false,

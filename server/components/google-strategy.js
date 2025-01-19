@@ -3,12 +3,13 @@ import bcrypt from "bcrypt";
 import passport from 'passport';;
 import UserModel from '../model/User.model.js';
 import generateJWT from '../utils/generateJWT.js';
-
+import * as dotenv from "dotenv";
+dotenv.config();
 passport.use( new GoogleStrategy(
     {  
         clientID: process.env.GCLOUD_CLIENT_ID,
         clientSecret: process.env.GCLOUD_CLIENT_SECRET,
-        callbackURL: `${process.env.SERVER_BASE_URL}v1/api/auth/google/callback`,
+        callbackURL: `${process.env.SERVER_BASE_URL}/v1/api/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
         try {

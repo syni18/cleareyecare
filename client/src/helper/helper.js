@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
 
 // ** Make API Requests **
 
 
 // "" google authentication ""
 export async function signupWithGoogle(){
-  window.location.href = "http://localhost:8080/v1/api/auth/google";
+  window.location.href = "http://localhost:8585/v1/api/auth/google";
   signupWithGoogleCallback()
 }
 export async function signupWithGoogleCallback() {
@@ -152,6 +152,7 @@ export async function editAddress(values, mode) {
 export async function fetchAddress(){
     try {
       const r = await axios.get(`v1/api/addresses`, {withCredentials: true});
+        console.log("fg", r);
       return r.data;
     } catch (error) {
       console.error("Error fetching addresses:", error);
