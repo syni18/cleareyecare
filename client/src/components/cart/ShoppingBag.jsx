@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./shopingbag.css";
 import "./billingaddress.css";
 import BagItem from "./BagItem";
@@ -17,7 +17,6 @@ import NewAddress from "../address/NewAddress";
 import { fetchAddress, getCartItems, getCouponsToShow, setDefaultAddress } from "../../helper/helper";
 import useCartStore from "../../redux/store/cartStore";
 import { useAddressStore } from "../../redux/store/addressStore";
-import axios from "axios";
 
 function ShoppingBag() {
   const navigate = useNavigate();
@@ -62,7 +61,6 @@ function ShoppingBag() {
     const fetchCoupons = async () => {
       try {
         const response = await getCouponsToShow();
-        // console.log("rtrth", response);
         setCoupons(response.coupons.map((coupon) => coupon.code));
       } catch (e) {
         console.log(e);
@@ -71,9 +69,9 @@ function ShoppingBag() {
     fetchCoupons();
   }, []);
   // const coupons = ["AGRQO5NPPZ", "DISCOUNT10", "SAVE20"];
-  // Calculate subtotal
+  // sub total
   const subtotal = cartItems
-    .reduce((acc, item) => acc + item.price * item.quantity, 0)
+    .reduce((acc, item) => acc + item.productId.price * item.quantity, 0)
     .toFixed(2);
 
   const handleSelectCoupon = (coupon) => {
@@ -313,7 +311,7 @@ function ShoppingBag() {
               </div>
               <div className="checkout-btn">
                 <button type="button" onClick={() => navigate("")}>
-                  Procced to Checkout
+                  CHECKOUT
                 </button>
               </div>
             </div>
