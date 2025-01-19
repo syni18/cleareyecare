@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { updateProfileInfo } from "../../helper/helper";
 import { profileEditValidation } from "../../helper/validate";
 import useUserStore from "../../redux/store/userStore";
+import styles from "../../css/Button.module.css";
 
 
 function ProfileInfo() {
@@ -108,7 +109,7 @@ function ProfileInfo() {
             </div>
             <button
               type="submit"
-              className="form-save-btn"
+              className={styles.btnRegular}
               disabled={!firstNameEditMode && !lastNameEditMode}
             >
               Save
