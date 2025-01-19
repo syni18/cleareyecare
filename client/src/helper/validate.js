@@ -1,10 +1,9 @@
 import toast from "react-hot-toast";
-import { authenticate } from "./helper";
 
 // validate username
 function verifyNameString(error = {}, values) {
   // Updated regex to only allow alphabets (both uppercase and lowercase)
-  const NameRegEx = /^[a-zA-Z]+$/;
+  const NameRegEx =import.meta.env.VITE_REGEX_NAME;
 
   // Check if firstname exists
   if (!values.firstname) {
@@ -28,7 +27,7 @@ function verifyNameString(error = {}, values) {
 
 // validate emails
 function verifyEmailString(error={}, values){
-    const EmailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const EmailRegEx = import.meta.env.VITE_REGEX_EMAIL;
     if(!values.email){
         error.email = toast.error("Email address Required!")
     }
@@ -58,10 +57,10 @@ function userPhonenoVerify(error={}, values){
 // validate password
 function verifyPasswordString(error = {}, values) {
   // Regular expressions for validation
-  const upperCaseRegEx = /[A-Z]/; // At least one uppercase letter
-  const lowerCaseRegEx = /[a-z]/; // At least one lowercase letter
-  const digitRegEx = /\d/; // At least one digit
-  const specialCharRegEx = /[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+/; // At least one special character
+  const upperCaseRegEx = import.meta.env.VITE_REGEX_UPPERCASE; // At least one uppercase letter
+  const lowerCaseRegEx = import.meta.env.VITE_REGEX_LOWERCASE; // At least one lowercase letter
+  const digitRegEx = import.meta.env.VITE_REGEX_DIGITS; // At least one digit
+  const specialCharRegEx = import.meta.env.VITE_REGEX_SPECIALCHAR; // At least one special character
 
   if (!values.password) {
     error.password = toast.error("Password Required!");
@@ -91,7 +90,7 @@ function verifyPasswordString(error = {}, values) {
 }
 
 function verifyPancardString(error = {}, values) {
-  const panCardRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/; // PAN card validation regex
+  const panCardRegex = import.meta.env.VITE_REGEX_PANNO; // PAN card validation regex
   const panCardNumber = values?.panNumber?.trim(); // Access and trim the PAN card value
 
   if (!panCardNumber) {
@@ -122,8 +121,7 @@ export async function signupValidation(values){
 }
 // recovery Email validate
 export async function recoveryEmailValidation(values){
-    const errors = verifyEmailString({}, values);
-    return errors;
+    return verifyEmailString({}, values);
 }
 
 // password reset validate
@@ -142,19 +140,15 @@ export async function resetPasswordValidation(values){
 // profile informaton validate
 export async function profileEditValidation(values) {
   if(values.email) {
-    const errors = verifyEmailString({}, values);
-    return errors;
+      return verifyEmailString({}, values);
   } else if(values.phoneNo) {
-    const errors = userPhonenoVerify({}, values);
-    return errors;
+      return userPhonenoVerify({}, values);
   } else {
-    const errors = verifyNameString({}, values);
-    return errors;
+      return verifyNameString({}, values);
   }
 }
 
 export async function pancardValidation(values) {
   // const error = verifyNameString({}, values);
-  const error = verifyPancardString({}, values);
-  return error;
+    return verifyPancardString({}, values);
 }

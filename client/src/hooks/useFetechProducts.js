@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { saveProductsToServer } from "../helper/helper";
 
-const API_PRODUCT = "https://dummyjson.com/products/?limit=50";
+const API_PRODUCT = import.meta.env.VITE_DUMMY_JSON_URL;
 
 function useFetchProducts() {
   const [products, setProducts] = useState([]);

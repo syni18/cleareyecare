@@ -30,7 +30,8 @@ export const useWishlistStore = createWithEqualityFn(
         );
         return { wishlists: filteredWishlists };
       }),
-  }))
+  }),{ name: "WatchlistStore" } // <-- Add a name to the devtools
+  )
 );
 
 export default useWishlistStore;

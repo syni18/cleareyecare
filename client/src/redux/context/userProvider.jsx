@@ -1,8 +1,9 @@
 // src/context/UserProvider.js
-import React, { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import useUserStore from "../store/userStore";
 import { fetchAuthorizedUser } from "../../helper/helper";
 
+// eslint-disable-next-line react/prop-types
 export const UserProvider = ({ children }) => {
   const isFetchingRef = useRef(false); // Tracks if the fetch is already in progress
 

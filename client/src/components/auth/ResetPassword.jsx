@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useFormik } from "formik";
 import AuthLeftBox from "./AuthLeftBox";
 import toast, { Toaster } from "react-hot-toast";
 import { resetPassword } from "../../helper/helper";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../redux/store/authStore";
 import { useAuth } from "../../redux/context/AuthContext";
 import { resetPasswordValidation } from "../../helper/validate";
 
+// eslint-disable-next-line react/prop-types
 const FormField = ({ label, type, id, placeholder, fieldProps }) => (
   <>
     <label htmlFor={id}>{label}</label>
@@ -21,7 +21,7 @@ function ResetPassword(props) {
   const { setIsOtpVerified } = useAuth();
 
   useEffect(() => {
-    const handlePopState = (event) => {
+    const handlePopState = () => {
       if (location.pathname === "/reset-password") {
         setIsOtpVerified(false);
         navigate("/login");
@@ -37,6 +37,7 @@ function ResetPassword(props) {
 
   const formik = useFormik({
     initialValues: {
+      // eslint-disable-next-line react/prop-types
       id: props.id,
       password: "",
       confirmPassword: "",

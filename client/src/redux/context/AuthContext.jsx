@@ -1,13 +1,13 @@
 // AuthContext.js
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
+// eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
   const [isOtpVerified, setIsOtpVerified] = useState(false);
 
    const logStateChange = (newState) => {
-     console.log("Changing isOtpVerified from", isOtpVerified, "to", newState);
      setIsOtpVerified(newState);
    };
 
@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   return useContext(AuthContext);
 };

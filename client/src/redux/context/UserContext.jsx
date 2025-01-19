@@ -1,8 +1,9 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext } from "react";
 import { fetchAuthorizedUser } from "../../helper/helper";
 
 const UserContext = createContext();
 
+// eslint-disable-next-line react/prop-types
 export const UserProvider = ({ children }) => {
   const [user, setUser ] = useState(null); // Default to null
   const [loading, setLoading] = useState(true);
