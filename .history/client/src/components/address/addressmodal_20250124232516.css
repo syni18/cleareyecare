@@ -1,0 +1,262 @@
+/* addressmodal.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #f1f3f6;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+
+.modal-body {
+  max-height: 400px;
+  overflow-y: scroll;
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.modal-body::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
+.address-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 0.75rem;
+  margin: 0.5rem;
+  font-size: 14px;
+  position: relative;
+}
+
+.address-item .del-cg-type {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.25rem 0;
+}
+
+.address-item .del-cg-phone {
+  display: flex;
+  align-items: center;
+  padding: 3px 0;
+  margin: 0.25rem 0;
+}
+
+.address-item .del-cg-address {
+  display: flex;
+  align-items: flex-start;
+  margin: 0.25rem 0;
+  padding: 3px 0;
+}
+
+.address-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.edit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.add-new-address {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+.add-new-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.add-new-button:hover {
+  background-color: #218838;
+}
+
+/* Additional styles for NewAddress form if needed */
+.add-address-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+
+.add-address-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-address-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.close-form {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+
+.add-current-loc {
+  background-color: #f8f9fa;
+  border: 1px dashed #ced4da;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.add-current-loc:hover {
+  background-color: #e9ecef;
+}
+
+.add-address-field1,
+.add-address-field2,
+.add-address-field3,
+.add-address-field4,
+.add-address-field5,
+.add-address-field6 {
+  margin-bottom: 15px;
+}
+
+.add-address-field7 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-field1-name,
+.add-field1-phno,
+.add-field2-pin,
+.add-field2-locality,
+.add-field4-city,
+.add-field4-state,
+.add-field5-landmark,
+.add-field5-altphn {
+  margin-bottom: 10px;
+}
+
+.add-field1-name label,
+.add-field1-phno label,
+.add-field2-pin label,
+.add-field2-locality label,
+.add-field4-city label,
+.add-field4-state label,
+.add-field5-landmark label,
+.add-field5-altphn label,
+.add-address-field3 label,
+.add-address-field6 label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.add-field1-name input,
+.add-field1-phno input,
+.add-field2-pin input,
+.add-field2-locality input,
+.add-field4-city input,
+.add-field4-state select,
+.add-field5-landmark input,
+.add-field5-altphn input,
+.add-address-field3 textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.add-field4-state select {
+  height: calc(1.5em + 0.75rem + 2px);
+}
+
+.add-address-savebtn,
+.add-address-cancelbtn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.add-address-cancelbtn {
+  background-color: #dc3545;
+}
+
+.add-address-savebtn:hover {
+  background-color: #0056b3;
+}
+
+.add-address-cancelbtn:hover {
+  background-color: #c82333;
+}

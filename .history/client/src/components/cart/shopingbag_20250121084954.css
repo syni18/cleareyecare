@@ -1,0 +1,72 @@
+.sb-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: 0rem; */
+    position: relative;
+}
+.sb-container{
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+}
+.sbc-header{
+    margin: 1rem;
+}
+.sbc-header label{
+    font-size: 24px;
+    color: #495057;
+    font-weight: 600;
+}
+.sb-cartset {
+    /* border: 1px solid black; */
+    display: flex;
+    position: relative;
+}
+.sb-cartset .sb-cartset-left{
+    flex: 0.7;
+    border: 1px solid #ddd;
+    margin: 0 0.5rem 0 0;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+
+
+.sb-cartset .sb-cartset-right{
+    flex: 0.3;
+    border: 1px solid #ddd;
+    margin: 0 0 0 0.5rem;
+    border-radius: 8px;
+    /* position: static; */
+    background-color: #fff;
+}
+.sb-cartset-right .csr-container{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+}
+.csr-container .csr-deliver{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+.csr-deliver label {
+    font-size: 12px;
+    color: #495057;
+    font-weight: 600;
+}
+.csr-del-cg{
+    border: 1px solid #000;
+    width: max-content;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+}
+.csr-del-cg .del-cg-free{
+    border: 1px solid #000;
+    font-size: 12px;
+    padding: 4px 10px;
+    color: #;
+}

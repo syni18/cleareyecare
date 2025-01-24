@@ -40,7 +40,7 @@ const Layout = ({ children, showHeaderFooter = true }) => (
   <>
     {showHeaderFooter && <Navigation />}
     <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-    {showHeaderFooter && <Footer />}
+    {/*{showHeaderFooter && <Footer />}*/}
   </>
 );
 

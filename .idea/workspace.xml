@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ae8b2fd8-48b9-4bce-92bf-63d3b52c5771" name="Changes" comment=" fix subtotal if item add from wishlist">
+      <change beforePath="$PROJECT_DIR$/client/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/cart/ShoppingBag.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/cart/ShoppingBag.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/cart/shopingbag.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/cart/shopingbag.css" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="development" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="11ccabd9-4151-46c9-90e6-f3eb5e48db43" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2roDM1bKIvKGIatzCOfu75tyQ9i" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;payment__work&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/csesa/OneDrive/Desktop/projects&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.3.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ae8b2fd8-48b9-4bce-92bf-63d3b52c5771" name="Changes" comment="" />
+      <created>1737216486691</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1737216486691</updated>
+      <workItem from="1737216489180" duration="377000" />
+      <workItem from="1737216883288" duration="29201000" />
+    </task>
+    <task id="LOCAL-00001" summary="fix react 18 compatible with other dependencies">
+      <option name="closed" value="true" />
+      <created>1737216788990</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1737216788990</updated>
+    </task>
+    <task id="LOCAL-00002" summary="remove unwanted code from helper and remove also .history file">
+      <option name="closed" value="true" />
+      <created>1737217852283</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1737217852283</updated>
+    </task>
+    <task id="LOCAL-00003" summary="remove unwanted code from server and use of .env">
+      <option name="closed" value="true" />
+      <created>1737256080862</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1737256080862</updated>
+    </task>
+    <task id="LOCAL-00004" summary="remove unwanted code from client and use of .env">
+      <option name="closed" value="true" />
+      <created>1737272221317</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1737272221317</updated>
+    </task>
+    <task id="LOCAL-00005" summary="remove unwanted code from client and use of .env">
+      <option name="closed" value="true" />
+      <created>1737279492582</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1737279492582</updated>
+    </task>
+    <task id="LOCAL-00006" summary="remove node modules to track">
+      <option name="closed" value="true" />
+      <created>1737279766258</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1737279766258</updated>
+    </task>
+    <task id="LOCAL-00007" summary="modular css work">
+      <option name="closed" value="true" />
+      <created>1737281403984</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1737281403985</updated>
+    </task>
+    <task id="LOCAL-00008" summary="increase access token exp time">
+      <option name="closed" value="true" />
+      <created>1737282206169</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1737282206169</updated>
+    </task>
+    <task id="LOCAL-00009" summary=" fix subtotal if item add from wishlist">
+      <option name="closed" value="true" />
+      <created>1737298166883</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1737298166883</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix react 18 compatible with other dependencies" />
+    <MESSAGE value="remove unwanted code from helper and remove also .history file" />
+    <MESSAGE value="remove unwanted code from server and use of .env" />
+    <MESSAGE value="remove unwanted code from client and use of .env" />
+    <MESSAGE value="remove node modules to track" />
+    <MESSAGE value="modular css work" />
+    <MESSAGE value="increase access token exp time" />
+    <MESSAGE value=" fix subtotal if item add from wishlist" />
+    <option name="LAST_COMMIT_MESSAGE" value=" fix subtotal if item add from wishlist" />
+  </component>
+</project>
