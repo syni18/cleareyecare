@@ -175,7 +175,7 @@ function NewAddress({ onCancel, mode, addressSavedData, onAddressSaved }) {
               name="address"
               id="_address"
               cols="10"
-              rows="3"
+              rows="4"
               tabIndex={5}
               placeholder="Address (Area and Street)"
               {...getFieldProps("address")}

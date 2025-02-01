@@ -256,7 +256,7 @@ form .add-address-field1 {
     width: max-content;
     background-color: #59839d;
     border: 1px solid #d3d3d3;
-    padding: 8px 40px;
+    padding: 8px 24px;
     border-radius: 4px;
     color: white;
     cursor: pointer;
@@ -269,7 +269,7 @@ form .add-address-field1 {
     border: 1px solid #ddd;
     border-radius: 4px;
     font-weight: 600;
-    padding: 8px 40px;
+    padding: 8px 50px;
     cursor: pointer;
     color: #495057;
 

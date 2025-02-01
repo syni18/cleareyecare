@@ -91,7 +91,7 @@ const AddressModal = ({ addresses, onClose, updateAddress }) => {
         ) : (
           <NewAddress
             onCancel={handleCloseForm}
-            mode={editingAddressId ? "update" : "create"}
+            mode={editingAddressId ? "edit" : "create"}
             addressSavedData={
               editingAddressId
                 ? addresses.find((addr) => addr._id === editingAddressId)
