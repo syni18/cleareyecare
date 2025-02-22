@@ -1,0 +1,24 @@
+.coupon-wrapper {
+
+}
+.coupon-container {
+
+}
+.coupon-container .coupon-head {
+    margin: 1rem;
+}
+.coupon-head label {
+    font-size: 18px;
+}
+.coupon-container .coupon-avail-list,
+.coupon-container .coupon-upcome-list,
+.coupon-container .coupon-expire-list {
+    margin: 1rem;
+
+}
+.coupon-avail-list .coupon-avail-item,
+.coupon-upcome-list .coupon-upcome-item,
+.coupon-expire-list .coupon-expire-item {
+    border: 1px solid #d3d3d3;
+    padding: 1rem;
+}

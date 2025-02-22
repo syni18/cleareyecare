@@ -1,0 +1,105 @@
+.home-page-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: 0rem; */
+    position: relative;
+}
+.home-page-container{
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-top-cat {
+    display: grid;
+    /* grid-template-columns: repeat(2, 1fr); */
+    margin: 2rem 0;
+    gap: 25px;
+}
+.home-page-container .page-top-cat label {
+    /* font-size: 18px; */
+}
+.tdhead-label {
+    /* background-color: black; */
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 32px; 
+    color: #495057;
+    font-weight: 900;
+    /* color: white; */
+    /* border: 1px solid #d8d8d8; */
+}
+.page-top-tdhead {
+    /* margin: 2rem 0; */
+}
+
+/* topItem css */
+.product-grids {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Create two columns */
+  gap: 5px; /* Space between items */
+  margin-top: 0.5rem;
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
+  /* justify-items: center; Center the items in their cells */
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr; /* One column on smaller screens */
+  }
+}
+
+.product {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 16px;
+  background: rgb(249, 249, 249);
+  /* text-align: center; */
+  width: 200px; /* Fixed width */
+  margin: 0.5rem auto; /* Center product in the grid cell */
+  position: relative;
+}
+
+.product .product-wishlist-add{
+  position: absolute;
+  /* color: #666; */
+  /* border: 1px solid #fff; */
+  border-radius: 99px;
+  display: flex;
+  right: 5px;
+  top: 5px;
+  padding: 2px;
+  /* background-color: #fff; */
+  /* z-index: 99; */
+}
+.product .product-wishlist-add .pd-wishlist-addicon:hover{
+  fill: red;
+  stroke: red;
+  cursor: pointer;
+}
+
+.product-image {
+  width: 100%; /* Make the image fill the container */
+  height: 200px; /* Fixed height */
+  object-fit:cover; /* Keep aspect ratio, cover the box */
+  border-radius: 4px;
+}
+
+.product-info {
+  width: 100%; /* Match width with the .product */
+}
+
+.product-title {
+  font-size: 14px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+
+.product-price {
+  color: #666;
+  margin: 0;
+  font-size: 16px;
+}

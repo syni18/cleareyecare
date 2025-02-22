@@ -1,0 +1,308 @@
+.add-address-wrapper{
+    width: 100%;
+}
+.add-address-container {
+    margin: 1rem;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 8px;
+}
+.add-address-container .add-address-head {
+    padding: 15px;
+}
+.add-address-head label {
+    color: #59839d;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.add-address-container form {
+    margin: 0 1rem;
+    width: 620px;
+    /* border: 1px solid black; */
+}
+.add-address-container form .add-current-loc {
+    /* margin: 1rem 0;   */
+}
+form .add-current-loc > span {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    width: max-content;
+    background-color: #ddd;
+    border: 1px solid #ddd;
+    padding: 8px 24px;
+    border-radius: 8px;
+    color: #495057;
+    cursor: pointer;
+    /* height: 40px; */
+}
+form .add-address-field1 {
+    display: flex;
+    /* flex-direction: column; */
+    margin-top: 2rem;
+    justify-content: space-between;
+    align-items: center;
+}
+.add-address-field1 .add-field1-name,
+.add-address-field1 .add-field1-phno {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-right: 1rem;
+}
+
+.add-field1-name #_fullname,
+.add-field1-phno #_phoneno{
+    height: 2.5rem;
+    padding-left: 14px;
+    width: 290px;
+    font-size: 12px;
+    outline: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;   
+}
+.add-field1-phno #_phoneno[type="number"]::-webkit-inner-spin-button,
+.add-field1-phno #_phoneno[type="number"]::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+}
+.add-field1-name label,
+.add-field1-phno label{
+    position: absolute;
+    top: -10px;
+    left: 6px;
+    background: #fff;
+    /* background: linear-gradient(180deg, rgba(241,243,246,1) 0%, rgba(255,255,255,1) 100%); */
+    font-size: 12px;
+    color: #495057;
+}
+.add-address-field2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+.add-address-field2 .add-field2-pin,
+.add-address-field2 .add-field2-locality {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-right: 1rem
+}
+.add-field2-pin label,
+.add-field2-locality label{
+    position: absolute;
+    top: -10px;
+    left: 6px;
+    background: #fff;
+    /* background: linear-gradient(180deg, rgba(241,243,246,1) 0%, rgba(255,255,255,1) 100%); */
+    font-size: 12px;
+    color: #495057;
+}
+.add-field2-pin #_pincode,
+.add-field2-locality #_locality{
+    height: 2.5rem;
+    padding-left: 14px;
+    width: 290px;
+    outline: none;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px; 
+}
+.add-field2-pin #_pincode[type="number"]::-webkit-inner-spin-button,
+.add-field2-pin #_pincode[type="number"]::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+}
+.add-address-field3 {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: 2rem
+}
+.add-address-field3 label{
+    position: absolute;
+    top: -10px;
+    left: 6px;
+    background: #fff;
+    /* background: linear-gradient(180deg, rgba(241,243,246,1) 0%, rgba(255,255,255,1) 100%);   */
+    font-size: 12px;
+    color: #495057;
+}
+.add-address-field3 #_address{  
+    /* height: 40px; */
+    padding-left: 14px;
+    padding-top: 5px;
+    width: 605px;
+    outline: none;
+    border: 1px solid #ddd;
+    border-radius: 4px; 
+    font-size: 12px;
+    background: #fff;
+    resize: none;
+}
+.add-address-field4{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+.add-address-field4 .add-field4-city,
+.add-address-field4 .add-field4-state {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-right: 1rem
+}
+.add-field4-city label,
+.add-field4-state label {
+    position: absolute;
+    top: -10px;
+    left: 6px;
+    background: #fff;
+    /* background: linear-gradient(180deg, rgba(241,243,246,1) 0%, rgba(255,255,255,1) 100%); */
+    font-size: 12px;
+    color: #495057;
+}
+.add-field4-city #_city-district-town,
+.add-field4-state #_state{
+    height: 40px;
+    padding-left: 14px;
+    width: 290px;
+    outline: none;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px; 
+}
+.add-address-field5 {
+    display: flex;
+    align-items: center;
+    margin-top: 2rem;
+    justify-content: space-between;
+}
+.add-address-field5 .add-field5-landmark,
+.add-address-field5 .add-field5-altphn {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-right: 1rem
+}
+.add-field5-landmark label,
+.add-field5-altphn label {
+    position: absolute;
+    top: -10px;
+    left: 6px;
+    background: #fff;
+    /* background: linear-gradient(180deg, rgba(241,243,246,1) 0%, rgba(255,255,255,1) 100%); */
+    font-size: 12px;
+    color: #495057;
+}
+.add-field5-landmark #_landmark,
+.add-field5-altphn #_alt-mobile {
+    height: 40px;
+    padding-left: 14px;
+    width: 290px;
+    outline: none;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px; 
+}
+.add-field5-altphn #_alt-mobile[type="number"]::-webkit-inner-spin-button,
+.add-field5-altphn #_alt-mobile[type="number"]::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+}
+.add-address-field6{
+    display: flex;
+    /* align-items: center; */
+    flex-direction: column;
+    margin-top: 2rem;
+}
+.add-address-field6 label{
+    /* position: absolute;
+    top: -10px;
+    left: 6px; */
+    width: max-content;
+    background-color: #fff;
+    font-size: 12px;
+    color: #495057;
+}
+.add-address-field6 .add-field6-addtype{
+    display: flex;
+}
+.add-field6-addtype .addtype-office,
+.add-field6-addtype .addtype-home{
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+    margin-top: 0.25rem;
+}
+.addtype-office #_office,
+.addtype-home #_home {
+    margin-right: 0.5em;
+}
+.addtype-office span,
+.addtype-home span {
+    font-size: 14px;
+}
+.add-address-field7 {
+    display: flex;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.add-address-field7 .add-address-savebtn{
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    width: max-content;
+    background-color: #59839d;
+    border: 1px solid #d3d3d3;
+    padding: 8px 40px;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    /* height: 40px; */
+}
+.add-address-field7 .add-address-cancelbtn {
+    font-size: 12px;
+    margin-left: 1rem;
+    background-color: #ddd;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-weight: 600;
+    padding: 8px 40px;
+    cursor: pointer;
+    color: #495057;
+
+}
+
+/* Checkbox css ui verse */
+input[type="radio"] {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #59839d;
+  border-radius: 4px;
+  background-color: transparent;
+  display: inline-block;
+  position: relative;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+input[type="radio"]:before {
+  content: "";
+  background-color: #59839d;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  transition: all 0.3s ease-in-out;
+}
+
+input[type="radio"]:checked:before {
+  transform: translate(-50%, -50%) scale(1);
+}

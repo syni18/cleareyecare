@@ -1,0 +1,28 @@
+.banner {
+  width: 100%;
+  overflow: hidden;
+  transition: height 0.5s ease;
+}
+.banner-content {
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  color: #fff;
+}
+
+.banner-content h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.banner-content p {
+  font-size: 1.2rem;
+}
+
+.slider-img {
+  width: 100%;
+  border-radius: 5px;
+  height: 70vh;
+  object-fit: cover;
+}
+

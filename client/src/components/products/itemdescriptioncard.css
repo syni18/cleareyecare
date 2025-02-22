@@ -1,0 +1,67 @@
+.description-card-wrapper{
+
+}
+.description-card-container {
+    margin-top: 2em;
+}
+.description-card-container label {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    color: #495057;
+    font-weight: 600;
+    justify-content: space-between;
+}
+.description-card-container label span {
+    /* border: 1px solid black; */
+    color: #495057;
+    font-weight: 600;
+    cursor: pointer;
+}
+.description-card-container .card-container-desc {
+    font-size: 12px;
+    color: #495057;
+    margin-top: 1rem;
+    /* font-weight: 600; */
+}
+.description-card-container .card-container-bullets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */
+  grid-gap: 20px; /* Spacing between grid items */
+  margin-top: 1rem;
+}
+
+.card-container-bullets .bullet-container-fit {
+  display: flex;
+  flex-direction: column;
+  /* background-color: #fff; */
+  /* border: 1px solid #59839d; */
+  cursor: default;
+  border-radius: 5px;
+}
+
+/* .bullet-container-fit:hover {
+    color: white !important;
+    background: #007bff;
+} */
+.bullet-container-fit .bullet-head {
+  /* width: 180px; */
+  padding: 8px 5px;
+  font-size: 12px;
+  color: #fff;
+  background-color: #59839d;
+  font-weight: 400;
+  letter-spacing: 1px;
+  border-radius: 4px;
+}
+
+.bullet-container-fit .bullet-head-val {
+  padding: 8px 5px;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 1px solid #59839d;
+  margin-top: 0.2rem;
+  /* box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px; */
+
+}
+

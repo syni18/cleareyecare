@@ -1,0 +1,219 @@
+.rate-prod-form-wrapper{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    /* height: 93.6vmin; */
+    height: 100%;
+    padding-bottom: 4rem;
+    background-color: #f1f3f6;
+
+}
+.rate-prod-form-container{
+    width: 85%;
+    height: 100%;
+
+}
+.rate-prod-form-container .rate-form-head{
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    margin-top: 1rem;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+}
+.rate-form-head .rate-form-head-left{
+    display: flex;
+    flex-direction: column;
+    /* margin-top: 1rem; */
+}
+.rate-form-head-left label {
+    font-size: 24px;
+    color: #495057;
+    font-weight: 600;
+}
+.rate-form-head-left small {
+    color: rgb(141, 140, 140);
+}
+.rate-form-head .rate-form-head-right{
+    display: flex;
+    align-items: center;
+    /* margin-top: 1rem; */
+}
+.rate-form-head-right h5{
+    font-weight: normal;
+    font-size: 12px;
+}
+.rate-form-head-right img {
+    width: 70px;
+    object-fit: cover;
+    height: 70px;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+}
+.rate-form-card {
+    display: flex;
+}
+.rate-prod-form {
+    background-color: #fff;
+    margin-top: 1rem;
+    border-radius: 4px;
+    flex: 0.6;
+    flex-direction: column;
+    padding: 15px 15px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+}
+.rate-prod-form .prod-form-star {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin-bottom: 1.2rem;
+}
+.prod-form-star label, 
+.prod-form-review label {
+    font-size: 18px;
+    margin-bottom: 0.25rem;
+    color: #495057;
+    font-weight: 600;
+}
+.prod-form-star .star-rating {
+    display: flex;
+    /* border: 1px solid black; */
+    /* justify-content: space-between; */
+}
+.prod-form-star p {
+    font-size: 12px;
+    margin-top: 0.5rem;
+    letter-spacing: 1px;
+}
+.star-rate-info {
+    font-size: 14px;
+    font-weight: 600;
+    color: green;
+    /* margin-left: 1rem; */
+}
+.rate-prod-form .prod-form-review {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.2rem;
+}
+.prod-form-review textarea{
+    padding: 10px;
+    outline: none;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    resize: none;
+    font-size: 12px;
+}
+.rate-prod-form .prod-form-title {
+    display: flex;
+    flex-direction: column;
+}
+.prod-form-title label {
+    font-size: 18px;
+    font-weight: 600;
+    color:#495057;
+    margin-bottom: 0.25rem;
+}
+.prod-form-title #form-title {
+    height: 40px;
+    padding-left: 5px;
+    outline: none;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.rate-prod-user-image {
+    display: flex;
+    flex-direction: column;
+    margin-right: 1rem;
+}
+.rate-prod-user-image input[type="file"]{
+    display: none;
+}
+.rate-prod-user-image label {
+    border: 1px solid #d3d3d3;
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f1f3f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.rate-prod-user-image label:hover{
+    color: #59839d;
+    border: 1px solid #59839d;
+}
+.image-preview-container{
+    display: flex;
+    margin: 2rem 0;
+}
+.image-preview-container .image-preview-wrapper{
+    position: relative;
+}
+.image-preview-container .image-preview{
+    border: 1px solid #d3d3d3;
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    margin-right: 0.5em;
+    /* cursor: pointer; */
+    background-color: #f1f3f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+}
+.image-preview-wrapper .delete-icon {
+    position: absolute;
+    right: -0px;
+    top: -10px;
+    color: white;
+    cursor: pointer;
+    
+}
+.rate-prod-form .rate-submit-btn {
+    background-color: #59839d;
+    border: 1px solid #d3d3d3;
+    font-size: 12px;
+    padding: 8px 35px;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+.rate-form-faq {
+    flex: 0.4;
+    height: max-content;
+    background-color: #fff;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    border-radius: 4px;
+    flex-direction: column;
+    padding: 15px 15px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.rate-form-faq label{
+    font-size: 18px;
+    font-weight: 600;
+    color: #495057;
+}
+.rate-form-faq .rate-faq-container {
+    margin-top: 2rem;
+}
+.rate-faq-container .rate-faq-1 {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0;
+}
+.rate-faq-1 .faq-1-ques {
+    font-weight: 600;
+    color: #495057;
+}
+.rate-faq-1 span:last-child{
+    font-size: 12px;
+    margin-top: 0.5rem;
+}

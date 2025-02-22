@@ -1,0 +1,347 @@
+:root {
+    --primary-color: #59839d;
+    --secondary-color: #f1f3f6;
+    --text-color: #495057;
+    --border-color: #ced4da;
+    --hover-bg-color: #f8f9fa;
+    --light-bg-color: #ffffff;
+}
+
+.login-wrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--secondary-color);
+}
+
+.auth-wrap-close {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.auth-wrap-close .auth-wrcl-text {
+    margin-left: 0.5rem;
+}
+
+.login-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.login-container .loco-left {
+    flex: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0.5rem;
+    border-radius: 16px;
+    background-image: url('../../assets/31624428_7330621.jpg'); /* Replace with your image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #ffffff;
+}
+
+.login-container .loco-left h1 {
+    font-size: 3rem;
+    font-weight: 500;
+    width: max-content;
+    margin-left: 2rem;
+    border-bottom: 7px solid #ffffff;
+    border-radius: 4px;
+}
+
+.login-container .loco-left h3,
+.login-container .loco-left h5 {
+    font-weight: normal;
+    margin-top: 1rem;
+    margin-left: 2rem;
+}
+
+.login-container .loco-right {
+    flex: 70%;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem;
+    border-radius: 16px;
+    flex-direction: column;
+    background-color: var(--light-bg-color);
+}
+
+.lort-box {
+    width: 75%;
+    height: 80%;
+}
+
+.lort-already {
+    width: 80%;
+    margin: 1rem;
+    text-align: right;
+}
+
+.lrtady-link {
+    cursor: pointer;
+}
+
+.lrtady-span-text {
+    opacity: 0.5;
+    font-size: 14px;
+}
+
+.lrtady-login {
+    color: #b76d3e;
+    font-weight: 600;
+    margin-left: 0.25rem;
+    font-size: 14px;
+}
+
+.lrtb-header {
+    margin: 1rem 1rem 1rem 2rem;
+    font-size: 48px;
+    color: var(--text-color);
+    font-weight: 900;
+}
+
+.social-signup {
+    display: flex;
+    gap: 1rem;
+    margin: 3rem 1rem 1rem 2rem;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.40rem 2.1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    text-decoration: none;
+    color: var(--text-color);
+    background-color: var(--light-bg-color);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.social-btn:hover {
+    background-color: var(--hover-bg-color);
+    transform: scale(1.0);
+}
+
+.google-btn svg,
+.facebook-btn svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.horizontal-divider-with-text {
+    display: flex;
+    margin: 3rem 1rem 1rem 2rem;
+    width: 45%;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.horizontal-divider-with-text span {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+}
+
+.loco-right .login-form-wrapper {
+    width: 45%;
+    margin: 2rem 1rem 2rem 2rem;
+}
+
+.login-form-wrapper label {
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+.login-form-wrapper input {
+    outline: none;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    height: 2.5rem;
+    font-size: 14px;
+    padding-left: 0.4rem;
+    margin: 0.25rem 0 1rem 0;
+    border-radius: 0.4rem;
+    background-color: var(--light-bg-color);
+}
+
+.login-form-wrapper input:focus::-webkit-input-placeholder {
+    color: transparent;
+}
+
+.login-form-wrapper .change-text {
+    margin: 0rem 0rem  0.5rem 0rem;
+    font-size: 12px;
+}
+
+.login-form-wrapper .change-text .change-rs{
+    font-weight: 600;
+    color: #b76d3e;
+    cursor: pointer;
+}
+
+.login-form-wrapper .change-text .change-rs-timer{
+    font-weight: 600;
+    color: #b76d3e;
+}
+
+.login-form-wrapper p em {
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.lfw-name {
+    display: flex;
+}
+
+.lfw-name span:first-child {
+    margin-right: 0.5rem;
+}
+
+.login-form-wrapper button,
+.login-linkbtn {
+    width: 100%;
+    margin-top: 0.8rem;
+    border-radius: 9rem;
+    border: none;
+    padding: 0.6rem 2rem;
+    background: var(--primary-color);
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.otp-section {
+  /* margin: 20px 0; Space above and below the OTP section */
+}
+.otp-section label{
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+.otp-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.25rem 0 1rem 0;
+
+}
+
+.otp-input-f {
+  width: 65px !important; /* Width of each input box */
+  height: 60px !important; /* Height of each input box */
+  text-align: center !important;
+  font-size: 24px !important; /* Font size for better visibility */
+  border: 1px solid #ccc !important; /* Border styling */
+  border-radius: 5px !important; /* Rounded corners */
+  /* margin: 0 15px; Space between inputs */
+}
+
+.otp-input-f:focus {
+  border-color: #b76d3e !important; /* Change border color on focus */
+  outline: none !important; /* Remove default outline */
+}
+
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .login-container {
+        flex-direction: column; /* Stack the left and right sections on smaller screens */
+    }
+
+    .login-container .loco-left,
+    .login-container .loco-right {
+        flex: 100%; /* Full width for both sections */
+        margin: 0; /* Remove margins for better alignment */
+    }
+
+    .lort-box {
+        width: 90%; /* Adjust width for smaller screens */
+    }
+
+    .loco-right .login-form-wrapper {
+        width: 90%; /* Adjust form width */
+    }
+}
+
+@media (max-width: 992px) {
+    .lbtb-header {
+        font-size: 36px; /* Reduce header size */
+    }
+
+    .social-signup {
+        flex-direction: column; /* Stack social buttons */
+        align-items: center; /* Center align */
+    }
+
+    .social-btn {
+        width: 100%; /* Full width for social buttons */
+        margin-bottom: 1rem; /* Add space between buttons */
+    }
+}
+
+@media (max-width: 768px) {
+    .login-container .loco-left h1 {
+        font-size: 2.5rem; /* Reduce heading size */
+    }
+
+    .login-container .loco-left h3,
+    .login-container .loco-left h5 {
+        margin-left: 1rem; /* Reduce margin */
+    }
+
+    .login-form-wrapper label {
+        font-size: 12px; /* Reduce label size */
+    }
+
+    .login-form-wrapper input {
+        height: 2rem; /* Reduce input height */
+    }
+
+    .login-form-wrapper button {
+        padding: 0.5rem 1.5rem; /* Adjust button padding */
+    }
+}
+
+@media (max-width: 576px) {
+    .login-container {
+        flex-direction: column; /* Stack entire login container */
+    }
+    .login-container .loco-left {
+        display: none; /* Hide the AuthLeftbox component */
+    }
+    .lort-already {
+        display: none; /* Hide the element */
+    }
+    .login-container .loco-left,
+    .login-container .loco-right {
+        flex: 100%; /* Full width */
+    }
+
+    .lort-box {
+        width: 95%; /* Adjust box width */
+    }
+
+    .horizontal-divider-with-text {
+        width: 90%; /* Adjust width for smaller screens */
+    }
+
+    .login-form-wrapper {
+        width: 100%; /* Full width for form wrapper */
+    }
+}

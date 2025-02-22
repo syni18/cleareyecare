@@ -1,0 +1,56 @@
+.rating-review-wrapper{
+
+}
+.rating-review-container {
+    margin-top: 3rem;
+}
+.rating-review-container .rating-review-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+.rating-review-container label {
+    font-size: 24px;
+    color: #495057;
+    font-weight: 600;
+}
+.rating-review-head .rating-head-overview {
+    display: flex;
+    font-size: 12px;
+    margin: 1rem 0;
+    align-items: center;
+}
+.rating-head-overview .rating-overview-star {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffc107;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+}
+.rating-overview-star .overview-star-icon {
+    fill: white;
+    color: white;
+    margin-left: 0.2rem;
+}
+.rating-review-head .rating-review-addbtn {
+    background-color: #59839d;
+    border: 1px solid #d3d3d3;
+    font-size: 12px;
+    padding: 8px 35px;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+.rating-review-container .review-load-more {
+    display: flex;
+    align-items: center;
+    color: #59839d;
+    font-weight: 600;
+    margin: 1rem 0;
+    font-size: 14px;
+    cursor: pointer;
+}

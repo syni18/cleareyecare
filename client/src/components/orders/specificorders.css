@@ -1,0 +1,287 @@
+.orders-wrapper{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin: 1rem 0;
+}
+.orders-container {
+    width: 85%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.orders-container .orders-head{
+
+}
+.orders-head label {
+    font-size: 18px;
+    color: rgb(130, 130, 130);
+    text-transform: uppercase;
+}
+.orders-details-container{
+    display: flex;
+    /* flex: 0.3; */
+    align-items: flex-start;
+    margin-top: 1rem;
+}
+.orders-details-card {
+    display: flex;
+    flex: 1;
+    align-items: flex-start;
+}
+.orders-details-card .details-card-pkg {
+    flex: 0.75;
+    border: 1px solid #d3d3d3;
+    background-color: #fff;
+    border-radius: 4px;
+    /* margin-left: 1rem; */
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+.details-card-pkg .pkg-label-invoice {
+    display: flex;
+    justify-content: space-between;
+}
+.details-card-pkg .pkg-label-invoice label {
+    font-weight: bold;
+    /* margin: 0.5rem; */
+    font-size: 18px;
+    color: rgb(130, 130, 130);
+}
+.pkg-label-invoice button {
+    background-color: #fff;
+    outline: none;
+    border: 1px solid #d3d3d3;
+    padding: 4px 25px;
+    cursor: pointer;
+    color: green;
+    /* font-weight: 60; */
+    text-transform: uppercase;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+}
+.pkg-label-invoice button .invoice-btn{
+    margin-right: 0.25rem;
+}
+.pkg-label-invoice button:hover{
+    /* background-color: green; */
+    /* color: #fff; */
+    border: 1px solid green;
+}
+.details-card-pkg .pkg-invoice-id {
+    margin-top: 0.5rem;
+    font-size: 14px;
+}
+.details-card-pkg span small {
+    background-color: #f1f1f1;
+    padding: 2px 5px;
+    color: green;
+    font-weight: 600;
+    margin-left: 1rem;
+}
+
+.card-pkg-shipped{
+    margin-top: 1rem;
+}
+.card-pkg-shipped label{
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(130, 130, 130);
+}
+.card-pkg-shipped .pkg-shipped-address {
+    margin-top: 0.5em;
+}
+.card-pkg-shipped .pkg-address-card{
+    width: 40%;
+    font-size: 14px;
+}
+.card-pkg-shipped .pkg-shipped-mail {
+    /* font-size: 14px; */
+    display: flex;
+    align-items: center;
+    margin-top: 0.5em;
+}
+.pkg-shipped-mail span{
+    margin: 0;
+    margin-left: 1rem;
+}
+.card-pkg-shipped .pkg-shipped-phno{
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+.pkg-shipped-phno h5{
+
+}
+.pkg-shipped-phno span {
+    margin-left: 1rem;
+    margin-top: 0;
+}
+.pkg-head {
+    margin-top: 2rem;
+    text-transform: uppercase;
+    color: rgb(130, 130, 130);
+    font-weight: 600;
+}
+.pkg-item-details{
+    margin-top: 1rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.pkg-item-details .pkg-details-view{
+    display: flex;
+}
+.pkg-details-view img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+.pkg-view-desc h5{
+    cursor: pointer;
+}
+.pkg-details-view .pkg-view-desc p{
+    font-size: 14px;
+    color: rgb(130, 130, 130);
+}
+.pkg-details-view h4{
+    margin-top: 0.65em;
+
+}
+.pkg-item-details .pkg-details-help{
+    display: flex;
+    flex-direction: column;
+    color: #007bff;
+    font-size: 14px;
+}
+.pkg-details-help .pkg-help-rate-review{
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5em;
+    cursor: pointer;
+    list-style: none;
+    color: #007bff;
+}
+.pkg-details-help .pkg-help-help{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.pkg-help-rate-review span,
+.pkg-help-help span {
+    margin-left: 0.5rem;
+}
+
+.orders-details-card .details-card-tracker {
+    flex: 0.25;
+    margin-left: 1rem;
+}
+.details-card-tracker .card-1{
+    border: 1px solid #d3d3d3;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.details-card-tracker .tracker-date,
+.details-card-tracker .tracker-carrier{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+.tracker-date .pkg-order-date,
+.tracker-date .pkg-order-time,
+.tracker-carrier .pkg-order-carrier,
+.tracker-carrier .pkg-order-trackid{
+    display: flex;
+    flex-direction: column;
+}
+.pkg-order-date label,
+.pkg-order-time label,
+.pkg-order-carrier label,
+.pkg-order-trackid label{
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.pkg-order-date span,
+.pkg-order-time span,
+.pkg-order-carrier span,
+.pkg-order-trackid span{
+    font-size: 12px;
+    color: rgb(130, 130, 130);
+}
+
+.details-card-tracker .card-2{
+    border: 1px solid #d3d3d3;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+.pkg-order-head,
+.pkg-shippment-head{
+    margin-bottom: 1rem;
+}
+.pkg-order-head label,
+.pkg-shippment-head label {
+    text-transform: uppercase;
+    color: rgb(130, 130, 130);
+    font-weight: 600;
+}
+.card-2 .pkg-shipment-timeline-left {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.card-2 .pkg-shipment-timeline-left .timeline-vertical{
+    display: flex;
+    flex-direction: column;
+    border: 1.5px solid #d3d3d3;
+    position: relative;
+    width: 1px;
+    height: 320px;
+    margin-left: 1rem;
+}
+.pkg-shipment-timeline-left .timeline-vertical .timeline-truck{
+    position: absolute;
+    top: 0px;
+    background-color: #fff;
+    color: green;
+    /* border: 1px solid black; */
+    left: -10px;
+}
+.pkg-shipment-timeline-left .timeline-vertical .timeline-store{
+    position: absolute;
+    top: 140px;
+    left: -12px;
+    background-color: #fff;
+    color: blue;
+    /* border: 1px solid black; */
+}
+.pkg-shipment-timeline-left .timeline-vertical .timeline-mapin {
+    position: absolute;
+    bottom: 0;
+    left: -12px;
+    background-color: #fff;
+    color: rgb(130, 130, 130);
+    /* border: 1px solid black; */
+
+}
+.pkg-shipment-timeline-right{
+    font-size: 12px;
+}
+.timeline-right-done {
+    margin-bottom: 1rem;
+}
+.pkg-shipment-timeline-right .timeline-right-done label{
+    font-weight: 600;
+    color: rgb(130, 130, 130);
+}

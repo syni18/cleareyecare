@@ -1,0 +1,185 @@
+.billing-address-wrapper
+{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: #f1f3f6;
+}
+.billing-address-container
+{
+    width: 85%;
+    height: 100%;
+}
+
+.bill-label-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+    width: 575px;
+    margin-bottom: 1em;
+    /* border: 1px solid black; */
+}
+.bill-label-head .bill-label-head-left{
+    display: flex;
+    align-items: center;
+}
+.bill-label-head label {
+    font-size: 24px;
+    color: #495057;
+    font-weight: 600;
+    margin-right: 1rem;
+}
+.bill-label-head .bill-address-sliding{
+    /* cursor: pointer; */
+    width: 40px;
+    display: flex;
+    justify-content: space-between;
+    /* border: 1px solid black; */
+}
+.bill-address-sliding .sliding-arrowLeft,
+.bill-address-sliding .sliding-arrowRight{
+    cursor: pointer;
+}
+.bill-address-sliding .sliding-arrowLeft:hover,
+.bill-address-sliding .sliding-arrowRight:hover{
+    color: #59839d;
+    fill: #59839d;
+}
+.bill-head-new {
+    padding: 4px 10px;
+    background-color: #59839d;
+    color: #fff;
+    border: 1px solid #59839d;
+    border-radius: 2px;
+    cursor: pointer;
+}
+.billing-address-scard{
+    
+    /* width: 300px; */
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(2,1fr);
+}
+.billing-address-scard .bill-address-scard-container{
+    /* margin: 0.5em; */
+    padding: 0.5em;
+    width: 280px;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    background-color: #fff;
+}
+.bill-scard-tag{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.bill-address-scard-container .bill-scard-tag .bill-scard-tag-addresstype{
+    background-color: #f1f3f6;
+    padding: 2px 5px;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.bill-scard-tag .scard-modify{
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: center; */
+}
+.scard-modify .scard-selected-address{
+    color: green;
+}
+.bill-scard-tag .scard-modify .bill-label-edit{
+    background-color: #fff;
+    /* border: 1px solid #d3d3d3; */
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-left: 0.5em;
+    color: #59839d;
+    cursor: pointer;
+
+}
+/* .bill-scard-tag span:last-child:hover{
+    border: 1px solid #007bff;
+} */
+.bill-scard-nameph{
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+    font-size: 14px;
+}
+.bill-scard-nameph .bill-scard-name {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin: 0.25rem 0;
+}
+.bill-scard-nameph .bill-scard-phno{
+    display: flex;
+    align-items: center;
+    /* justify-content: s; */
+}
+
+.bill-scard-locate {
+    margin-top: 0.5em;
+    font-size: 12px;
+    /* color: rgb(108, 108, 108); */
+    display: flex;
+    flex-direction: column;
+}
+
+/* billingaddress.css */
+.modal-overlay {
+    padding: 5px 0;
+    border-radius: 4px;
+    width: max-content;
+    background-color: #fff;
+}
+.bill-address-next {
+    margin-top: 1em;
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    height: 56vh;
+    /* border:1px solid black; */
+}
+.bill-address-next .bill-next-payment{
+    padding: 4px 10px;
+    background-color: #59839d;
+    color: #fff;
+    border: 1px solid #59839d;
+    border-radius: 2px;
+    cursor: pointer;
+}
+/* Define CSS animations for the address transition */
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-10%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeft {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-10%);
+    opacity: 0;
+  }
+}
+
+/* Add animation properties to the address container */
+.bill-address-scard-container {
+  animation: slideInFromLeft 0.3s ease forwards;
+}
+
+.bill-address-scard-container-exit {
+  animation: slideOutToLeft 0.3s ease forwards;
+}

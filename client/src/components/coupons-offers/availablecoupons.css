@@ -1,0 +1,36 @@
+.available-cp-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.available-cp-left {
+    display: flex;
+    flex-direction: column;
+}
+.available-cp-left .cp-left-title {
+    font-weight: 600;
+    margin: 0.2rem 0;
+}
+.cp-left-title span {
+    cursor: pointer;
+}
+.available-cp-left .cp-left-detail {
+    font-size: 14px;
+    margin: 0.2rem 0;
+}
+.available-cp-right {
+
+}
+.available-cp-right .cp-right-validity {
+    font-size: 14px;
+    color: rgb(130,130,130);
+}
+.available-cp-right .cp-right-tnc {
+    float: right;
+    margin: 0.5rem 0;
+    color: #490B3D;
+    font-weight: 600;
+}
+.cp-right-tnc span {
+    cursor: pointer;
+}

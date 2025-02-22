@@ -1,0 +1,108 @@
+.size-chart-wrapper{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+  
+
+}
+.no-scroll {
+  overflow: hidden; /* Disable scrolling */
+}
+
+
+.blur-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+  z-index: 998; /* Ensure it's below the popup */
+}
+.size-chart-container{
+    z-index: 99;
+    width: 768px;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    /* border: 1px solid black; */
+    position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  z-index: 999; 
+
+}
+.size-chart-container .chart-label-closebtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.chart-label-closebtn label {
+    font-size: 24px;
+    color: #495057;
+    font-weight: 600;
+}
+.chart-label-closebtn .chart-close-icon {
+    color: rgb(94, 93, 93);
+    cursor: pointer;
+}
+.size-chart-container label{
+    font-size: 24px;
+}
+.size-chart-container .size-chart-table {
+    /* width: 100%; */
+    display: flex;
+    margin-top: 1rem;
+    align-items: flex-start;
+}
+.size-chart-table table {
+    /* margin: auto; */
+}
+.size-chart-table table{
+    text-align: center;
+    border-collapse:collapse;
+}
+.size-chart-table table thead th {
+    border: 1px solid #59839d;
+    margin: 1rem;
+    padding: 0.2rem 0rem;    
+    width: 130px;
+    font-size: 14px;
+    color: #59839d;
+    text-align: center;
+}
+.size-chart-table table tbody td {
+    border: 1px solid #59839d;
+}
+.size-chart-term {
+    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+    margin: 0 1rem;
+}
+.size-chart-term .chart-term-waist,
+.size-chart-term .chart-term-length,
+.size-chart-term .chart-term-inseam,
+.size-chart-term .chart-term-rise {
+    display: flex;
+    align-items: flex-start;
+}
+.size-chart-term label {
+    font-size: 14px;
+    font-weight: 600;
+    color: black;
+    /* width: max-content; */
+    /* margin-right: 0.5rem; */
+}
+.size-chart-term p {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #495057;
+}

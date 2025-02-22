@@ -1,0 +1,47 @@
+.pay-card-wrapper {
+
+}
+.pay-card-container {
+    
+}
+.pay-card-container .pay-card-head {
+    margin: 1rem;
+}
+.pay-card-head label {
+    font-size: 18px;
+}
+.pay-card-container .pay-card-saved {
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    margin: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem;
+}
+.pay-card-saved .pay-card-saved-left {
+    display: flex;
+}
+.pay-card-saved-left .paycard-saved-detail {
+    display: flex;
+    flex-direction: column;
+    margin:0  1rem;
+}
+.paycard-saved-detail span {
+    font-weight: normal;
+    line-height: 30px;
+}
+.paycard-saved-detail .paycard-saved-iconValue span {
+    color: rgb(130,130,130);
+    letter-spacing: 2px;
+    margin-left: 1rem;
+}
+.pay-card-saved-left .paycard-saved-edit {
+    margin-left: 2rem;
+    cursor: pointer;
+    color: #490B3D;
+    font-weight: 600;
+}
+.pay-card-container .pay-card-saved-right {
+    cursor: pointer;
+}

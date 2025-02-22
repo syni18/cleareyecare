@@ -1,0 +1,124 @@
+.address-form-wrapper {
+
+}
+.address-form-container {
+
+}
+.address-form-container .address-form-head {
+    margin: 1rem;
+}
+.address-form-head label {
+    font-size: 18px;
+    color: #495057;
+    font-weight: 600;
+}
+.address-form-container .address-form-add-label {
+    /* border: 1px solid #490B3D; */
+    margin: 1rem;
+}
+.address-form-add-label label {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    color: #59839d;
+    font-weight: 600;
+    border: 1px solid #59839d;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.address-form-add-label label span {
+    margin-left: 1rem;
+}
+.address-form-container .address-form-saved {
+    margin: 1rem;
+    font-size: 14px;
+}
+.address-form-saved li {
+    padding-left: 1rem;
+    margin-bottom: 0.25rem;
+    border: 1px solid #d3d3d3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.address-form-saved li .form-saved-left {
+    display: flex;
+    flex-direction: column;
+}
+.address-form-saved li .saved-address-tag {
+    /* margin: 0.25em; */
+    margin-top: 1rem;
+}
+.saved-address-tag span {
+    background-color: #f1f3f6;
+    padding: 2px 5px;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.saved-address-nameph{
+    margin-top: 0.5rem;
+}
+.saved-address-nameph span{
+    margin-right: 1rem;
+}
+.saved-address-local{
+    margin-bottom: 1rem;
+}
+.address-saved-edit {
+    cursor: pointer;
+}
+
+/* address list css */
+/* Add these styles to your CSS file */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 100px;
+  border: 1px solid #d8d8d8;
+  border-radius: 4px;
+  left: -90px; /* Adjust this value as needed */
+  top: 30px; /* Adjust this value as needed */
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  padding: 8px;
+  text-align: left;
+}
+
+.dropdown-content button:hover {
+  background-color: #ddd;
+}
+
+.dropdown-content.visible {
+  display: block;
+}
+
+
+
+
+
+
