@@ -8,7 +8,7 @@ axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
 // "" google authentication ""
 export async function signupWithGoogle(){
   window.location.href =
-    `${import.meta.env.VITE_SERVER_URL}/v1/api/auth/google`;
+    "https://cleareyecare-production.up.railway.app//v1/api/auth/google";
   signupWithGoogleCallback()
 }
 export async function signupWithGoogleCallback() {
