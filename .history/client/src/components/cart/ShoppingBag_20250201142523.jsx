@@ -59,7 +59,7 @@ function ShoppingBag() {
   const handleCreateOrder =async () => {
     // TODO: Implement order creation logic
     // subTotal, final cart items, currency, total, address, user, 
-    const cf = await createOrderCF(amount, cartItems, subtotal, defaultAddress);
+    const cf = await createOrderCF();
     navigate("/order");
   }
   // Check if cart is empty

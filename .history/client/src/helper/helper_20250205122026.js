@@ -373,3 +373,17 @@ export async function createOrderCF() {
   }
 }
 
+
+
+
+
+
+function Ab(){
+  name="Ab",
+}
+
+const a
+
+class Test {
+  name: "name"
+}

@@ -364,12 +364,3 @@ export async function getProductReviews(id) {
   }
 }
 
-export async function createOrderCF() {
-  try {
-    const r = await axios.post("v1/api/create-order", {}, {withCredentials: true});
-    return r.data;
-  } catch (error) {
-    console.error("Error in creating Order: ", error);
-  }
-}
-

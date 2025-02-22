@@ -372,4 +372,3 @@ export async function createOrderCF() {
     console.error("Error in creating Order: ", error);
   }
 }
-

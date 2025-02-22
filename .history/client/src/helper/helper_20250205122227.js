@@ -373,3 +373,21 @@ export async function createOrderCF() {
   }
 }
 
+
+
+
+
+
+function Ab(){
+  names="Ab"
+};
+
+const a = new Ab();
+console.log(a.names);
+
+const obj = object.literals({"name": "sahil"});
+console.log(obj
+
+class Test {
+  name: "name"
+}

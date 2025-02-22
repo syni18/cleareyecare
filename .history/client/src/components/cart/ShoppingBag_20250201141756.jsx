@@ -17,7 +17,7 @@ import {
   User,
 } from "lucide-react";
 import NewAddress from "../address/NewAddress";
-import { fetchAddress, getCouponsToShow, setDefaultAddress, createOrderCF } from "../../helper/helper";
+import { fetchAddress, getCouponsToShow, setDefaultAddress } from "../../helper/helper";
 import useCartStore from "../../redux/store/cartStore";
 import { useAddressStore } from "../../redux/store/addressStore";
 import AddressModal from "../address/AddressModal";
@@ -56,12 +56,6 @@ function ShoppingBag() {
     .reduce((acc, item) => acc + item.productId.price * item.quantity, 0)
     .toFixed(2);
   
-  const handleCreateOrder =async () => {
-    // TODO: Implement order creation logic
-    // subTotal, final cart items, currency, total, address, user, 
-    const cf = await createOrderCF(amount, cartItems, subtotal, defaultAddress);
-    navigate("/order");
-  }
   // Check if cart is empty
   if (cartItems.length === 0) {
     return <EmptyCart />;
@@ -176,7 +170,7 @@ function ShoppingBag() {
                 <span>${subtotal}</span>
               </div>
               <div className="csr-btn-chkout">
-                <button type="button" className="btn-checkout" onClick={handleCreateOrder}>
+                <button type="button" className="btn-checkout" onClick={}>
                   Proceed to checkout
                 </button>
                 <button type="button" className="btn-more-shop">
